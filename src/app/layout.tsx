@@ -1,15 +1,104 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import SmoothScrolling from "@/components/SmoothScrolling";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const dirtyLine = localFont({
+  src: [
+    { path: "../fonts/Dirtyline/36daysoftype2022.woff2", style: "regular" },
+    { path: "../fonts/Dirtyline/36daysoftype2022.otf", style: "regular" },
+  ],
+  variable: "--font-36days",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const nohemi = localFont({
+  src: [
+    {
+      path: "../fonts/Nohemi/Nohemi-Thin.woff2",
+      weight: "100",
+      style: "normal",
+    },
+    { path: "../fonts/Nohemi/Nohemi-Thin.otf", weight: "100", style: "normal" },
+    {
+      path: "../fonts/Nohemi/Nohemi-ExtraLight.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-ExtraLight.otf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    { path: "../fonts/Nohemi/Nohemi-Bold.otf", weight: "700", style: "normal" },
+    {
+      path: "../fonts/Nohemi/Nohemi-ExtraBold.woff2",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-ExtraBold.otf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Black.woff2",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Nohemi/Nohemi-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-nohemi",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,11 +112,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" className={`${dirtyLine.variable} ${nohemi.variable}`}>
+      <body className="font-nohemi bg-neutral-950 font-light tracking-wider text-white antialiased">
+        <SmoothScrolling>{children}</SmoothScrolling>
       </body>
     </html>
   );
