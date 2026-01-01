@@ -62,7 +62,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <div className="relative h-screen px-8">
+    <div className="relative px-8">
       <div className="grid grid-cols-7 py-4">
         <div
           ref={scope}
@@ -180,7 +180,7 @@ export default function HeroSection() {
         <motion.a
           ref={scrollRef}
           href="#project-section"
-          className="absolute bottom-28 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-white px-4 py-2 text-sm hover:border-[#a4a4a4] hover:text-[#a4a4a4]"
+          className="absolute bottom-8 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-white px-4 py-2 text-sm hover:border-[#a4a4a4] hover:text-[#a4a4a4]"
           initial={{ display: "hidden", opacity: 0 }}
           whileInView={{ display: "flex", opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}

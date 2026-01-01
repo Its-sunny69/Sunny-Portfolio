@@ -1,7 +1,7 @@
 export default function Navbar() {
   return (
-    <nav className="mt-4 flex justify-between py-4 text-xs px-8">
-      <div>name</div>
+    <nav className="flex justify-between px-8 py-4 text-xs">
+      <div>ポートフォリオ</div>
       <div>
         <a
           href="https://drive.google.com/uc?export=download&id=15gyH9nlnuuhr2CIuvwif9uV4odH_tLaW"

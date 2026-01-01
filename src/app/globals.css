@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme iniline {
-    --font-36days: var(--font-36days);
-    --font-nohemi: var(--font-nohemi);
+  --font-36days: var(--font-36days);
+  --font-nohemi: var(--font-nohemi);
 }
 
 *::selection {
@@ -108,10 +108,83 @@ html.lenis body {
 /* HTML: <div class="rounded-edge"></div> */
 .rounded-edge {
   height: 200px;
-  aspect-ratio: 3/2;
-  /* update the 85% to control the curvature
-     you can also update the 50% to control the position
-  */
+  aspect-ratio: 3 / 2;
   clip-path: ellipse(85% 100% at 50% 0%);
-  background: #CC2A41;
+  background: #cc2a41;
+}
+
+/* button hover effect */
+.button-circular-reveal-1 {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.button-circular-reveal-1::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 200%;
+  background: #000;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.button-circular-reveal-1:hover::before {
+  transform: scale(1.5);
+}
+
+.button-circular-reveal-2 {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.button-circular-reveal-2::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200%;
+  height: 200%;
+  background: #000;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.button-circular-reveal-2:hover::before {
+  transform: scale(1.5);
+}
+
+.button-circular-reveal-3 {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.button-circular-reveal-3::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200%;
+  height: 200%;
+  background: #fff;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.button-circular-reveal-3:hover::before {
+  transform: scale(1.5);
 }

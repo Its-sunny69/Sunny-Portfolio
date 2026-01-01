@@ -36,6 +36,8 @@ export default function DetailsCard({ data, ref }: { data: Data; ref: React.Ref<
     // console.log(x, y);
   };
 
+  console.log(data);
+
   // const data = {
   //   title: "Arise",
   //   overview: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",

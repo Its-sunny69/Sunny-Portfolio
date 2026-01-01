@@ -121,17 +121,17 @@ export default function ProjectSection2() {
   ];
 
   useEffect(() => {
-    console.log(isDetailCardOpen);
+    // console.log(isDetailCardOpen);
   }, [isDetailCardOpen]);
 
   return (
-    <div className="flex px-8 my-8 w-full flex-col items-center justify-center text-white">
+    <div className="my-8 flex w-full flex-col items-center justify-center px-8 text-white">
       <p className="font-36days mb-2">Some more...</p>
 
       {list.map((item, index) => (
         <motion.div
           key={index}
-          className={`group relative w-[90%] ${index !== list.length - 1 ? "border-t" : "border-y"} border-white p-4`}
+          className={`relative w-[90%] ${index !== list.length - 1 ? "border-t" : "border-y"} border-white p-4`}
           onHoverStart={() => setIsHovered(index)}
           onHoverEnd={() => setIsHovered(null)}
         >
@@ -152,24 +152,28 @@ export default function ProjectSection2() {
               {item.title}
             </h1>
 
-            <p className="col-span-3 flex justify-between transition-all duration-300">
+            <div className="col-span-3 flex justify-between transition-all duration-300">
               <span className="truncate">{item.overview}</span>{" "}
-              <span
-                className="cursor-pointer hover:underline"
+              <div
+                className="group cursor-pointer"
                 onClick={() => setIsDetailCardOpen({ isOpen: true, index })}
               >
                 more details
-              </span>
-            </p>
+                <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
+              </div>
+            </div>
 
-            <div className="group col-span-1 text-end transition-all duration-300">
-              <a
-                href={item.projectURLs[0].url}
-                className="hover:underline"
-                target="_blank"
-              >
-                View Project
-              </a>
+            <div className="col-span-1 flex justify-end">
+              <div className="w-fit">
+                <a
+                  href={item.projectURLs[0].url}
+                  className="group"
+                  target="_blank"
+                >
+                  View Project
+                  <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -178,7 +182,7 @@ export default function ProjectSection2() {
       <AnimatePresence>
         {isDetailCardOpen.isOpen && isDetailCardOpen.index !== null && (
           <motion.div
-            className="absolute inset-0 z-100 backdrop-blur-sm"
+            className="fixed inset-0 z-50 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
