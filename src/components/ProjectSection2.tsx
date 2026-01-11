@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DetailsCard from "./DetailsCard";
 import useOutsideClick from "@/utlis/useOutsideClicks";
+import DeveloperDetails from "./DeveloperDetails";
+import { DeveloperContext } from "@/context/developerContext";
 
 type CardItem = {
   title: string;
@@ -23,10 +25,21 @@ export default function ProjectSection2() {
     isOpen: boolean;
     index: number | null;
   }>({ isOpen: false, index: null });
+  const [detailList, setdetailList] = useState({
+    slidingBackground: false,
+  });
+  const { developerMode } = useContext(DeveloperContext);
 
   const detailCardRef = useOutsideClick(() =>
     setIsDetailCardOpen({ isOpen: false, index: null }),
   );
+
+  const HandleDetailClick = (key: keyof typeof detailList) => {
+    setdetailList((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  };
 
   const list: CardItem[] = [
     {
@@ -124,8 +137,41 @@ export default function ProjectSection2() {
     // console.log(isDetailCardOpen);
   }, [isDetailCardOpen]);
 
+  const data = {
+    slidingBackground: {
+      title: "Sliding Background Hover Animation",
+      description:
+        "How it's created:\n\n• Uses <code class='code'>onHoverStart</code> and <code class='code'>onHoverEnd</code> callbacks to track hover state\n• <code class='code'>motion.div</code> with <code class='code'>layoutId=\"inner-card\"</code> creates a shared layout animation context\n• <code class='code'>inset-0</code> (position absolute with all edges 0) fills the entire parent container\n• Background color is solid white, positioned behind text using z-index layering\n\nAnimation Logic:\n\n• Background Element: Initially hidden, slides in with spring physics on hover\n• Spring Transition: Uses <code class='code'>type: \"spring\", stiffness: 120, damping: 14</code> for bouncy, natural motion\n• Text Color: Animates from white to black based on hover state: <code class='code'>animate={{ color: isHovered === index ? \"black\" : \"white\" }}</code>\n• Duration: 0.2s easeOut for color transition\n• Z-index Layering: Background div is at default z-index, text is <code class='code'>relative z-10</code> to stay on top\n\nInteraction Flow:\n\n• On hover: Background slides in with spring animation, text color transitions to black\n• Off hover: Background slides out, text returns to white\n• Combined effect: Creates impression of light background expanding behind dark text, then text darkening\n\nOptimization:\n\n• <code class='code'>layoutId</code> enables Framer Motion's shared layout animation for smooth transitions\n• Single state variable (<code class='code'>isHovered</code>) controls both background and text color\n• Applied to each card in the list independently with index matching\n\nResult: Creates an elegant, responsive background highlight effect with physics-based motion that feels natural and interactive, perfect for list item hover states",
+      codeSnippet: `const [isHovered, setIsHovered] = useState<number | null>(null);
+
+<motion.div
+  className="relative w-[90%] border border-white p-4"
+  onHoverStart={() => setIsHovered(index)}
+  onHoverEnd={() => setIsHovered(null)}
+>
+  {isHovered === index && (
+    <motion.div
+      layoutId="inner-card"
+      className="absolute inset-0 bg-white"
+      transition={{ type: "spring", stiffness: 120, damping: 14 }}
+    />
+  )}
+
+  <motion.div
+    className="relative z-10 grid grid-cols-5"
+    animate={{ color: isHovered === index ? "black" : "white" }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
+  >
+    <h1>{item.title}</h1>
+    <span>{item.overview}</span>
+    <a href={item.projectURLs[0].url}>View Project</a>
+  </motion.div>
+</motion.div>`,
+    },
+  };
+
   return (
-    <div className="my-8 flex w-full flex-col items-center justify-center px-8 text-white">
+    <div className="relative my-8 flex w-full flex-col items-center justify-center px-8 text-white">
       <p className="font-36days mb-2">Some more...</p>
 
       {list.map((item, index) => (
@@ -148,7 +194,10 @@ export default function ProjectSection2() {
             animate={{ color: isHovered === index ? "black" : "white" }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <h1 className="col-span-1 transition-all duration-300">
+            <h1
+              className="col-span-1 transition-all duration-300"
+              data-cursor-hover="true"
+            >
               {item.title}
             </h1>
 
@@ -163,17 +212,18 @@ export default function ProjectSection2() {
               </div>
             </div>
 
-            <div className="col-span-1 flex justify-end">
-              <div className="w-fit">
-                <a
-                  href={item.projectURLs[0].url}
-                  className="group"
-                  target="_blank"
-                >
-                  View Project
-                  <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
-                </a>
-              </div>
+            <div
+              className="col-span-1 flex justify-end transition-all duration-300"
+              data-cursor-hover="true"
+            >
+              <a
+                href={item.projectURLs[0].url}
+                className="group"
+                target="_blank"
+              >
+                View Project
+                <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
+              </a>
             </div>
           </motion.div>
         </motion.div>
@@ -195,6 +245,49 @@ export default function ProjectSection2() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {developerMode && (
+        <>
+          <button
+            className="absolute top-0 left-48 flex cursor-pointer hover:opacity-75"
+            onClick={() => HandleDetailClick("slidingBackground")}
+          >
+            <motion.p
+              initial={{ x: 0, color: "#05df72" }}
+              animate={
+                detailList.slidingBackground
+                  ? { x: -5, color: "red" }
+                  : { x: 0, color: "#05df72" }
+              }
+              transition={{ duration: 0.2 }}
+            >
+              [
+            </motion.p>
+            <motion.p className="mx-1">5</motion.p>
+            <motion.p
+              initial={{ x: 0, color: "#05df72" }}
+              animate={
+                detailList.slidingBackground
+                  ? { x: 5, color: "red" }
+                  : { x: 0, color: "#05df72" }
+              }
+              transition={{ duration: 0.2 }}
+            >
+              ]
+            </motion.p>
+          </button>
+
+          <AnimatePresence>
+            {developerMode && detailList.slidingBackground && (
+              <DeveloperDetails
+                className="absolute top-5 left-48 z-70 text-xs"
+                data={data.slidingBackground}
+                LabelProps={{ direction: "right", orientation: "up" }}
+              />
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

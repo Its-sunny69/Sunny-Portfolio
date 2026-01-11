@@ -21,7 +21,13 @@ type Data = {
   techListImg: string[];
 };
 
-export default function DetailsCard({ data, ref }: { data: Data; ref: React.Ref<HTMLDivElement> }) {
+export default function DetailsCard({
+  data,
+  ref,
+}: {
+  data: Data;
+  ref: React.Ref<HTMLDivElement>;
+}) {
   const [followButton, setFollowButton] = useState(false);
 
   const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 });
@@ -68,8 +74,7 @@ export default function DetailsCard({ data, ref }: { data: Data; ref: React.Ref<
   // };
 
   return (
-    <div className="h-screen flex w-full items-center justify-center z-70">
-
+    <div className="z-70 flex h-screen w-full items-center justify-center">
       <div
         className="absolute inset-0 mask-t-from-black mask-t-from-80% mask-t-to-transparent mask-r-from-white mask-r-from-80% mask-r-to-transparent mask-b-from-white mask-b-from-80% mask-b-to-transparent mask-l-from-white mask-l-from-80% mask-l-to-transparent mask-alpha"
         style={{
@@ -80,8 +85,10 @@ export default function DetailsCard({ data, ref }: { data: Data; ref: React.Ref<
         }}
       />
 
-      <div 
-        ref={ref} className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black p-8 text-sm text-gray-200">
+      <div
+        ref={ref}
+        className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black p-8 text-sm text-gray-200"
+      >
         <a
           href={data.projectURLs[0].url}
           target="_blank"
@@ -135,7 +142,12 @@ export default function DetailsCard({ data, ref }: { data: Data; ref: React.Ref<
         </a>
 
         <div className="">
-          <h1 className="font-36days text-6xl text-white">{data.title}</h1>
+          <h1
+            className="font-36days text-6xl text-white"
+            data-cursor-hover="true"
+          >
+            {data.title}
+          </h1>
           <p className="text-[#a4a4a4]">{data.overview}</p>
         </div>
 

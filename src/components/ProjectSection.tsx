@@ -1,9 +1,11 @@
-import { motion, useInView } from "motion/react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import reactIcon from "@/assets/programming-icons/reactjs.svg";
 import tailwindIcon from "@/assets/programming-icons/tailwindcss.svg";
 import html5Icon from "@/assets/programming-icons/html5.svg";
 import NewCard from "./NewCard";
-import { useRef } from "react";
+import { useContext, useRef, useState } from "react";
+import DeveloperDetails from "./DeveloperDetails";
+import { DeveloperContext } from "@/context/developerContext";
 
 type CardItem = {
   title: string;
@@ -100,13 +102,102 @@ const list: CardItem[] = [
 ];
 
 export default function ProjectSection() {
+  const [detailList, setdetailList] = useState({
+    semicircleDetail: false,
+    projectCardDetail: false,
+  });
+  const { developerMode } = useContext(DeveloperContext);
   const scope = useRef(null);
   const isInView = useInView(scope, { once: true });
 
+  const HandleDetailClick = (key: keyof typeof detailList) => {
+    setdetailList((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  };
+
+  const data = {
+    semicircleDetail: {
+      title: "Glowing Semicircle Animation",
+      description:
+        "How it's created:\n\n• Uses <code class='code'>motion.div</code> with <code class='code'>aspect-square</code> and <code class='code'>rounded-full</code> to create a perfect circle\n• Positioned with <code class='code'>-top-[180%]</code> to sit above the viewport\n• Layered with <code class='code'>-z-50</code> to sit behind all content\n• <code class='code'>border border-none bg-transparent</code> allows only the box-shadow to be visible\n\nAnimation Logic:\n\n• Initial State: width is 0 (invisible), boxShadow is <code class='code'>0px 0px 0px 0px rgba(255,255,255,0.75)</code>\n• Active State (isInView): width expands to 120%, boxShadow becomes <code class='code'>0px 5px 80px 10px rgba(255,255,255,0.55)</code>\n• The shadow blur radius grows from 0px to 80px, creating a soft glowing effect\n• Spread radius increases from 0px to 10px, expanding the glow outward\n\nTiming & Triggers:\n\n• Transition duration: 4 seconds with <code class='code'>easeInOut</code> easing\n• Triggered by <code class='code'>useInView</code> hook with <code class='code'>once: true</code> option\n• Animation plays once when section enters viewport\n\nResult: Creates an elegant, glowing semicircular backdrop that expands and illuminates when the project section comes into view, adding depth and visual impact to the section",
+      codeSnippet: `// useInView hook setup
+const scope = useRef(null);
+const isInView = useInView(scope, { once: true });
+
+// Glowing semicircle animation
+<motion.div
+  className="absolute -top-[180%] -z-50 aspect-square rounded-full border border-none bg-transparent"
+  initial={{
+    width: 0,
+    boxShadow: "0px 0px 0px 0px rgba(255,255,255,0.75)",
+  }}
+  animate={
+    isInView
+      ? {
+          width: "120%",
+          boxShadow: "0px 5px 80px 10px rgba(255,255,255,0.55)",
+        }
+      : {
+          width: 0,
+          boxShadow: "0px 0px 0px 0px rgba(255,255,255,0.75)",
+        }
+  }
+  transition={{ duration: 4, ease: "easeInOut" }}
+/>`,
+    },
+    projectCardDetail: {
+      title: "Project Card Staggered Entrance Animation",
+      description:
+        "How it's created:\n\n• Cards use <code class='code'>useAnimate</code> hook to orchestrate complex multi-step sequences\n• <code class='code'>inView</code> callback triggers animation when card enters viewport\n• Card positions calculated dynamically: x = 30 * index, y = 100 + index * 5, rotate = -20 + index * 5\n• Initial state: card positioned at top (y: -1000) with rotateY: 180 (flipped) and opacity: 0\n\nAnimation Sequence (5 steps):\n\n• Step 1: Fade in card (opacity: 0 to 1) in 0.3s with easeOut\n• Step 2: Rotate, position, and stack cards with rotation (-20 to 0) and x/y/left/zIndex transforms over 2s using backInOut easing\n• Step 3: Drop cards down (y increases by 400px) over 2s with backInOut easing\n• Step 4: Settle cards into final grid layout, reset rotation, reposition left based on card width and spacing calculations over 2s with easeInOut\n• Step 5: Add glowing box-shadow effect (0 to 170px glow) in 0.3s with easeIn\n\nCard Flip Animation:\n\n• Uses <code class='code'>AnimatePresence</code> with conditional rendering of back/front sides\n• Back side (front to user): Shows project image, title, description, tech icons with glowing shadows\n• Front side (back to user): Shows decorative spade icon on black background\n• Flip timing: Triggered ~6.88s after entrance + (index * 950ms) for staggered flip effect\n\nInteractive Effects:\n\n• <code class='code'>whileHover={{ scale: 1.05 }}</code> adds 5% scale increase on hover\n• Tech icons stack with overflow indicators (+N more) with hover scaling\n• Tech tooltip appears on +N button hover with smooth fade-in animation\n\nResult: Creates an impressive choreographed entrance where cards cascade in, settle into a grid layout, flip to reveal project details, with smooth hover interactions and layered visual effects",
+      codeSnippet: `const createSequence = (vw: number): AnimationSequence => [
+  [".card", { opacity: 1 }, { duration: 0.3, ease: "easeOut" }],
+  [".card", {
+    rotate: r,
+    x: x,
+    y: y,
+    left: vw / 3,
+    zIndex: 30 - index,
+  }, { duration: 2, ease: "backInOut", delay: 0.2 }],
+  [".card", { x: x, y: y + 400 }, { duration: 2, ease: "backInOut", delay: 1.5 }],
+  [".card", {
+    top: 0,
+    left: (vw - N * cardWidth) / (N + 3) + index * (cardWidth + (vw - N * cardWidth) / (N + 2)),
+    rotate: 0,
+    rotateY: 0,
+    y: 100,
+  }, { duration: 2, ease: "easeInOut", delay: 0.9 * index }],
+  [".card", { boxShadow: "0px 0px 170px -90px rgba(255,225,225, 0.5)" }, { duration: 0.3, ease: "easeIn" }],
+];
+
+// Trigger animation on viewport entry
+const cleanup = inView(scope.current, () => {
+  animation(createSequence(viewportWidth));
+  setTimeout(() => setIsCardFlipped(true), 6880 + index * 950);
+});
+
+// Card flip with AnimatePresence
+<AnimatePresence>
+  {isCardFlipped ? (
+    <motion.div className="inner rounded-lg bg-black p-4">
+      {/* Front side: Project details */}
+    </motion.div>
+  ) : (
+    <motion.div className="inner rounded-lg bg-black flex items-center justify-center">
+      {/* Back side: Spade icon */}
+    </motion.div>
+  )}
+</AnimatePresence>`,
+    },
+  };
+
   return (
     <div className="py-4">
-      <div className="px-8 text-center">
-        <h1 className="font-36days text-6xl">Hand Crafted Works</h1>
+      <div className="flex flex-col items-center px-8">
+        <h1 className="font-36days text-6xl" data-cursor-hover="true">
+          Hand Crafted Works
+        </h1>
         <p>
           Each project tells a story of growth, upgrades, and milestones
           achieved -{" "}
@@ -143,6 +234,92 @@ export default function ProjectSection() {
           }
           transition={{ duration: 4, ease: "easeInOut" }}
         ></motion.div>
+
+        {/* Semicircle Animation */}
+        {developerMode && (
+          <>
+            <button
+              className="absolute top-0 right-5 flex cursor-pointer hover:opacity-75"
+              onClick={() => HandleDetailClick("semicircleDetail")}
+            >
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.semicircleDetail
+                    ? { x: -5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                [
+              </motion.p>
+              <motion.p className="mx-1">3</motion.p>
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.semicircleDetail
+                    ? { x: 5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                ]
+              </motion.p>
+            </button>
+            <AnimatePresence>
+              {developerMode && detailList.semicircleDetail && (
+                <DeveloperDetails
+                  className="absolute top-8 right-5 z-70 text-xs"
+                  data={data.semicircleDetail}
+                  LabelProps={{ direction: "left", orientation: "up" }}
+                />
+              )}
+            </AnimatePresence>
+          </>
+        )}
+
+        {/* Project Card Animation */}
+        {developerMode && (
+          <>
+            <button
+              className="absolute top-16 left-80 flex cursor-pointer hover:opacity-75"
+              onClick={() => HandleDetailClick("projectCardDetail")}
+            >
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.projectCardDetail
+                    ? { x: -5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                [
+              </motion.p>
+              <motion.p className="mx-1">4</motion.p>
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.projectCardDetail
+                    ? { x: 5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                ]
+              </motion.p>
+            </button>
+            <AnimatePresence>
+              {developerMode && detailList.projectCardDetail && (
+                <DeveloperDetails
+                  className="absolute top-28 left-80 z-70 text-xs"
+                  data={data.projectCardDetail}
+                  LabelProps={{ direction: "right", orientation: "up" }}
+                />
+              )}
+            </AnimatePresence>
+          </>
+        )}
       </motion.div>
     </div>
   );

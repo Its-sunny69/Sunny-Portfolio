@@ -188,3 +188,13 @@ html.lenis body {
 .button-circular-reveal-3:hover::before {
   transform: scale(1.5);
 }
+
+.code {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #e0e0e0;
+}

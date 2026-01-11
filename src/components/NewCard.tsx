@@ -144,10 +144,16 @@ function NewCard({ data, index }: { data: Data; index: number }) {
                   />
 
                   <div className="mt-4 flex items-center justify-between">
-                    <h2 className="font-36days text-xl">{data.title}</h2>
+                    <h2
+                      className="font-36days text-xl"
+                      data-cursor-hover="true"
+                    >
+                      {data.title}
+                    </h2>
                     <a
                       href={data.projectURLs[0].url}
                       className="flex items-center justify-center"
+                      data-cursor-hover="true"
                       title="view project"
                     >
                       <LaunchRoundedIcon style={{ fontSize: 16 }} />

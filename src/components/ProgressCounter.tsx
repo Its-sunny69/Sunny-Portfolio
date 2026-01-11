@@ -32,7 +32,7 @@ export default function ProgressCounter({
   const digits = paddedValue.split("");
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       {digits.map((digit, index) => (
         <AnimatePresence mode="wait" key={index}>
           <motion.span

@@ -1,4 +1,5 @@
 "use client";
+
 import Contact from "@/components/Contact";
 import CustomCursor from "@/components/CustomCursor";
 import Footer from "@/components/Footer";
@@ -11,30 +12,52 @@ import ProjectSection2 from "@/components/ProjectSection2";
 import SkillsSection from "@/components/SkillsSection";
 import StoryTimeline from "@/components/StoryTimeline";
 import Testing from "@/components/Testing";
+import { DeveloperContext } from "@/context/developerContext";
 import { animateSequence } from "motion/mini";
 import {
   AnimatePresence,
   AnimationSequence,
   motion,
-  MotionValue,
   useAnimate,
   useMotionValue,
   useMotionValueEvent,
   useScroll,
   useTransform,
+  useAnimationFrame,
 } from "motion/react";
 import { div } from "motion/react-client";
-import { use, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  use,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import KeyboardDoubleArrowUpRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowUpRounded";
+import { on } from "events";
 
 export default function Home() {
   const [cursorDisplay, setCursorDisplay] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [scope, animation] = useAnimate();
+  const [isHovered, setIsHovered] = useState(false);
+  const rotationValue = useMotionValue(0);
   const progressDiv = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);
+  const { developerMode, setDeveloperMode } = useContext(DeveloperContext);
 
   const { scrollYProgress } = useScroll();
+
+  // Velocity in degrees per second: slower when hovered
+  const rotationVelocity = isHovered ? 45 : 90;
+
+  // Update rotation continuously using animation frame
+  useAnimationFrame((_, delta) => {
+    const rotationIncrement = (rotationVelocity * delta) / 1000;
+    rotationValue.set(rotationValue.get() + rotationIncrement);
+  });
 
   const xProgress = useTransform(
     scrollYProgress,
@@ -93,16 +116,20 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const runAnimation = async () => {
-      await animation(loadingSequence);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    };
+  // useEffect(() => {
+  //   const runAnimation = async () => {
+  //     await animation(loadingSequence);
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 500);
+  //   };
 
-    runAnimation();
-  }, []);
+  //   runAnimation();
+  // }, []);
+
+  const handleDeveloperModeToggle = () => {
+    setDeveloperMode(!developerMode);
+  };
 
   console.log("rendering background");
 
@@ -151,7 +178,9 @@ export default function Home() {
   }
 
   return (
-    <div className="realtive">
+    <div className="realtive overflow-x-clip">
+      {/* work on background animation... */}
+
       <motion.div
         style={{ x: xProgress }}
         ref={progressDiv}
@@ -163,9 +192,9 @@ export default function Home() {
 
       <div className="realtive w-full flex-1">
         <div className="relative z-10 min-h-screen w-full bg-neutral-950">
-          <AnimatePresence>
+          {/* <AnimatePresence>
             <CustomCursor cursorDisplay={cursorDisplay} />
-          </AnimatePresence>
+          </AnimatePresence> */}
           <div>
             <Navbar />
           </div>
@@ -173,24 +202,58 @@ export default function Home() {
           <div id="hero-section" className="mt-4 min-h-screen">
             <HeroSection />
           </div>
-          <div id="project-section" className="my-16 min-h-screen border">
+          <div id="project-section" className="my-16 min-h-screen">
             <ProjectSection />
             <ProjectSection2 />
           </div>
-          <div id="skills-section" className="my-16 min-h-screen border">
+          <div id="skills-section" className="my-16 min-h-screen">
             <SkillsSection />
           </div>
-          <div id="story-section" className="my-16 min-h-screen border">
+          <div id="story-section" className="my-16 min-h-screen">
             <StoryTimeline />
           </div>
-          <div id="contact-section" className="my-16 min-h-screen border">
+          <div id="contact-section" className="my-16 min-h-screen">
             <Contact setCursorDisplay={setCursorDisplay} />
           </div>
         </div>
-        <div className="sticky bottom-0 -z-10 mt-[21rem] w-full bg-blue-400">
+
+        <div className="sticky bottom-0 -z-10 mt-[21rem] w-full">
           <Footer />
+        </div>
+
+        <div className="fixed bottom-5 left-5 z-10 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full cursor-pointer">
+          <motion.div
+            className="absolute rounded-full"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            style={{ rotate: rotationValue }}
+          >
+            <div className="relative h-16 w-16">
+              {"TOTHETOP".split("").map((char, i) => {
+                const totalChars = "TOTHETOP".length;
+                const angle = (360 / totalChars) * i;
+                return (
+                  <motion.div
+                    key={i}
+                    className="absolute flex h-full w-full items-center justify-center"
+                    style={{
+                      transform: `rotateZ(${angle}deg) translateY(-32px)`,
+                      transformOrigin: "center center",
+                    }}
+                  >
+                    <span className="text-xs font-medium text-white">
+                      {char}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+          <KeyboardDoubleArrowUpRoundedIcon fontSize="large" />
         </div>
       </div>
     </div>
   );
 }
+

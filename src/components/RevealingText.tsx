@@ -2,14 +2,18 @@ import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 // Reveal content in a circular area following the cursor
-export default function Testing({
+export default function RevealingText({
   children,
   className,
   style,
+  HoverMe = false,
+  textOrientation = "normal",
 }: {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  HoverMe?: boolean;
+  textOrientation?: "sideways" | "normal";
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -49,6 +53,22 @@ export default function Testing({
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Revealed content layer with mask */}
+      {HoverMe && (
+        <motion.p
+          className="pointer-events-none absolute text-neutral-700"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isHovering ? 0 : 1 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            textOrientation:
+              textOrientation === "sideways" ? "sideways" : "initial",
+            writingMode:
+              textOrientation === "sideways" ? "sideways-lr" : "initial",
+          }}
+        >
+          Hover Me
+        </motion.p>
+      )}
       <motion.div
         className="pointer-events-none h-full w-full p-16"
         style={{

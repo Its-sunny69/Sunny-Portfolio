@@ -5,14 +5,21 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import RingText3D from "@/components/RingText3D";
 import Image from "next/image";
 import City from "@/assets/city.jpg";
+import { DeveloperContext } from "@/context/developerContext";
+import DeveloperDetails from "./DeveloperDetails";
 
 export default function StoryTimeline() {
   const [currentScrollProgress, setCurrentScrollProgress] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [detailList, setdetailList] = useState({
+    ringtext3Ddetail: false,
+    timelineSVGDetail: false,
+  });
+  const { developerMode } = useContext(DeveloperContext);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -136,7 +143,7 @@ export default function StoryTimeline() {
     "By 8th grade, I was shifted to the new Division A based on exam percentages. \nI lost some of my buddies from B 😞",
     "I passed my 10th with 80.40% \n- not too shabby for a science student 😎",
     "I started exploring how the internet stuff actually works \n- while also playing Free Fire like a spoil kid 😂",
-    "I was so naive that I started Telegram channel \nto build Web page only with HTML CSS for others. Yes you heard correct 🙂",
+    "I was so naive that I started Telegram channel \nto build Web page only with HTML CSS for others. Yes you heard right 🙂",
     "That’s when I realized there was much more beyond HTML and CSS \n- programming had entered the chat 💻",
     "In college, everyone was struggling with the \nlegendary Turbo C compiler including me 🥲",
     "I was building noob projects and proudly calling myself a programmer. \nFake it till you make it 😉",
@@ -163,10 +170,151 @@ export default function StoryTimeline() {
     return lines;
   }
 
+  const HandleDetailClick = (key: keyof typeof detailList) => {
+    setdetailList((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  };
+
+  const data = {
+    ringtext3Ddetail: {
+      title: "3D Rotating Ring Text Animation",
+      description:
+        "How it's created:\n\n• Uses <code class='code'>useMotionValue</code> to hold a shared rotation value that drives the entire text ring\n• <code class='code'>useAnimationFrame</code> increments rotation every frame based on current speed: <code class='code'>degPerMs = 360 / speed</code>\n• <code class='code'>useSpring</code> smooths speed changes (hover vs normal) for natural motion\n• Characters are positioned around a 3D circle using <code class='code'>rotateY(angle)</code> + <code class='code'>translateZ(radius)</code>\n• Parent container applies <code class='code'>perspective</code> and <code class='code'>transformStyle: preserve-3d</code> with tilt via <code class='code'>rotateX</code> and <code class='code'>rotateZ</code>\n\nAnimation Logic:\n\n• Initial: rotation = 0, ring is tilted in 3D via <code class='code'>rotateX</code>/<code class='code'>rotateZ</code>\n• Per frame: rotation increases by <code class='code'>degPerMs * delta</code> to create continuous spin\n• On hover: speed smoothly transitions to a faster value via spring; rotation rate increases\n• Each character uses a shared rotation plus its own angle offset for synchronized movement\n\nKey Technical Details:\n\n• Angle per character: <code class='code'>angle = (360 / charCount) * i</code>\n• Per-character transform computed with <code class='code'>useTransform(rotation, r =&gt; \`rotateY(\${angle + r}deg) translateZ(\${radius}px) translate(-50%, -50%)\`)</code>\n• <code class='code'>perspective</code> on parent enables depth; <code class='code'>preserve-3d</code> keeps child transforms in 3D space\n• Spring config: <code class='code'>{ damping: 40, stiffness: 200 }</code> for responsive yet smooth speed transitions\n\nResult: A smooth 3D ring of text that continuously spins and accelerates on hover, with true depth thanks to perspective and per-character 3D transforms",
+      codeSnippet: `// Shared rotation value and smooth speed
+const rotation = useMotionValue(0);
+const speedSpring = useSpring(speed, { damping: 40, stiffness: 200 });
+
+// Toggle speed on hover
+useEffect(() => {
+  speedSpring.set(isHovered ? onHoverSpeed : speed);
+}, [isHovered, onHoverSpeed, speed, speedSpring]);
+
+// Increment rotation each frame based on current speed
+useAnimationFrame((_, delta) => {
+  const degPerMs = 360 / speedSpring.get();
+  rotation.set(rotation.get() + degPerMs * delta);
+});
+
+// Position characters around the ring
+{text.split("").map((char, i) => {
+  const angle = (360 / charCount) * i;
+  const transform = useTransform(
+    rotation,
+    (r) => \`rotateY(\${angle + r}deg) translateZ(\${radius}px) translate(-50%, -50%)\`
+  );
+  return (
+    <motion.span
+      key={i}
+      style={{ transform, fontSize: "3rem", color: "#fff" }}
+    >
+      {char}
+    </motion.span>
+  );
+})}
+
+// Parent with 3D perspective and tilt
+<motion.div style={{ perspective: 800 }}>
+  <div
+    style={{
+      transformStyle: "preserve-3d",
+      transform: \`rotateX(\${rotateX}deg) rotateZ(\${rotateZ}deg)\`,
+      width: 2 * radius + 30,
+      height: 2 * radius - 120,
+    }}
+    onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}
+  >
+    {/* characters */}
+  </div>
+</motion.div>`,
+    },
+    timelineSVGDetail: {
+      title: "SVG Path Timeline Scroll Animation",
+      description:
+        "How it's created:\n\n• Binds scroll progress to the timeline container using <code class='code'>useScroll({ target })</code> to get <code class='code'>scrollYProgress</code>\n• Maps progress to stroke draw using <code class='code'>useTransform(scrollYProgress, [0.02, 1], [0, 1])</code> and applies it to <code class='code'>motion.path</code> via <code class='code'>style={{ pathLength }}</code>\n• Computes the path's total length once with <code class='code'>pathRef.current.getTotalLength()</code> in <code class='code'>useEffect</code>\n• Places milestone cards by sampling the SVG path with <code class='code'>getPointAtLength(totalLength * position)</code> for each normalized position value\n• Uses gradients (<code class='code'>linearGradient</code>) and a drop-shadow filter for visual polish\n\nAnimation Logic:\n\n• Initial: <code class='code'>pathLength = 0</code> so the timeline stroke is invisible; milestone rectangles/text are also hidden\n• While scrolling: <code class='code'>pathLength</code> increases towards 1, progressively revealing the path\n• Milestones: Each rect/text fades/scales in when <code class='code'>currentScrollProgress &gt; position</code> (threshold per milestone)\n• Stagger: A small delay is applied per element to create a subtle stagger on reveal\n\nKey Technical Details:\n\n• Accurate placement via <code class='code'>getTotalLength()</code> + <code class='code'>getPointAtLength()</code>: converts normalized progress to an exact <code class='code'>(x,y)</code> on the curve\n• <code class='code'>safeX</code> calculation keeps milestone rectangles within the viewBox bounds\n• Two mirrored <code class='code'>motion.path</code> strokes with opposing gradients add depth\n• Responsive scaling with <code class='code'>viewBox</code> and <code class='code'>preserveAspectRatio</code> keeps the timeline consistent across sizes\n\nResult: A scroll-reactive SVG timeline that draws itself as you scroll and reveals milestone cards precisely anchored along the curve for a clean, narrative progression",
+      codeSnippet: `// Scroll progress bound to the timeline container
+const scrollRef = useRef<HTMLDivElement>(null);
+const pathRef = useRef<SVGPathElement>(null);
+const { scrollYProgress } = useScroll({ target: scrollRef });
+
+// Map progress to pathLength (0 → 1)
+const pathLength = useTransform(scrollYProgress, [0.02, 1], [0, 1]);
+
+// Cache the total path length once
+const [totalLength, setTotalLength] = useState(0);
+useEffect(() => {
+  if (pathRef.current) {
+    setTotalLength(pathRef.current.getTotalLength());
+  }
+}, []);
+
+// Draw the timeline stroke progressively
+<motion.svg viewBox="-2 -2 15 56">
+  <motion.path
+    ref={pathRef}
+    initial={{ pathLength: 0 }}
+    style={{ pathLength }}
+    d="M 0 0 C 0 6 10 4 10 10 C 10 16 0 14 0 20 C 0 26 10 24 10 30 C 10 36 0 34 0 40 C 0 46 10 44 10 50"
+    stroke="url(#timeline-gradient)"
+    strokeWidth="0.05"
+    fill="none"
+  />
+</motion.svg>
+
+// Place milestone cards along the path
+{positions.map((position, index) => {
+  const length = position * totalLength;
+  const point = pathRef.current?.getPointAtLength(length) || { x: 0, y: 0 };
+
+  const rectWidth = 6;
+  let safeX = point.x - rectWidth / 2 - 0.5;
+  if (safeX < 0) safeX = -1.5;
+
+  return (
+    <g key={index}>
+      <motion.rect
+        x={safeX}
+        y={point.y - 0.3}
+        width="6"
+        height="3"
+        fill="#0a0a0a"
+        stroke="#262626"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: currentScrollProgress > position ? 1 : 0,
+          scale: currentScrollProgress > position ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, delay: currentScrollProgress >= position ? 0 : 0.15 }}
+      />
+
+      <motion.text
+        x={safeX + 0.25}
+        y={point.y + 0.3}
+        fontSize="0.3"
+        fill="white"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: currentScrollProgress > position ? 1 : 0,
+          scale: currentScrollProgress > position ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, delay: currentScrollProgress >= position ? 0.1 : 0 }}
+      >
+        {storyList[index] ? storyList[index].title : "Untitled"}
+      </motion.text>
+    </g>
+  );
+})`,
+    },
+  };
+
   return (
     <div className="py-4">
-      <div className="px-8 text-center">
-        <h1 className="font-36days text-6xl">Story</h1>
+      <div className="flex flex-col items-center px-8">
+        <h1 className="font-36days text-6xl" data-cursor-hover="true">
+          Story
+        </h1>
         <p>
           Not Perfect -<span className="italic"> Still in Progress</span>.
         </p>
@@ -174,12 +322,11 @@ export default function StoryTimeline() {
 
       <div className="relative w-full px-8 tracking-normal" ref={scrollRef}>
         <motion.div className="left sticky top-110 left-full flex h-40 w-fit flex-col items-end justify-end rounded bg-transparent p-2 text-right tracking-wide">
-          {/* <div className="text-xs opacity-70">Story Progress</div> */}
-
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
               className="rounded-md text-sm whitespace-pre-line"
+              data-cursor-hover="true"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -228,6 +375,94 @@ export default function StoryTimeline() {
             delay: currentScrollProgress > 0 ? 0 : 0.15,
           }}
         />
+
+        {/* Ring Text 3D Animation */}
+        {developerMode && (
+          <>
+            <button
+              className="absolute top-42 left-54 flex cursor-pointer hover:opacity-75"
+              onClick={() => HandleDetailClick("ringtext3Ddetail")}
+            >
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.ringtext3Ddetail
+                    ? { x: -5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                [
+              </motion.p>
+              <motion.p className="mx-1">8</motion.p>
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.ringtext3Ddetail
+                    ? { x: 5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                ]
+              </motion.p>
+            </button>
+
+            <AnimatePresence>
+              {developerMode && detailList.ringtext3Ddetail && (
+                <DeveloperDetails
+                  className="absolute top-48 left-54 z-70 text-xs tracking-wider"
+                  data={data.ringtext3Ddetail}
+                  LabelProps={{ direction: "right", orientation: "up" }}
+                />
+              )}
+            </AnimatePresence>
+          </>
+        )}
+
+        {/*SVG Timeline Animation */}
+        {developerMode && (
+          <>
+            <button
+              className="absolute top-64 left-[34rem] flex cursor-pointer hover:opacity-75"
+              onClick={() => HandleDetailClick("timelineSVGDetail")}
+            >
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.timelineSVGDetail
+                    ? { x: -5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                [
+              </motion.p>
+              <motion.p className="mx-1">9</motion.p>
+              <motion.p
+                initial={{ x: 0, color: "#05df72" }}
+                animate={
+                  detailList.timelineSVGDetail
+                    ? { x: 5, color: "red" }
+                    : { x: 0, color: "#05df72" }
+                }
+                transition={{ duration: 0.2 }}
+              >
+                ]
+              </motion.p>
+            </button>
+
+            <AnimatePresence>
+              {developerMode && detailList.timelineSVGDetail && (
+                <DeveloperDetails
+                  className="absolute top-72 left-[34rem] z-70 text-xs tracking-wider"
+                  data={data.timelineSVGDetail}
+                  LabelProps={{ direction: "right", orientation: "up" }}
+                />
+              )}
+            </AnimatePresence>
+          </>
+        )}
 
         <motion.svg
           ref={svgRef}

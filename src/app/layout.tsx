@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SmoothScrolling from "@/components/SmoothScrolling";
+import { DeveloperContextProvider } from "@/context/developerContext";
 
 const dirtyLine = localFont({
   src: [
@@ -114,7 +115,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dirtyLine.variable} ${nohemi.variable}`}>
       <body className="font-nohemi bg-neutral-950 font-light tracking-wider text-white antialiased">
-        <SmoothScrolling>{children}</SmoothScrolling>
+        <DeveloperContextProvider>
+          <SmoothScrolling>{children}</SmoothScrolling>
+        </DeveloperContextProvider>
       </body>
     </html>
   );
