@@ -1,13 +1,24 @@
 @import "tailwindcss";
 
-@theme iniline {
+@theme inline {
   --font-36days: var(--font-36days);
   --font-nohemi: var(--font-nohemi);
+
+  --color-hover: #a4a4a4;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 *::selection {
   background: #fff;
   color: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+  *::selection {
+    background: #000;
+    color: #fff;
+  }
 }
 
 html.lenis,
@@ -37,6 +48,7 @@ html.lenis body {
 .example-2 {
   position: relative;
   overflow: hidden;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,6 +79,17 @@ html.lenis body {
   z-index: 0;
   top: 50%;
   transform-origin: top center;
+}
+
+@media (prefers-color-scheme: light) {
+  .example-2::before {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(56, 56, 56, 0.75) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
 }
 
 @keyframes rotate {
@@ -194,7 +217,7 @@ html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   padding: 2px 6px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.9em;
   color: #e0e0e0;
 }

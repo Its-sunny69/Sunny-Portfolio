@@ -2,20 +2,17 @@ import {
   AnimatePresence,
   motion,
   useAnimate,
-  useInView,
   type AnimationSequence,
 } from "motion/react";
-import Image from "next/image";
 import heroImage from "@/assets/mountain3.jpg";
-import { useContext, useEffect, useRef, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Testing from "./Testing";
 import RevealingText from "./RevealingText";
 import TypingAnimation from "./TypingAnimation";
 import DeveloperDetails from "./DeveloperDetails";
-import { image } from "motion/react-client";
 import { DeveloperContext } from "@/context/developerContext";
+import { useTheme } from "next-themes";
 
 type Cursor = {
   x: number;
@@ -28,13 +25,18 @@ export default function HeroSection() {
     imageDetail: false,
     textDetail: false,
   });
+  const [gradientBackground, setGradientBackground] = useState({
+    initial:
+      "linear-gradient(162deg,rgba(255, 255, 255, 1) 100%, rgba(0, 0, 0, 1) 100%)",
+    animate:
+      "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
+  });
   const { developerMode } = useContext(DeveloperContext);
+  const { theme } = useTheme();
 
   const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 });
 
   const scrollRef = useRef(null);
-
-  const isInView = useInView(scrollRef);
 
   const handleCursor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -71,6 +73,24 @@ export default function HeroSection() {
   useEffect(() => {
     animation(sequence);
   }, []);
+
+  useEffect(() => {
+    if (theme === "light") {
+      setGradientBackground({
+        initial:
+          "linear-gradient(162deg,rgba(0, 0, 0, 1) 100%, rgba(255, 255, 255, 1) 100%)",
+        animate:
+          "linear-gradient(162deg,rgba(0, 0, 0, 1) 20%, rgba(255, 255, 255, 1) 81%)",
+      });
+    } else {
+      setGradientBackground({
+        initial:
+          "linear-gradient(162deg,rgba(255, 255, 255, 1) 100%, rgba(0, 0, 0, 1) 100%)",
+        animate:
+          "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
+      });
+    }
+  }, [theme]);
 
   const HandleDetailClick = (key: keyof typeof detailList) => {
     setdetailList((prevState) => ({
@@ -203,7 +223,7 @@ export default function HeroSection() {
             <AnimatePresence>
               {followButton && (
                 <motion.button
-                  className="group pointer-events-none absolute rounded-full px-4 py-2 text-xs text-white backdrop-blur-lg"
+                  className="group pointer-events-none absolute rounded-full px-4 py-2 text-xs text-neutral-950 backdrop-blur-lg dark:text-white"
                   initial={{
                     scale: 0,
                     opacity: 0,
@@ -224,7 +244,7 @@ export default function HeroSection() {
                 >
                   Wanna talk? <OpenInNewIcon fontSize="inherit" />
                   <motion.div
-                    className="h-[0.7px] w-0 bg-[#a4a4a4] transition-all duration-200 ease-out"
+                    className="h-[0.7px] w-0 bg-neutral-700 transition-all duration-200 ease-out"
                     initial={{ width: 0 }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
@@ -241,11 +261,11 @@ export default function HeroSection() {
                 onClick={() => HandleDetailClick("imageDetail")}
               >
                 <motion.p
-                  initial={{ x: 0, color: "#05df72" }}
+                  initial={{ x: 0, color: "#22c55e" }}
                   animate={
                     detailList.imageDetail
-                      ? { x: -5, color: "red" }
-                      : { x: 0, color: "#05df72" }
+                      ? { x: -5, color: "#ef4444" }
+                      : { x: 0, color: "#22c55e" }
                   }
                   transition={{ duration: 0.2 }}
                 >
@@ -253,11 +273,11 @@ export default function HeroSection() {
                 </motion.p>
                 <motion.p className="mx-1">1</motion.p>
                 <motion.p
-                  initial={{ x: 0, color: "#05df72" }}
+                  initial={{ x: 0, color: "#22c55e" }}
                   animate={
                     detailList.imageDetail
-                      ? { x: 5, color: "red" }
-                      : { x: 0, color: "#05df72" }
+                      ? { x: 5, color: "#ef4444" }
+                      : { x: 0, color: "#22c55e" }
                   }
                   transition={{ duration: 0.2 }}
                 >
@@ -280,18 +300,17 @@ export default function HeroSection() {
 
         <motion.div className="relative col-span-4">
           <TypingAnimation text="I am" delay={2.8} />
+
           <motion.p
             className="font-36days text-[7.5rem] text-transparent"
             data-cursor-hover="true"
             initial={{
-              background:
-                "linear-gradient(162deg,rgba(255, 255, 255, 1) 100%, rgba(0, 0, 0, 1) 100%)",
+              background: gradientBackground.initial,
               backgroundClip: "text",
               opacity: 0,
             }}
             animate={{
-              background:
-                "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
+              background: gradientBackground.animate,
               opacity: 1,
             }}
             transition={{
@@ -310,11 +329,11 @@ export default function HeroSection() {
                 onClick={() => HandleDetailClick("textDetail")}
               >
                 <motion.p
-                  initial={{ x: 0, color: "#05df72" }}
+                  initial={{ x: 0, color: "#22c55e" }}
                   animate={
                     detailList.textDetail
-                      ? { x: -5, color: "red" }
-                      : { x: 0, color: "#05df72" }
+                      ? { x: -5, color: "#ef4444" }
+                      : { x: 0, color: "#22c55e" }
                   }
                   transition={{ duration: 0.2 }}
                 >
@@ -322,11 +341,11 @@ export default function HeroSection() {
                 </motion.p>
                 <motion.p className="mx-1">2</motion.p>
                 <motion.p
-                  initial={{ x: 0, color: "#05df72" }}
+                  initial={{ x: 0, color: "#22c55e" }}
                   animate={
                     detailList.textDetail
-                      ? { x: 5, color: "red" }
-                      : { x: 0, color: "#05df72" }
+                      ? { x: 5, color: "#ef4444" }
+                      : { x: 0, color: "#22c55e" }
                   }
                   transition={{ duration: 0.2 }}
                 >
@@ -372,7 +391,7 @@ export default function HeroSection() {
         <motion.a
           ref={scrollRef}
           href="#project-section"
-          className="absolute bottom-8 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-white px-4 py-2 text-sm hover:border-[#a4a4a4] hover:text-[#a4a4a4]"
+          className="hover:border-hover hover:text-hover absolute bottom-8 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-black px-4 py-2 text-sm dark:border-white"
           initial={{ display: "hidden", opacity: 0 }}
           animate={{ display: "flex", opacity: 1 }}
           transition={{ duration: 0.3, delay: 11.8, ease: "easeInOut" }}

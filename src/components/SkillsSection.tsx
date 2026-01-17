@@ -2,11 +2,9 @@ import {
   motion,
   useMotionValue,
   useAnimationFrame,
-  useScroll,
-  useTransform,
   AnimatePresence,
 } from "motion/react";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import Image from "next/image";
 //Programming Icons
 import Html5Icon from "@/assets/programming-icons/html5.svg";
@@ -27,7 +25,6 @@ import Postman from "@/assets/tool-icons/postman.svg";
 import GithubCopilot from "@/assets/tool-icons/github-copilot.svg";
 import MaterialUi from "@/assets/tool-icons/material-ui.svg";
 import ShadcnUi from "@/assets/tool-icons/shadcn-ui.svg";
-import { div } from "motion/react-client";
 import RevealingText from "./RevealingText";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
@@ -160,7 +157,6 @@ export default function SkillsSection() {
 
     const halfWidth = items1.length * ITEM_WIDTH;
 
-    // seamless reset
     if (x1.get() <= -halfWidth) {
       x1.set(0);
     }
@@ -172,7 +168,6 @@ export default function SkillsSection() {
 
     const halfWidth = items2.length * ITEM_WIDTH;
 
-    // seamless reset
     if (x2.get() >= 0) {
       x2.set(-halfWidth);
     }
@@ -430,11 +425,11 @@ useAnimationFrame((_, delta) => {
             onClick={() => HandleDetailClick("hoverTextRevealingDetail")}
           >
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.hoverTextRevealingDetail
-                  ? { x: -5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: -5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >
@@ -442,11 +437,11 @@ useAnimationFrame((_, delta) => {
             </motion.p>
             <motion.p className="mx-1">6</motion.p>
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.hoverTextRevealingDetail
-                  ? { x: 5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: 5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >
@@ -474,11 +469,11 @@ useAnimationFrame((_, delta) => {
             onClick={() => HandleDetailClick("infiniteScrollDetail")}
           >
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.infiniteScrollDetail
-                  ? { x: -5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: -5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >
@@ -486,11 +481,11 @@ useAnimationFrame((_, delta) => {
             </motion.p>
             <motion.p className="mx-1">7</motion.p>
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.infiniteScrollDetail
-                  ? { x: 5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: 5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >

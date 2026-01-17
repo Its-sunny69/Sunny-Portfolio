@@ -27,7 +27,6 @@ export default function StoryTimeline() {
   const { scrollYProgress } = useScroll({ target: scrollRef });
 
   const [totalLength, setTotalLength] = useState(0);
-  const [currentPoints, setCurrentPoints] = useState({ x: 0, y: 0 });
 
   const pathLength = useTransform(scrollYProgress, [0.02, 1], [0, 1]);
 
@@ -35,7 +34,6 @@ export default function StoryTimeline() {
   useEffect(() => {
     if (pathRef.current) {
       const length = pathRef.current.getTotalLength();
-      // console.log("Total Path Length:", length);
       setTotalLength(length);
     }
   }, []);
@@ -47,35 +45,24 @@ export default function StoryTimeline() {
       x: 0,
       y: 0,
     };
-
-    setCurrentPoints({ x: point.x, y: point.y });
-    // console.log("Point at length", length, "->", point);
   }, [pathRef.current]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // console.log("Scroll Progress:", latest);
     setCurrentScrollProgress(latest);
 
     if (pathRef.current && totalLength > 0) {
       // Calculate the current position along the path
       const currentLength = latest * totalLength;
       const point = pathRef.current.getPointAtLength(currentLength);
-
-      // console.log("Current Point:", { x: point.x, y: point.y });
     }
 
-    // Determine active milestone index based on scroll progress
-    // let idx = 0;
-    // for (let i = 0; i < positions.length; i++) {
-    //   if (latest >= positions[i]) idx = i;
-    // }
     let idx = Math.floor(latest * 10);
     if (latest == 0) {
       idx = 0;
     } else {
       idx = idx + 1;
     }
-    // console.log("Active Index:", idx);
+
     setActiveIndex(idx);
   });
 
@@ -336,9 +323,9 @@ useEffect(() => {
             </motion.div>
           </AnimatePresence>
 
-          <div className="my-4 h-1 w-48 rounded bg-neutral-800">
+          <div className="my-4 h-1 w-48 rounded bg-neutral-200 dark:bg-neutral-800">
             <motion.div
-              className="h-1 rounded bg-white"
+              className="h-1 rounded dark:bg-white bg-neutral-800"
               animate={{
                 width: `${(activeIndex / (storyMessage.length - 1)) * 100}%`,
               }}
@@ -355,14 +342,11 @@ useEffect(() => {
               className="aspect-square rounded-full object-cover"
             />
           </div>
-          {/* <div className="mt-1 text-[11px] opacity-70">
-            {activeIndex + 1} / {storyMessage.length}
-          </div> */}
         </motion.div>
 
         <RingText3D
           ClassNames="absolute top-64 left-9"
-          ringText="START STORY "
+          ringText="THE START "
           ringRadius={90}
           initial={{ opacity: 0, scale: 0 }}
           animate={{
@@ -384,11 +368,11 @@ useEffect(() => {
               onClick={() => HandleDetailClick("ringtext3Ddetail")}
             >
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.ringtext3Ddetail
-                    ? { x: -5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: -5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -396,11 +380,11 @@ useEffect(() => {
               </motion.p>
               <motion.p className="mx-1">8</motion.p>
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.ringtext3Ddetail
-                    ? { x: 5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: 5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -428,11 +412,11 @@ useEffect(() => {
               onClick={() => HandleDetailClick("timelineSVGDetail")}
             >
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.timelineSVGDetail
-                    ? { x: -5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: -5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -440,11 +424,11 @@ useEffect(() => {
               </motion.p>
               <motion.p className="mx-1">9</motion.p>
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.timelineSVGDetail
-                    ? { x: 5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: 5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -526,7 +510,7 @@ useEffect(() => {
               storyList[index]?.description || "No description",
             );
 
-            const rectWidth = 6; // your rectangle width
+            const rectWidth = 6;
 
             // Calculate safe x position for rect and text
             let safeX = point.x - rectWidth / 2 - 0.5;
@@ -537,10 +521,10 @@ useEffect(() => {
                 <defs>
                   <filter
                     id="shadow"
-                    x="-30%" // expands left
-                    y="-30%" // expands up
-                    width="160%" // expands right
-                    height="160%" // expands down
+                    x="-30%"
+                    y="-30%"
+                    width="160%"
+                    height="160%"
                   >
                     <feDropShadow
                       dx="0"
@@ -555,13 +539,10 @@ useEffect(() => {
                 <AnimatePresence>
                   {/* Rectangle background */}
                   <motion.rect
-                    // x={point.x - 1.8}
                     x={safeX}
                     y={point.y - 0.3}
                     width="6"
                     height="3"
-                    //   rx="0.1" // This makes it rounded (like border-radius)
-                    //   ry="0.1" // This makes it rounded (like border-radius)
                     fill="#0a0a0a"
                     stroke="#262626"
                     filter="url(#shadow)"
@@ -584,7 +565,7 @@ useEffect(() => {
                 <AnimatePresence>
                   <motion.text
                     x={safeX + 0.25}
-                    y={point.y + 0.3} // Slight offset for centering
+                    y={point.y + 0.3}
                     textAnchor="start"
                     fontSize="0.3"
                     fill="white"
@@ -607,7 +588,7 @@ useEffect(() => {
                   <motion.text
                     width="8"
                     x={safeX + 1}
-                    y={point.y + 1} // Slight offset for centering
+                    y={point.y + 1}
                     textAnchor="start"
                     fontSize="0.2"
                     fill="white"
@@ -624,9 +605,6 @@ useEffect(() => {
                       delay: currentScrollProgress >= position ? 0.1 : 0,
                     }}
                   >
-                    {/* {storyList[index]
-                    ? storyList[index].description
-                    : "No description"} */}
                     {lines.map((line, i) => (
                       <tspan x={safeX + 1} dy={i === 0 ? 0 : "0.3"} key={i}>
                         {line}

@@ -88,12 +88,12 @@ export default function RingText3D({
             return (
               <motion.span
                 key={i}
-                className="absolute top-[50%] left-[42%]"
+                className="absolute top-[50%] left-[42%] text-black dark:text-white"
                 style={{
                   transform,
                   fontSize: "3rem",
                 //   fontWeight: "800px",
-                  color: "#fff",
+                  // color: "#fff",
                   whiteSpace: "pre",
                   // pointerEvents: "none",
                 }}

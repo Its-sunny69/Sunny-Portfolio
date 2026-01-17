@@ -22,17 +22,15 @@ export default function ProgressCounter({
   // Calculate scroll direction based on previous and current value
   const scrollDirection = displayValue > prevValueRef.current ? "down" : "up";
 
-  // Update ref after render
   useEffect(() => {
     prevValueRef.current = displayValue;
   }, [displayValue]);
 
-  // Pad to 3 digits (000 to 100)
   const paddedValue = displayValue.toString().padStart(3, "0");
   const digits = paddedValue.split("");
 
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex items-center justify-center">
       {digits.map((digit, index) => (
         <AnimatePresence mode="wait" key={index}>
           <motion.span

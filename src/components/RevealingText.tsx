@@ -1,7 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-// Reveal content in a circular area following the cursor
 export default function RevealingText({
   children,
   className,
@@ -26,7 +25,6 @@ export default function RevealingText({
   const smoothY = useSpring(mouseY, { stiffness: 300, damping: 30 });
   const smoothRadius = useSpring(radius, { stiffness: 300, damping: 30 });
 
-  // Create radial gradient mask that follows cursor
   const maskImage = useTransform(
     [smoothX, smoothY, smoothRadius],
     ([x, y, r]) =>
@@ -52,10 +50,9 @@ export default function RevealingText({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Revealed content layer with mask */}
       {HoverMe && (
         <motion.p
-          className="pointer-events-none absolute text-neutral-700"
+          className="text-hover pointer-events-none absolute"
           initial={{ opacity: 1 }}
           animate={{ opacity: isHovering ? 0 : 1 }}
           transition={{ duration: 0.2 }}

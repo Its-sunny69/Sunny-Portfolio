@@ -2,10 +2,17 @@ import { AnimatePresence, motion, useInView } from "motion/react";
 import reactIcon from "@/assets/programming-icons/reactjs.svg";
 import tailwindIcon from "@/assets/programming-icons/tailwindcss.svg";
 import html5Icon from "@/assets/programming-icons/html5.svg";
+import typescriptIcon from "@/assets/programming-icons/typescript.svg";
+import nextjsIcon from "@/assets/programming-icons/nextjs.svg";
+import mongodbIcon from "@/assets/programming-icons/mongodb.svg";
+import css3Icon from "@/assets/programming-icons/css3.svg";
+import javascriptIcon from "@/assets/programming-icons/javascript.svg";
+import nodejsIcon from "@/assets/programming-icons/nodejs.svg";
 import NewCard from "./NewCard";
 import { useContext, useRef, useState } from "react";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
+import { useTheme } from "next-themes";
 
 type CardItem = {
   title: string;
@@ -23,7 +30,7 @@ type CardItem = {
 
 const list: CardItem[] = [
   {
-    title: "Arise",
+    title: "Portafolio",
     overview: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
     imgURL:
       "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -51,53 +58,76 @@ const list: CardItem[] = [
     ],
   },
   {
-    title: "Beta",
+    title: "Briefox",
     overview:
-      "A short and compelling summary of what Project Beta is all about.",
+      "AI-powered web tool for designers to generate briefs, find fonts, and extract color palettes.",
     imgURL:
       "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "Here is a detailed breakdown of Project Beta. This project aimed to streamline a complex workflow into an intuitive application. Significant effort was invested in API design and database optimization for performance.",
+      "Briefox is an AI-powered design assistant that empowers designers with instant access to design briefs, font discovery, and color palette extraction. Featuring zero-login convenience, Lighthouse-optimized performance, and seamless Gemini API integration for intelligent design recommendations.",
     features: [
-      "API Integration",
-      "Advanced Search",
-      "Data Visualization",
-      "Export to CSV",
+      "Achieved <strong class='text-white font-bold'>96 Performance</strong>, <strong class='text-white font-bold'>82 Accessibility</strong>, <strong class='text-white font-bold'>96 Best Practices</strong>, and <strong class='text-white font-bold'>92 SEO</strong> scores using Lighthouse.",
+      "<strong class='text-white font-bold'>Optimized user experience</strong> with <strong class='text-white font-bold'>fast</strong>, <strong class='text-white font-bold'>mobile-friendly</strong> UI built using Next.js (TypeScript) and Tailwind CSS.",
+      "Integrated Gemini API for <strong class='text-white font-bold'>AI-driven content</strong> and features like <strong class='text-white font-bold'>drag-drop</strong>, <strong class='text-white font-bold'>HEIC conversion</strong>, and <strong class='text-white font-bold'>clipboard support</strong>.",
+      "<strong class='text-white font-bold'>Monetized</strong> via Google Analytics, AdSense, and AdsTerra; deployed on Vercel with a <strong class='text-white font-bold'>custom domain</strong>.",
+      "Key tools: <strong class='text-white font-bold'>Design Brief Generator</strong>, <strong class='text-white font-bold'>Font Finder</strong>, and <strong class='text-white font-bold'>Color Palette Extractor</strong> with <strong class='text-white font-bold'>export options</strong>.",
     ],
     projectURLs: [
       {
         label: "Live Demo",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://www.briefox.com/",
       },
       {
         label: "GitHub",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://github.com/Its-sunny69/Essential-Graphic-Design-Tools",
       },
     ],
-    techListName: "Vue.js, Firebase, Tailwind CSS, Chart.js",
-    techListImg: [reactIcon, tailwindIcon, html5Icon, html5Icon, html5Icon],
+    techListName:
+      "HTML, CSS, TypeScript, Next.js, TailwindCSS, MongoDB, API integration",
+    techListImg: [
+      html5Icon,
+      css3Icon,
+      tailwindIcon,
+      typescriptIcon,
+      nextjsIcon,
+      mongodbIcon,
+    ],
   },
   {
-    title: "Gamma",
+    title: "Arise",
     overview:
-      "An exciting glimpse into the innovative features of Project Gamma.",
+      "A productivity-focused app designed to help users overcome procrastination.",
     imgURL:
       "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "This section provides a complete description of Project Gamma. It is a full-stack application built with a focus on scalability and maintainability, utilizing modern development practices and a robust testing suite.",
-    features: ["Feature A", "Feature B", "Feature C", "Feature D"],
+      "Arise is a collaborative productivity platform that combines real-time task management with room-based collaboration. It features modular architecture built with React and Redux, secure JWT authentication, and leaderboard metrics to keep teams motivated and organized.",
+    features: [
+      "Developed a <strong class='text-white font-bold'>modular frontend</strong> using React and Redux to manage <strong class='text-white font-bold'>real-time task lists</strong>, <strong class='text-white font-bold'>room-based collaboration</strong>, and user state.",
+      "Implemented <strong class='text-white font-bold'>dynamic UI elements</strong> with TailwindCSS for <strong class='text-white font-bold'>responsiveness</strong> and <strong class='text-white font-bold'>visually engaging user experience</strong>.",
+      "Used <strong class='text-white font-bold'>authentication</strong> and backend to <strong class='text-white font-bold'>securely manage user sessions</strong> and <strong class='text-white font-bold'>room access</strong>.",
+      "Leveraged structured storage for <strong class='text-white font-bold'>user tasks</strong>, <strong class='text-white font-bold'>room data</strong>, and <strong class='text-white font-bold'>leaderboard metrics</strong>.",
+    ],
     projectURLs: [
       {
         label: "Live Demo",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://arise-hazel.vercel.app/",
       },
       {
         label: "GitHub",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://github.com/Its-sunny69/Arise",
       },
     ],
-    techListName: "Next.js, TypeScript, GraphQL, PostgreSQL",
-    techListImg: [reactIcon, tailwindIcon, html5Icon, html5Icon, html5Icon],
+    techListName:
+      "HTML, CSS, JavaScript, ReactJS, Redux, TailwindCSS, NodeJS, ExpressJS, JWT, MongoDB",
+    techListImg: [
+      html5Icon,
+      css3Icon,
+      tailwindIcon,
+      javascriptIcon,
+      reactIcon,
+      nodejsIcon,
+      mongodbIcon,
+    ],
   },
 ];
 
@@ -109,6 +139,7 @@ export default function ProjectSection() {
   const { developerMode } = useContext(DeveloperContext);
   const scope = useRef(null);
   const isInView = useInView(scope, { once: true });
+  const { theme } = useTheme();
 
   const HandleDetailClick = (key: keyof typeof detailList) => {
     setdetailList((prevState) => ({
@@ -225,7 +256,10 @@ const cleanup = inView(scope.current, () => {
             isInView
               ? {
                   width: "120%",
-                  boxShadow: "0px 5px 80px 10px rgba(255,255,255,0.55)",
+                  boxShadow:
+                    theme === "light"
+                      ? "0px 5px 80px 10px rgba(0,0,0,0.3)"
+                      : "0px 5px 80px 10px rgba(255,255,255,0.55)",
                 }
               : {
                   width: 0,
@@ -243,11 +277,11 @@ const cleanup = inView(scope.current, () => {
               onClick={() => HandleDetailClick("semicircleDetail")}
             >
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.semicircleDetail
-                    ? { x: -5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: -5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -255,11 +289,11 @@ const cleanup = inView(scope.current, () => {
               </motion.p>
               <motion.p className="mx-1">3</motion.p>
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.semicircleDetail
-                    ? { x: 5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: 5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -286,11 +320,11 @@ const cleanup = inView(scope.current, () => {
               onClick={() => HandleDetailClick("projectCardDetail")}
             >
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.projectCardDetail
-                    ? { x: -5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: -5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -298,21 +332,22 @@ const cleanup = inView(scope.current, () => {
               </motion.p>
               <motion.p className="mx-1">4</motion.p>
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.projectCardDetail
-                    ? { x: 5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: 5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
                 ]
               </motion.p>
             </button>
+
             <AnimatePresence>
               {developerMode && detailList.projectCardDetail && (
                 <DeveloperDetails
-                  className="absolute top-28 left-80 z-70 text-xs"
+                  className="absolute top-28 left-80 z-[70] text-xs"
                   data={data.projectCardDetail}
                   LabelProps={{ direction: "right", orientation: "up" }}
                 />

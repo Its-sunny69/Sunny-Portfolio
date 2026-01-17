@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <div className="w-full">
-      <div className="flex h-[24rem] w-full bg-neutral-950 text-white">
+      <div className="flex h-[26rem] w-full bg-neutral-950 text-white">
         <p
           className="flex items-center justify-start px-10 py-8 text-sm opacity-60"
           style={{

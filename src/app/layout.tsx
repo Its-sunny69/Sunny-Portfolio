@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SmoothScrolling from "@/components/SmoothScrolling";
 import { DeveloperContextProvider } from "@/context/developerContext";
+import Noise from "@/components/Noise";
+import { ThemeProvider } from "next-themes";
 
 const dirtyLine = localFont({
   src: [
@@ -113,10 +115,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dirtyLine.variable} ${nohemi.variable}`}>
-      <body className="font-nohemi bg-neutral-950 font-light tracking-wider text-white antialiased">
+    <html
+      lang="en"
+      className={`${dirtyLine.variable} ${nohemi.variable} dark`}
+      suppressHydrationWarning
+    >
+      <body className="font-nohemi relative overflow-x-hidden font-light tracking-wider text-black antialiased dark:text-white">
+        <Noise
+          patternSize={250}
+          patternScaleX={1}
+          patternScaleY={1}
+          patternRefreshInterval={2}
+          patternAlpha={15}
+        />
         <DeveloperContextProvider>
-          <SmoothScrolling>{children}</SmoothScrolling>
+          <SmoothScrolling>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+            </ThemeProvider>
+          </SmoothScrolling>
         </DeveloperContextProvider>
       </body>
     </html>

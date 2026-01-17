@@ -6,7 +6,7 @@ import {
   useTransform,
   MotionValue,
 } from "motion/react";
-import { Fragment, use, useContext, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import City from "@/assets/city.jpg";
 import DeveloperDetails from "./DeveloperDetails";
@@ -24,14 +24,19 @@ export default function Contact({
     textPathScrollDetail: false,
     slowRevealingSectionDetail: false,
   });
+  const [message, setMessage] = useState(
+    "This is testing message lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  );
 
   const { developerMode } = useContext(DeveloperContext);
 
   const paths = useRef<(SVGTextPathElement | null)[]>([]);
+
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start end", "end end"],
   });
+
   const { scrollYProgress: sectionScrollY } = useScroll({
     target: section,
     offset: ["start end", "end start"],
@@ -65,11 +70,31 @@ export default function Contact({
     setIsItVisible(true);
   };
 
-  const handleMail = () => {
-    window.open(
-      "https://mail.google.com/mail/?view=cm&fs=1&to=ranjeetyadav31638@gmail.com",
-      "_blank",
-    );
+  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const handleMail = async () => {
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const text = await res.text();
+
+      if (!res.ok) {
+        console.log("API Error:", text);
+        return;
+      } else {
+        console.log("Email sent successfully:", text);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   const HandleDetailClick = (key: keyof typeof detailList) => {
@@ -164,8 +189,17 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
   };
 
   return (
-    <div className="h-screen w-full bg-white pt-16 text-white">
-      <motion.div className="relative overflow-hidden bg-white">
+    <div className="h-screen w-full bg-white pt-16 text-black">
+      <div className="flex flex-col items-center px-8">
+        <h1 className="font-36days text-6xl" data-cursor-hover="true">
+          Open a Conversation
+        </h1>
+        <p>
+          No Redirect, Email ID required -<span className="italic"> just write and hit send!</span>
+        </p>
+      </div>
+
+      <motion.div className="relative overflow-hidden bg-white mt-16">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent"></div>
 
         <motion.div
@@ -177,7 +211,7 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
 
         <div className="absolute top-0 right-0 bottom-0 left-3/7 z-10 m-4 mr-8 flex flex-col items-start justify-between gap-4 overflow-y-auto rounded-xl bg-gray-400/30 p-8 text-black backdrop-blur-xs">
           <div className="">
-            <p className="font-36days text-6xl" data-cursor-hover="true">
+            <p className="font-36days text-4xl" data-cursor-hover="true">
               Your Turn to Say Hi!
             </p>
             <p className="mt-2">
@@ -232,7 +266,8 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
             <textarea
               className="max-h-64 min-h-44 w-96 rounded-xl bg-gray-600/30 p-4 text-sm text-black focus:outline-none"
               maxLength={200}
-              placeholder="Leave your feedback here..."
+              placeholder="Leave your feedback here anonymously...but if you are one of my friend or classmate then do mention your name ( • ‿ - ) ✧"
+              onChange={handleMessage}
             ></textarea>
 
             <button
@@ -242,7 +277,8 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
               Send &rarr;
             </button>
             <p className="text-sm" data-cursor-hover="true">
-              Note: Clicking send button will redirect you to your Gmail.
+              Note: If for some reason the message is not sent, you can mail me
+              directly.
             </p>
           </div>
         </div>
@@ -252,8 +288,6 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
             d="M 0 10 C 4 11 10 10 10 5 C 10 0 4 0 4 5 C 4 10 11 12 15 10 S 20 0 29 5"
             id="wave"
             fill="none"
-            // stroke="#fff"
-            // strokeWidth="0.2"
           />
 
           <text className="text-[1px] tracking-tight select-none" fill="black">
@@ -283,7 +317,7 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
                 initial={{ x: 0, color: "black" }}
                 animate={
                   detailList.textPathScrollDetail
-                    ? { x: -5, color: "red" }
+                    ? { x: -5, color: "#ef4444" }
                     : { x: 0, color: "black" }
                 }
                 transition={{ duration: 0.2 }}
@@ -295,7 +329,7 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
                 initial={{ x: 0, color: "black" }}
                 animate={
                   detailList.textPathScrollDetail
-                    ? { x: 5, color: "red" }
+                    ? { x: 5, color: "#ef4444" }
                     : { x: 0, color: "black" }
                 }
                 transition={{ duration: 0.2 }}
@@ -335,11 +369,11 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
               onClick={() => HandleDetailClick("slowRevealingSectionDetail")}
             >
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.slowRevealingSectionDetail
-                    ? { x: -5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: -5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -347,11 +381,11 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
               </motion.p>
               <motion.p className="mx-1">11</motion.p>
               <motion.p
-                initial={{ x: 0, color: "#05df72" }}
+                initial={{ x: 0, color: "#22c55e" }}
                 animate={
                   detailList.slowRevealingSectionDetail
-                    ? { x: 5, color: "red" }
-                    : { x: 0, color: "#05df72" }
+                    ? { x: 5, color: "#ef4444" }
+                    : { x: 0, color: "#22c55e" }
                 }
                 transition={{ duration: 0.2 }}
               >
@@ -387,8 +421,7 @@ const Social = ({
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
-  console.log(y);
+  const y = useTransform(scrollYProgress, [0, 1], [-50, 0]);
 
   const handleMouseMove = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -428,11 +461,16 @@ const Social = ({
     setLinkVisible(null);
   };
 
+  useEffect(() => {
+    console.log(scrollYProgress);
+  }, [scrollYProgress]);
+
   return (
     <div className="h-[250px] w-full overflow-hidden shadow-[0px_36px_41px_17px_rgba(0,0,0,1)]">
       <motion.div
         style={{ y }}
         className="flex h-full w-full items-center justify-center bg-black py-4 text-white"
+        initial={false}
       >
         <hr className="h-[0.5px] w-full bg-white/30" />
         {socialLinks.map((link) => (

@@ -11,9 +11,6 @@ import ProjectSection from "@/components/ProjectSection";
 import ProjectSection2 from "@/components/ProjectSection2";
 import SkillsSection from "@/components/SkillsSection";
 import StoryTimeline from "@/components/StoryTimeline";
-import Testing from "@/components/Testing";
-import { DeveloperContext } from "@/context/developerContext";
-import { animateSequence } from "motion/mini";
 import {
   AnimatePresence,
   AnimationSequence,
@@ -25,35 +22,27 @@ import {
   useTransform,
   useAnimationFrame,
 } from "motion/react";
-import { div } from "motion/react-client";
-import {
-  use,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { use, useEffect, useRef, useState } from "react";
 import KeyboardDoubleArrowUpRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowUpRounded";
-import { on } from "events";
+import EmailTemplate from "@/components/EmailTemplate";
+import { useTheme } from "next-themes";
 
 export default function Home() {
   const [cursorDisplay, setCursorDisplay] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [scope, animation] = useAnimate();
+  const [bgScope, bgAnimation] = useAnimate();
   const [isHovered, setIsHovered] = useState(false);
   const rotationValue = useMotionValue(0);
   const progressDiv = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);
-  const { developerMode, setDeveloperMode } = useContext(DeveloperContext);
 
   const { scrollYProgress } = useScroll();
+  const { theme } = useTheme();
 
-  // Velocity in degrees per second: slower when hovered
   const rotationVelocity = isHovered ? 45 : 90;
 
-  // Update rotation continuously using animation frame
   useAnimationFrame((_, delta) => {
     const rotationIncrement = (rotationVelocity * delta) / 1000;
     rotationValue.set(rotationValue.get() + rotationIncrement);
@@ -94,20 +83,51 @@ export default function Home() {
     [".title", { opacity: 0 }, { duration: 1, ease: "easeInOut", at: "1" }],
   ];
 
+  const themeAnimation: AnimationSequence = [
+    [
+      ".bg-div",
+      {
+        background:
+          theme === "light"
+            ? "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(225, 225, 225, 1) 100%)"
+            : "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(10, 10, 10, 1) 100%)",
+      },
+      { duration: 0.5, ease: "linear" },
+    ],
+    [
+      ".bg-div",
+      {
+        background:
+          theme === "light"
+            ? "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(225, 225, 225, 1) 50%)"
+            : "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(10, 10, 10, 1) 50%)",
+      },
+      { duration: 0.5, ease: "linear" },
+    ],
+    [
+      ".bg-div",
+      {
+        background:
+          theme === "light"
+            ? "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(225, 225, 225, 1) 100%)"
+            : "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 1) 100%)",
+      },
+      { duration: 0.5, ease: "linear" },
+    ],
+  ];
+  // work on background animation....
+
   useEffect(() => {
     console.log("scrollYProgress:", scrollYProgress);
   }, [scrollYProgress]);
 
   useEffect(() => {
-    // Set initial window width
     setWindowWidth(window.innerWidth);
 
-    // Measure progress div width
     if (progressDiv.current) {
       setProgressWidth(progressDiv.current.offsetWidth);
     }
 
-    // Update window width on resize
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -127,13 +147,13 @@ export default function Home() {
   //   runAnimation();
   // }, []);
 
-  const handleDeveloperModeToggle = () => {
-    setDeveloperMode(!developerMode);
-  };
+  // useEffect(() => {
+  //   bgAnimation(themeAnimation);
+  // }, [theme]);
 
   console.log("rendering background");
 
-  const sentence = "Let's keep aside this showpiece and move to the portfolio";
+  const sentence = "Custom-crafted animations, built line by line.";
   const words = sentence.split(" ");
 
   let letterIndex = 0;
@@ -178,20 +198,115 @@ export default function Home() {
   }
 
   return (
-    <div className="realtive overflow-x-clip">
-      {/* work on background animation... */}
-
+    <motion.div
+      className="relative overflow-x-clip"
+      initial={{
+        background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
+      }}
+      animate={{
+        background:
+          theme === "light"
+            ? [
+                "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+              ]
+            : [
+                "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+              ],
+      }}
+      transition={{
+        duration: 0.5,
+        ease: "linear",
+      }}
+    >
       <motion.div
         style={{ x: xProgress }}
         ref={progressDiv}
-        className="sticky top-0 z-[15] flex w-fit"
+        className="sticky top-0 z-11 flex w-fit"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
       >
         [<ProgressCounter value={progressCounter} />
         %]
       </motion.div>
 
-      <div className="realtive w-full flex-1">
-        <div className="relative z-10 min-h-screen w-full bg-neutral-950">
+      <div className="relative w-full flex-1">
+        <motion.div
+          className="relative z-10 min-h-screen w-full"
+          initial={{
+            background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
+          }}
+          animate={{
+            background:
+              theme === "light"
+                ? [
+                    "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                    "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                    "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                    "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                    "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                    "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                    "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                    "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                    "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                    "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                    "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                  ]
+                : [
+                    "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                    "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                    "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                    "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                    "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                    "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                    "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                    "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                    "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                    "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                    "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                  ],
+          }}
+          transition={{
+            duration: 0.5,
+            ease: "linear",
+          }}
+        >
           {/* <AnimatePresence>
             <CustomCursor cursorDisplay={cursorDisplay} />
           </AnimatePresence> */}
@@ -215,23 +330,26 @@ export default function Home() {
           <div id="contact-section" className="my-16 min-h-screen">
             <Contact setCursorDisplay={setCursorDisplay} />
           </div>
-        </div>
+        </motion.div>
 
-        <div className="sticky bottom-0 -z-10 mt-[21rem] w-full">
+        <div className="sticky bottom-0 z-5 mt-[29rem] w-full">
           <Footer />
         </div>
 
-        <div className="fixed bottom-5 left-5 z-10 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full cursor-pointer">
+        <div className="fixed bottom-0 left-15 z-10 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-full text-neutral-700 dark:text-white">
           <motion.div
             className="absolute rounded-full"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
             style={{ rotate: rotationValue }}
+            initial={{ scale: 1 }}
+            whileHover={{ scale: 1.2 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <div className="relative h-16 w-16">
-              {"TOTHETOP".split("").map((char, i) => {
-                const totalChars = "TOTHETOP".length;
+              {"TO•THE•TOP•".split("").map((char, i) => {
+                const totalChars = "TO•THE•TOP•".length;
                 const angle = (360 / totalChars) * i;
                 return (
                   <motion.div
@@ -242,9 +360,7 @@ export default function Home() {
                       transformOrigin: "center center",
                     }}
                   >
-                    <span className="text-xs font-medium text-white">
-                      {char}
-                    </span>
+                    <span className="text-xs font-medium">{char}</span>
                   </motion.div>
                 );
               })}
@@ -253,7 +369,6 @@ export default function Home() {
           <KeyboardDoubleArrowUpRoundedIcon fontSize="large" />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
-

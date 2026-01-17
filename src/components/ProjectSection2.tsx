@@ -1,9 +1,17 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import DetailsCard from "./DetailsCard";
 import useOutsideClick from "@/utlis/useOutsideClicks";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
+import reactIcon from "@/assets/programming-icons/reactjs.svg";
+import tailwindIcon from "@/assets/programming-icons/tailwindcss.svg";
+import html5Icon from "@/assets/programming-icons/html5.svg";
+import css3Icon from "@/assets/programming-icons/css3.svg";
+import javascriptIcon from "@/assets/programming-icons/javascript.svg";
+import nodejsIcon from "@/assets/programming-icons/nodejs.svg";
+import firebase from "@/assets/programming-icons/firebase.svg";
+import { useTheme } from "next-themes";
 
 type CardItem = {
   title: string;
@@ -29,6 +37,7 @@ export default function ProjectSection2() {
     slidingBackground: false,
   });
   const { developerMode } = useContext(DeveloperContext);
+  const { theme } = useTheme();
 
   const detailCardRef = useOutsideClick(() =>
     setIsDetailCardOpen({ isOpen: false, index: null }),
@@ -43,99 +52,73 @@ export default function ProjectSection2() {
 
   const list: CardItem[] = [
     {
-      title: "Arise",
-      overview: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      title: "Oak Together",
+      overview:
+        "Tree Plantation and Event Management Web App [ Incomplete Project ]",
       imgURL:
         "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       description:
-        "3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa minus sed, ex doloremque possimus voluptas sapiente illum doloribus numquam mollitia molestiae, nemo voluptates, nisi molestias! Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-      features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4"],
+        "Oak Together is a collaborative tree plantation platform that combines environmental activism with gamified engagement. Built as a team project, it connects users to real environmental initiatives through interactive mapping, real-time air quality monitoring, and AI-powered insights for sustainable impact.",
+      features: [
+        "Developed a <strong class='text-white font-bold'>responsive, interactive web app</strong> to promote <strong class='text-white font-bold'>environmental awareness</strong> through tree plantation drives and <strong class='text-white font-bold'>gamified participation</strong>.",
+        "Built core frontend features using <strong class='text-white font-bold'>React</strong> and <strong class='text-white font-bold'>Redux</strong>, with <strong class='text-white font-bold'>Live AQI Display</strong> [D3.js] for <strong class='text-white font-bold'>real-time data visualization</strong>.",
+        "<strong class='text-white font-bold'>User Dashboard</strong> tracking <strong class='text-white font-bold'>points</strong>, <strong class='text-white font-bold'>badges</strong>, and <strong class='text-white font-bold'>unlocked cards</strong> for engagement and gamification.",
+        "<strong class='text-white font-bold'>Map Interface</strong> [Google Map API] displaying <strong class='text-white font-bold'>barren/planted/watered sites</strong> with <strong class='text-white font-bold'>event markers</strong> and <strong class='text-white font-bold'>interactive popups</strong>.",
+        "<strong class='text-white font-bold'>Event Listing Page</strong> with <strong class='text-white font-bold'>advanced filters</strong>, <strong class='text-white font-bold'>pagination</strong>, and <strong class='text-white font-bold'>detailed event cards</strong>.",
+        "<strong class='text-white font-bold'>Ask AI</strong> feature using <strong class='text-white font-bold'>Gemini API</strong>-based <strong class='text-white font-bold'>tree recommendations</strong> and environmental insights.",
+        "<strong class='text-white font-bold'>Frontend Optimization</strong> focused on <strong class='text-white font-bold'>performance</strong>, <strong class='text-white font-bold'>intuitive navigation</strong>, and <strong class='text-white font-bold'>seamless user experience</strong> through <strong class='text-white font-bold'>modular design</strong>.",
+      ],
       projectURLs: [
         {
           label: "Live Demo",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+          url: "https://oak-together-fkup.vercel.app/",
         },
         {
           label: "GitHub",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+          url: "https://github.com/Its-sunny69/Oak-Together",
         },
       ],
-      techListName: "React, Tailwind CSS, HTML5, JavaScript, MongoDB, Next.js",
+      techListName:
+        "HTML, CSS, JavaScript, TailwindCSS, ReactJS, Redux, Google Maps API, GeminiAPI",
       techListImg: [
-        "/programming-icons/react.svg",
-        "/programming-icons/tailwindcss.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
+        html5Icon,
+        css3Icon,
+        javascriptIcon,
+        tailwindIcon,
+        reactIcon,
+        nodejsIcon,
       ],
     },
     {
-      title: "Beta",
+      title: "TrustVibes",
       overview:
-        "A short and compelling summary of what Project Beta is all about.",
+        "Public review and testimonial management platform with no-auth feedback collection.",
       imgURL:
         "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       description:
-        "Here is a detailed breakdown of Project Beta. This project aimed to streamline a complex workflow into an intuitive application. Significant effort was invested in API design and database optimization for performance.",
+        "TrustVibes is a feedback collection platform that enables businesses to gather authentic customer reviews and testimonials without requiring user authentication. Built with React and Firebase, it simplifies the review submission process while providing powerful admin tools for testimonial management and display.",
       features: [
-        "API Integration",
-        "Advanced Search",
-        "Data Visualization",
-        "Export to CSV",
+        "Developed a <strong class='text-white font-bold'>public review form</strong> using <strong class='text-white font-bold'>ReactJS</strong> and <strong class='text-white font-bold'>Firebase</strong> for <strong class='text-white font-bold'>seamless feedback collection</strong>.",
+        "<strong class='text-white font-bold'>No user authentication required</strong> - visitors can submit <strong class='text-white font-bold'>feedback</strong> and <strong class='text-white font-bold'>reviews</strong> without creating accounts or logging in.",
+        "<strong class='text-white font-bold'>Create Form</strong> with intuitive UI, dedicated <strong class='text-white font-bold'>Review Space</strong>, and smooth <strong class='text-white font-bold'>feedback submission</strong> workflow.",
+        "<strong class='text-white font-bold'>Admin Dashboard</strong> for managing, moderating, and organizing <strong class='text-white font-bold'>customer testimonials</strong> and reviews.",
+        "<strong class='text-white font-bold'>Testimonials converted to iFrame</strong> for easy embeddable display on external websites and landing pages.",
+        "Integrated <strong class='text-white font-bold'>Firebase Realtime Database</strong> for <strong class='text-white font-bold'>real-time data sync</strong>, secure storage, and <strong class='text-white font-bold'>scalable review management</strong>.",
       ],
       projectURLs: [
         {
           label: "Live Demo",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+          url: "https://trust-vibes.vercel.app/",
         },
         {
           label: "GitHub",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+          url: "https://github.com/Its-sunny69/ReviewProvider",
         },
       ],
-      techListName: "Vue.js, Firebase, Tailwind CSS, Chart.js",
-      techListImg: [
-        "/programming-icons/react.svg",
-        "/programming-icons/tailwindcss.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-      ],
-    },
-    {
-      title: "Gamma",
-      overview:
-        "An exciting glimpse into the innovative features of Project Gamma.",
-      imgURL:
-        "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      description:
-        "This section provides a complete description of Project Gamma. It is a full-stack application built with a focus on scalability and maintainability, utilizing modern development practices and a robust testing suite.",
-      features: ["Feature A", "Feature B", "Feature C", "Feature D"],
-      projectURLs: [
-        {
-          label: "Live Demo",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
-        },
-        {
-          label: "GitHub",
-          url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
-        },
-      ],
-      techListName: "Next.js, TypeScript, GraphQL, PostgreSQL",
-      techListImg: [
-        "/programming-icons/react.svg",
-        "/programming-icons/tailwindcss.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-        "/programming-icons/html5.svg",
-      ],
+      techListName: "HTML, CSS, TailwindCSS, React, Firebase",
+      techListImg: [html5Icon, css3Icon, tailwindIcon, reactIcon, firebase],
     },
   ];
-
-  useEffect(() => {
-    // console.log(isDetailCardOpen);
-  }, [isDetailCardOpen]);
 
   const data = {
     slidingBackground: {
@@ -171,27 +154,36 @@ export default function ProjectSection2() {
   };
 
   return (
-    <div className="relative my-8 flex w-full flex-col items-center justify-center px-8 text-white">
+    <div className="relative my-8 flex w-full flex-col items-center justify-center px-8 dark:text-white">
       <p className="font-36days mb-2">Some more...</p>
 
       {list.map((item, index) => (
         <motion.div
           key={index}
-          className={`relative w-[90%] ${index !== list.length - 1 ? "border-t" : "border-y"} border-white p-4`}
+          className={`relative w-[90%] ${index !== list.length - 1 ? "border-t" : "border-y"} border-black p-4 dark:border-white`}
           onHoverStart={() => setIsHovered(index)}
           onHoverEnd={() => setIsHovered(null)}
         >
           {isHovered === index && (
             <motion.div
               layoutId="inner-card"
-              className="absolute inset-0 bg-white"
+              className="absolute inset-0 bg-black dark:bg-white"
               transition={{ type: "spring", stiffness: 120, damping: 14 }}
             />
           )}
 
           <motion.div
-            className="relative z-10 grid grid-cols-5 text-white"
-            animate={{ color: isHovered === index ? "black" : "white" }}
+            className="relative z-10 grid grid-cols-5"
+            animate={{
+              color:
+                isHovered === index
+                  ? theme === "light"
+                    ? "white"
+                    : "black"
+                  : theme === "light"
+                    ? "black"
+                    : "white",
+            }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <h1
@@ -202,13 +194,13 @@ export default function ProjectSection2() {
             </h1>
 
             <div className="col-span-3 flex justify-between transition-all duration-300">
-              <span className="truncate">{item.overview}</span>{" "}
+              <div className="truncate px-2">{item.overview}</div>
               <div
-                className="group cursor-pointer"
+                className="group shrink-0 cursor-pointer text-center"
                 onClick={() => setIsDetailCardOpen({ isOpen: true, index })}
               >
                 more details
-                <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
+                <div className="h-[0.7px] w-0 bg-white transition-all duration-200 ease-out group-hover:w-full dark:bg-black"></div>
               </div>
             </div>
 
@@ -222,7 +214,7 @@ export default function ProjectSection2() {
                 target="_blank"
               >
                 View Project
-                <div className="h-[0.7px] w-0 bg-black transition-all duration-200 ease-out group-hover:w-full"></div>
+                <div className="h-[0.7px] w-0 bg-white transition-all duration-200 ease-out group-hover:w-full dark:bg-black"></div>
               </a>
             </div>
           </motion.div>
@@ -253,11 +245,11 @@ export default function ProjectSection2() {
             onClick={() => HandleDetailClick("slidingBackground")}
           >
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.slidingBackground
-                  ? { x: -5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: -5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >
@@ -265,11 +257,11 @@ export default function ProjectSection2() {
             </motion.p>
             <motion.p className="mx-1">5</motion.p>
             <motion.p
-              initial={{ x: 0, color: "#05df72" }}
+              initial={{ x: 0, color: "#22c55e" }}
               animate={
                 detailList.slidingBackground
-                  ? { x: 5, color: "red" }
-                  : { x: 0, color: "#05df72" }
+                  ? { x: 5, color: "#ef4444" }
+                  : { x: 0, color: "#22c55e" }
               }
               transition={{ duration: 0.2 }}
             >

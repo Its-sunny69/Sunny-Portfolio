@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { use, useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { useTheme } from "next-themes";
 
 type Cursor = {
   x: number;
@@ -32,54 +33,24 @@ export default function DetailsCard({
 
   const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 });
 
+  const { theme } = useTheme();
+
   const handleCursor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     setCursor({ x, y });
-
-    // console.log(rect);
-    // console.log(x, y);
   };
 
-  console.log(data);
-
-  // const data = {
-  //   title: "Arise",
-  //   overview: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  //   imgURL:
-  //     "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   description:
-  //     "3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa minus sed, ex doloremque possimus voluptas sapiente illum doloribus numquam mollitia molestiae, nemo voluptates, nisi molestias! Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-  //   features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4"],
-  //   projectURLs: [
-  //     {
-  //       label: "Live Demo",
-  //       url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
-  //     },
-  //     {
-  //       label: "GitHub",
-  //       url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
-  //     },
-  //   ],
-  //   techListName: "React, Tailwind CSS, HTML5, JavaScript, MongoDB, Next.js",
-  //   techListImg: [
-  //     "/programming-icons/react.svg",
-  //     "/programming-icons/tailwindcss.svg",
-  //     "/programming-icons/html5.svg",
-  //     "/programming-icons/html5.svg",
-  //     "/programming-icons/html5.svg",
-  //     "/programming-icons/html5.svg",
-  //   ],
-  // };
-
   return (
-    <div className="z-70 flex h-screen w-full items-center justify-center">
+    <div className="z-[70] flex h-screen w-full items-center justify-center">
       <div
-        className="absolute inset-0 mask-t-from-black mask-t-from-80% mask-t-to-transparent mask-r-from-white mask-r-from-80% mask-r-to-transparent mask-b-from-white mask-b-from-80% mask-b-to-transparent mask-l-from-white mask-l-from-80% mask-l-to-transparent mask-alpha"
+        className="absolute inset-0 mask-t-from-white mask-t-from-80% mask-t-to-transparent mask-r-from-black mask-r-from-80% mask-r-to-transparent mask-b-from-black mask-b-from-80% mask-b-to-transparent mask-l-from-black mask-l-from-80% mask-l-to-transparent mask-alpha dark:mask-t-from-black dark:mask-r-from-white dark:mask-b-from-white dark:mask-l-from-white"
         style={{
           backgroundImage:
-            "radial-gradient(circle at center, transparent 1px, rgba(225,225,225, 0.4) 1px)",
+            theme === "light"
+              ? "radial-gradient(circle at center, transparent 1px, rgba(0,0,0, 0.3) 1px)"
+              : "radial-gradient(circle at center, transparent 1px, rgba(225,225,225, 0.4) 1px)",
           backgroundRepeat: "repeat",
           backgroundSize: "5px 5px",
         }}
@@ -165,7 +136,9 @@ export default function DetailsCard({
 
               <ul className="pt-2 pl-2">
                 {data.features.map((feature, index) => (
-                  <li key={index}>- {feature}</li>
+                  <li key={index}>
+                    - <span dangerouslySetInnerHTML={{ __html: feature }} />
+                  </li>
                 ))}
               </ul>
             </div>
@@ -218,9 +191,9 @@ export default function DetailsCard({
           <h2 className="text-xs text-[#a4a4a4] underline underline-offset-2">
             Behind the scenes
           </h2>
-          <p className="mt-3">{data.techListName}</p>
+          <p className="z-[76] mt-3">{data.techListName}</p>
 
-          <p className="font-36days pointer-events-none absolute -right-4 -bottom-8 z-75 w-fit text-9xl text-[#1c1c1c7e] select-none">
+          <p className="font-36days pointer-events-none absolute -right-4 -bottom-8 -z-5 w-fit text-9xl text-[#1c1c1c7e] select-none">
             {data.title.toUpperCase()}
           </p>
         </div>
