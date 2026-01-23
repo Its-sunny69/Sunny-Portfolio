@@ -141,6 +141,7 @@ html.lenis body {
   position: relative;
   overflow: hidden;
   z-index: 0;
+  color: #fff;
 }
 
 .button-circular-reveal-1::before {
@@ -151,6 +152,7 @@ html.lenis body {
   width: 200%;
   height: 200%;
   background: #000;
+  color: #fff;
   border-radius: 50%;
   transform: scale(0);
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -160,6 +162,7 @@ html.lenis body {
 
 .button-circular-reveal-1:hover::before {
   transform: scale(1.5);
+  color: #fff;
 }
 
 .button-circular-reveal-2 {
@@ -187,10 +190,15 @@ html.lenis body {
   transform: scale(1.5);
 }
 
+.button-circular-reveal-2:hover {
+  color: #fff;
+}
+
 .button-circular-reveal-3 {
   position: relative;
   overflow: hidden;
   z-index: 0;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .button-circular-reveal-3::before {
@@ -212,6 +220,10 @@ html.lenis body {
   transform: scale(1.5);
 }
 
+.button-circular-reveal-3:hover {
+  color: #000;
+}
+
 .code {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -220,4 +232,10 @@ html.lenis body {
   font-family: "Courier New", monospace;
   font-size: 0.9em;
   color: #e0e0e0;
+}
+
+@media screen and (max-width: 640px) {
+  .code {
+    font-size: 0.7em;
+  }
 }

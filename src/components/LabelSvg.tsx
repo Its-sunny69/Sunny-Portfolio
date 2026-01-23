@@ -1,4 +1,6 @@
 import { motion } from "motion/react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 type Direction = "right" | "left";
 type Orientation = "up" | "down";
@@ -8,7 +10,6 @@ interface LabelProps {
   orientation: Orientation;
   length?: number;
   LabelClassName?: string;
-  strokeColor?: string;
 }
 
 // Configuration object for better maintainability
@@ -29,9 +30,19 @@ export default function LabelSvg({
   orientation,
   length = 0,
   LabelClassName = "",
-  strokeColor = "white",
 }: LabelProps) {
+  const [strokeColor, setStrokeColor] = useState("white");
   const width = CONFIG.baseWidth + length;
+
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    if (theme === "light") {
+      setStrokeColor("black");
+    } else {
+      setStrokeColor("white");
+    }
+  }, [theme]);
 
   // Fix viewBox to accommodate left direction with increased length
   const viewBoxWidth =

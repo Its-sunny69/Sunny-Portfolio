@@ -1,0 +1,10 @@
+export { default as CSS3Icon } from "./css3.svg";
+export { default as FirebaseIcon } from "./firebase.svg";
+export { default as HTML5Icon } from "./html5.svg";
+export { default as JavaScriptIcon } from "./javascript.svg";
+export { default as MongoDBIcon } from "./mongodb.svg";
+export { default as NextJSIcon } from "./nextjs.svg";
+export { default as NodeJSIcon } from "./nodejs.svg";
+export { default as ReactJSIcon } from "./reactjs.svg";
+export { default as TailwindCSSIcon } from "./tailwindcss.svg";
+export { default as TypeScriptIcon } from "./typescript.svg";

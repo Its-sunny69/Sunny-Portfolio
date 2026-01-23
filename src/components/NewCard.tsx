@@ -39,11 +39,16 @@ function NewCard({ data, index }: { data: Data; index: number }) {
   const [scope, animation] = useAnimate();
   const { theme } = useTheme();
 
-  const cardWidth = 288;
+  // const windowSize = 1024;
+  const cardWidth = viewportWidth && viewportWidth >= 768 ? 288 : 256; // lg breakpoint
   const N = 3;
+  const gap = 24; // gap between cards
   const x = 30 * index;
   const y = 100 + index * 5;
   const r = -20 + index * 5;
+  // Center formula: account for card width to center properly
+  // Index 0 (left), index 1 (center at 0), index 2 (right)
+  const leftX = index * (cardWidth + gap);
 
   const createSequence = (vw: number): AnimationSequence => [
     [".card", { opacity: 1 }, { duration: 0.3, ease: "easeOut" }],
@@ -53,7 +58,7 @@ function NewCard({ data, index }: { data: Data; index: number }) {
         rotate: r,
         x: x,
         y: y,
-        left: vw / 3,
+        left: vw / 2 - cardWidth / 2 - 15,
         zIndex: 30 - index,
       },
       { duration: 2, ease: "backInOut", delay: 0.2 },
@@ -70,25 +75,26 @@ function NewCard({ data, index }: { data: Data; index: number }) {
       ".card",
       {
         top: 0,
-        left:
-          (vw - N * cardWidth) / (N + 3) +
-          index * (cardWidth + (vw - N * cardWidth) / (N + 2)),
+        // left:
+        //   (vw - N * cardWidth) / (N + 3) +
+        //   index * (cardWidth + (vw - N * cardWidth) / (N + 2)),
+        left: vw <= 768 ? leftX : (vw - N * cardWidth) / (N + 2) + index * (cardWidth + (vw - N * cardWidth) / (N + 2)),
         rotate: 0,
         rotateY: 0,
         y: 100,
       },
       { duration: 2, ease: "easeInOut", delay: 0.9 * index },
     ],
-    [
-      ".card",
-      {
-        boxShadow:
-          theme === "light"
-            ? "0px 0px 125px -90px rgba(0,0,0, 0.5)"
-            : "0px 0px 170px -90px rgba(255,225,225, 0.5)",
-      },
-      { duration: 0.3, ease: "easeIn" },
-    ],
+    // [
+    //   ".card",
+    //   {
+    //     boxShadow:
+    //       theme === "light"
+    //         ? "0px 0px 125px -90px rgba(0,0,0, 0.5)"
+    //         : "0px 0px 170px -90px rgba(255,225,225, 0.5)",
+    //   },
+    //   { duration: 0.3, ease: "easeIn" },
+    // ],
   ];
 
   useEffect(() => {
@@ -97,6 +103,7 @@ function NewCard({ data, index }: { data: Data; index: number }) {
 
   useEffect(() => {
     if (viewportWidth === null || !scope.current) return;
+    console.log("viewportWidth:", viewportWidth);
 
     const cleanup = inView(scope.current, () => {
       animation(createSequence(viewportWidth));
@@ -112,7 +119,7 @@ function NewCard({ data, index }: { data: Data; index: number }) {
   }, [viewportWidth, animation, index, scope]);
 
   return (
-    <div ref={scope}>
+    <div ref={scope} className="absolute inset-0 border border-red-400 md:mx-2">
       <motion.div
         className="card absolute w-72 rounded-lg"
         initial={{
@@ -125,7 +132,7 @@ function NewCard({ data, index }: { data: Data; index: number }) {
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="relative">
-          <motion.div className="example-2">
+          <motion.div className="example-2 mx-2">
             <AnimatePresence>
               {isCardFlipped ? (
                 <motion.div

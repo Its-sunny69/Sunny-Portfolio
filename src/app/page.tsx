@@ -30,6 +30,7 @@ import { useTheme } from "next-themes";
 export default function Home() {
   const [cursorDisplay, setCursorDisplay] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [scope, animation] = useAnimate();
   const [bgScope, bgAnimation] = useAnimate();
   const [isHovered, setIsHovered] = useState(false);
@@ -43,6 +44,10 @@ export default function Home() {
 
   const rotationVelocity = isHovered ? 45 : 90;
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useAnimationFrame((_, delta) => {
     const rotationIncrement = (rotationVelocity * delta) / 1000;
     rotationValue.set(rotationValue.get() + rotationIncrement);
@@ -51,7 +56,7 @@ export default function Home() {
   const xProgress = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, Math.max(0, windowWidth - progressWidth - 15)],
+    [0, Math.max(0, windowWidth - progressWidth - 75)],
   );
   const progressCounter = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
@@ -121,21 +126,6 @@ export default function Home() {
     console.log("scrollYProgress:", scrollYProgress);
   }, [scrollYProgress]);
 
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-
-    if (progressDiv.current) {
-      setProgressWidth(progressDiv.current.offsetWidth);
-    }
-
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   // useEffect(() => {
   //   const runAnimation = async () => {
   //     await animation(loadingSequence);
@@ -158,11 +148,26 @@ export default function Home() {
 
   let letterIndex = 0;
 
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+
+    if (progressDiv.current) {
+      setProgressWidth(progressDiv.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (isLoading) {
     return (
       <motion.div
         ref={scope}
-        className="relative flex h-screen w-full flex-col items-center justify-center bg-neutral-950"
+        className="relative flex h-screen w-full flex-col items-center justify-center bg-white dark:bg-neutral-950"
       >
         <motion.div
           className="loading mb-2"
@@ -172,7 +177,9 @@ export default function Home() {
             maskImage: "linear-gradient(90deg, black 100%, transparent 100%)",
           }}
         >
-          <NameSvg />
+          {isMounted && (
+            <NameSvg strokeColor={theme === "light" ? "#000" : "#fff"} />
+          )}
         </motion.div>
 
         <motion.p className="font-36days absolute">
@@ -247,9 +254,12 @@ export default function Home() {
       }}
     >
       <motion.div
-        style={{ x: xProgress }}
+        key="progress-bar"
+        style={{
+          x: xProgress,
+        }}
         ref={progressDiv}
-        className="sticky top-0 z-11 flex w-fit"
+        className="sticky top-0 z-11 flex w-fit ![mask-image:none]"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
@@ -262,7 +272,10 @@ export default function Home() {
         <motion.div
           className="relative z-10 min-h-screen w-full"
           initial={{
-            background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
+            background:
+              theme === "light"
+                ? "linear-gradient(to right, #ffffff 100%, #000000 100%)"
+                : "linear-gradient(to right, #000000 0%, #ffffff 0%)",
           }}
           animate={{
             background:
@@ -314,25 +327,25 @@ export default function Home() {
             <Navbar />
           </div>
 
-          <div id="hero-section" className="mt-4 min-h-screen">
+          <div id="hero-section" className="mt-4 lg:min-h-screen">
             <HeroSection />
           </div>
-          <div id="project-section" className="my-16 min-h-screen">
+          <div id="project-section" className="my-16 border lg:min-h-screen">
             <ProjectSection />
             <ProjectSection2 />
           </div>
-          <div id="skills-section" className="my-16 min-h-screen">
+          <div id="skills-section" className="my-16 border lg:min-h-screen">
             <SkillsSection />
           </div>
-          <div id="story-section" className="my-16 min-h-screen">
+          <div id="story-section" className="my-16 border lg:min-h-screen">
             <StoryTimeline />
           </div>
-          <div id="contact-section" className="my-16 min-h-screen">
+          <div id="contact-section" className="my-16 border lg:min-h-screen">
             <Contact setCursorDisplay={setCursorDisplay} />
           </div>
         </motion.div>
 
-        <div className="sticky bottom-0 z-5 mt-[29rem] w-full">
+        <div className="sticky bottom-0 z-5 mt-[29rem] md:mt-[20rem] w-full lg:mt-[29rem]">
           <Footer />
         </div>
 

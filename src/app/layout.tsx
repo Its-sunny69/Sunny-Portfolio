@@ -120,6 +120,9 @@ export default function RootLayout({
       className={`${dirtyLine.variable} ${nohemi.variable} dark`}
       suppressHydrationWarning
     >
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body className="font-nohemi relative overflow-x-hidden font-light tracking-wider text-black antialiased dark:text-white">
         <Noise
           patternSize={250}
@@ -130,7 +133,7 @@ export default function RootLayout({
         />
         <DeveloperContextProvider>
           <SmoothScrolling>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               {children}
             </ThemeProvider>
           </SmoothScrolling>

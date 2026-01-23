@@ -5,12 +5,18 @@ import {
   useScroll,
   useTransform,
   MotionValue,
+  scale,
 } from "motion/react";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import City from "@/assets/city.jpg";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
+import { useTheme } from "next-themes";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
+import PriorityHighRoundedIcon from "@mui/icons-material/PriorityHighRounded";
+import SentimentDissatisfiedRoundedIcon from "@mui/icons-material/SentimentDissatisfiedRounded";
+import { contactDeveloperData } from "@/data/developerDetailsData";
 
 export default function Contact({
   setCursorDisplay,
@@ -24,11 +30,12 @@ export default function Contact({
     textPathScrollDetail: false,
     slowRevealingSectionDetail: false,
   });
-  const [message, setMessage] = useState(
-    "This is testing message lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  );
+  const [message, setMessage] = useState("");
+  const [isSent, setIsSent] = useState("");
 
   const { developerMode } = useContext(DeveloperContext);
+
+  const { theme } = useTheme();
 
   const paths = useRef<(SVGTextPathElement | null)[]>([]);
 
@@ -65,9 +72,51 @@ export default function Contact({
     }
   }, [isItVisible]);
 
+  useEffect(() => {
+    if (isSent) {
+      const timer = setTimeout(() => {
+        setIsSent("");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSent]);
+
   const handleCopy = () => {
-    navigator.clipboard.writeText("ranjeetyadav31638@gmail.com");
-    setIsItVisible(true);
+    const email = "ranjeetyadav31638@gmail.com";
+
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(email)
+        .then(() => {
+          setIsItVisible(true);
+        })
+        .catch(() => {
+          // Fallback if clipboard API fails
+          fallbackCopy(email);
+        });
+    } else {
+      // Fallback for older browsers or non-secure contexts
+      fallbackCopy(email);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      document.execCommand("copy");
+      setIsItVisible(true);
+    } catch (err) {
+      console.log("Copy failed:", err);
+    }
+
+    document.body.removeChild(textarea);
   };
 
   const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,6 +124,11 @@ export default function Contact({
   };
 
   const handleMail = async () => {
+    if (message.trim().length === 0) {
+      setIsSent("Message cannot be empty.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/send", {
         method: "POST",
@@ -88,9 +142,11 @@ export default function Contact({
 
       if (!res.ok) {
         console.log("API Error:", text);
+        setIsSent("Failed to send message.");
         return;
       } else {
         console.log("Email sent successfully:", text);
+        setIsSent("Message Sent!");
       }
     } catch (error) {
       console.log("Error:", error);
@@ -104,186 +160,32 @@ export default function Contact({
     }));
   };
 
-  const data = {
-    textPathScrollDetail: {
-      title: "Scroll-Driven Wavy Text Path Animation",
-      description:
-        "How it's created:\n\n• Binds scroll progress to an SVG section using <code class='code'>useScroll({ target: section, offset: [\"start end\", \"end start\"] })</code> to get <code class='code'>sectionScrollY</code>\n• Defines an SVG wave path using Bezier curves: <code class='code'>d=\"M 0 10 C 4 11 10 10 10 5 C ...\"</code>\n• Creates 40 <code class='code'>textPath</code> elements that each follow the wave path via <code class='code'>href=\"#wave\"</code>\n• Stores refs to all textPath elements in <code class='code'>paths.current</code> array for dynamic control\n• Each textPath is initialized with a staggered <code class='code'>startOffset={i * 35 + \"%\"}</code>\n\nAnimation Logic:\n\n• Initial: Each textPath positioned along the wave at offset <code class='code'>i * 35%</code>, creating a repeating pattern\n• On scroll: Uses <code class='code'>sectionScrollY.on(\"change\")</code> listener to update <code class='code'>startOffset</code> dynamically\n• Formula: <code class='code'>startOffset = -15 + i * 15 + e * 15</code> where <code class='code'>e</code> is scroll progress (0-1)\n• Result: Text flows along the wave from bottom-left to top-right as user scrolls, creating a continuous wavy scrolling effect\n\nKey Technical Details:\n\n• SVG <code class='code'>&lt;textPath&gt;</code> element: anchors text to follow the path defined by <code class='code'>href=\"#wave\"</code>\n• <code class='code'>startOffset</code> attribute: controls where along the path the text starts (in percentage or pixel units)\n• The negative base <code class='code'>-15</code> shifts text off-screen initially; <code class='code'>i * 15</code> spaces copies; <code class='code'>e * 15</code> scrolls them smoothly\n• All 40 textPath refs stored in array for batch updates on every scroll frame\n• <code class='code'>offset: [\"start end\", \"end start\"]</code> triggers animation when section enters and leaves viewport\n\nResult: A mesmerizing wave of repeating text that flows smoothly along a curved path as you scroll, perfect for eye-catching hero sections or decorative animations",
-      codeSnippet: `// Scroll progress for the SVG section
-const section = useRef(null);
-const paths = useRef<(SVGTextPathElement | null)[]>([]);
-const { scrollYProgress: sectionScrollY } = useScroll({
-  target: section,
-  offset: ["start end", "end start"],
-});
-
-// Update all textPath startOffsets on scroll
-useEffect(() => {
-  sectionScrollY.on("change", (e) => {
-    paths.current.forEach((path, i) => {
-      if (path) {
-        // Dynamic formula: base offset + stagger + scroll animation
-        path.setAttribute("startOffset", -15 + i * 15 + e * 15 + "%");
-      }
-    });
-  });
-}, []);
-
-// Wave path definition
-<svg viewBox="1 0 25 12" className="w-full" ref={section}>
-  <path
-    d="M 0 10 C 4 11 10 10 10 5 C 10 0 4 0 4 5 C 4 10 11 12 15 10 S 20 0 29 5"
-    id="wave"
-    fill="none"
-  />
-
-  {/* 40 copies of text, each following the wave path */}
-  <text className="text-[1px] tracking-tight select-none" fill="black">
-    {[...Array(40)].map((_, i) => (
-      <textPath
-        key={i}
-        href="#wave"
-        startOffset={i * 35 + "%"}
-        ref={(ref) => {
-          paths.current[i] = ref;
-        }}
-      >
-        Lets connect! {i % 2 === 0 ? "💜" : "💙"}
-      </textPath>
-    ))}
-  </text>
-</svg>`,
-    },
-    slowRevealingSectionDetail: {
-      title: "Scroll-Driven Vertical Slide-Up Reveal Animation",
-      description:
-        "How it's created:\n\n• Binds scroll progress to the social section container using <code class='code'>useScroll({ target: container, offset: [\"start end\", \"end end\"] })</code> to get <code class='code'>scrollYProgress</code>\n• Uses <code class='code'>useTransform(scrollYProgress, [0, 1], [-220, 0])</code> to map scroll progress (0-1) to Y translation (-220px to 0px)\n• Applies the transformed Y value to a <code class='code'>motion.div</code> via <code class='code'>style={{ y }}</code> to create smooth vertical movement\n• Social links are rendered directly inside the sliding container\n\nAnimation Logic:\n\n• Initial: Section positioned at <code class='code'>y = -220px</code> (off-screen, hidden below viewport)\n• While scrolling: As user scrolls and progress increases from 0 to 1, section smoothly slides upward\n• Final: At full scroll progress (1), section reaches <code class='code'>y = 0px</code> (natural position, fully visible in viewport)\n• The entire section translates vertically based on scroll position, no individual element delays\n\nKey Technical Details:\n\n• <code class='code'>useTransform</code> creates a continuous, real-time mapping from scroll progress to Y position\n• Input range <code class='code'>[0, 1]</code> represents scroll progress from start to end\n• Output range <code class='code'>[-220, 0]</code> defines vertical translation in pixels\n• <code class='code'>offset: [\"start end\", \"end end\"]</code> triggers animation when container enters viewport and stays visible\n• Motion values update automatically; no manual animation frame or effect listeners needed\n• <code class='code'>bg-clip-text</code> with gradient backgrounds creates colored link text\n\nResult: A smooth, scroll-reactive vertical slide-up animation that brings the entire social links section into view as the user scrolls.",
-      codeSnippet: `// Scroll progress for the social section container
-const container = useRef(null);
-const { scrollYProgress } = useScroll({
-  target: container,
-  offset: ["start end", "end end"],
-});
-
-// Map scroll progress to Y translation: 0 → 1 maps to -220px → 0px
-const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
-
-// Slide up container from off-screen to visible
-<motion.div
-  style={{ y }}
-  className="flex h-full w-full items-center justify-center bg-black py-4 text-white"
->
-  <hr className="h-[0.5px] w-full bg-white/30" />
-  {socialLinks.map((link) => (
-    <Fragment key={link.name}>
-      <a href={link.url} target="_blank">
-        <p className={\`\${link.color} bg-clip-text text-3xl transition-all hover:text-transparent\`}>
-          {link.name}
-        </p>
-      </a>
-      <hr className="h-[0.5px] w-full bg-white/30" />
-    </Fragment>
-  ))}
-</motion.div>`,
-    },
-  };
-
   return (
     <div className="h-screen w-full bg-white pt-16 text-black">
-      <div className="flex flex-col items-center px-8">
-        <h1 className="font-36days text-6xl" data-cursor-hover="true">
+      <div className="flex flex-col items-center px-2 md:px-8">
+        <h1
+          className="font-36days text-3xl md:text-4xl lg:text-6xl"
+          data-cursor-hover="true"
+        >
           Open a Conversation
         </h1>
-        <p>
-          No Redirect, Email ID required -<span className="italic"> just write and hit send!</span>
+        <p className="pt-2 text-center">
+          No Redirect, Email ID required -
+          <span className="italic"> just write and hit send!</span>
         </p>
       </div>
 
-      <motion.div className="relative overflow-hidden bg-white mt-16">
+      <motion.div className="relative mt-16 min-h-[38rem] overflow-hidden border bg-white">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent"></div>
 
         <motion.div
-          className="absolute h-56 w-36"
-          style={{ x: 250, y: imgY, scale: imgScale }}
+          className="absolute left-32 h-56 w-36 md:left-28 lg:left-[250]"
+          style={{ y: imgY, scale: imgScale }}
         >
           <Image src={City} alt="Description" fill className="object-cover" />
         </motion.div>
 
-        <div className="absolute top-0 right-0 bottom-0 left-3/7 z-10 m-4 mr-8 flex flex-col items-start justify-between gap-4 overflow-y-auto rounded-xl bg-gray-400/30 p-8 text-black backdrop-blur-xs">
-          <div className="">
-            <p className="font-36days text-4xl" data-cursor-hover="true">
-              Your Turn to Say Hi!
-            </p>
-            <p className="mt-2">
-              Let's Connect, You can share any thing with me :)
-            </p>
-
-            <div className="mt-6 flex items-start gap-4">
-              <p className="w-fit rounded-full bg-gray-600/30 px-6 py-2 text-xs">
-                ranjeetyadav31638@gmail.com
-              </p>
-
-              <div>
-                <div className="">
-                  <button
-                    className="button-circular-reveal-2 left-0 cursor-pointer rounded-l-full bg-[#4a556542] px-6 py-2 text-xs transition-all hover:text-white"
-                    style={{
-                      clipPath: "polygon(0 0, 100% 0%, 75% 100%, 0% 100%)",
-                    }}
-                    onClick={handleCopy}
-                  >
-                    Copy
-                  </button>
-                  <button
-                    className="button-circular-reveal-1 -left-4.5 cursor-pointer rounded-r-full bg-gray-600/30 px-6 py-2 text-xs transition-all hover:text-white"
-                    style={{
-                      clipPath:
-                        "polygon(27.5% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    }}
-                    onClick={handleMail}
-                  >
-                    Mail
-                  </button>
-                </div>
-                <AnimatePresence>
-                  <motion.div
-                    className={`py-1 text-center text-xs`}
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={
-                      isItVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }
-                    }
-                    transition={{ duration: 0.3 }}
-                    exit={{ opacity: 0, y: -8 }}
-                  >
-                    Email Copied !
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt- flex flex-1 flex-col justify-between gap-4">
-            <textarea
-              className="max-h-64 min-h-44 w-96 rounded-xl bg-gray-600/30 p-4 text-sm text-black focus:outline-none"
-              maxLength={200}
-              placeholder="Leave your feedback here anonymously...but if you are one of my friend or classmate then do mention your name ( • ‿ - ) ✧"
-              onChange={handleMessage}
-            ></textarea>
-
-            <button
-              className="button-circular-reveal-3 font-36days w-fit cursor-pointer rounded-full bg-black px-6 py-2 text-3xl text-white transition-all hover:text-black"
-              onClick={handleMail}
-            >
-              Send &rarr;
-            </button>
-            <p className="text-sm" data-cursor-hover="true">
-              Note: If for some reason the message is not sent, you can mail me
-              directly.
-            </p>
-          </div>
-        </div>
-
-        <svg viewBox="1 0 25 12" className="w-full" ref={section}>
+        <svg viewBox="1 0 25 12" className="mt-28 w-full lg:mt-0" ref={section}>
           <path
             d="M 0 10 C 4 11 10 10 10 5 C 10 0 4 0 4 5 C 4 10 11 12 15 10 S 20 0 29 5"
             id="wave"
@@ -306,11 +208,131 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
           </text>
         </svg>
 
+        <div className="top-0 right-0 bottom-0 left-3/7 z-10 m-4 mr-4 flex flex-col items-start justify-between gap-2 rounded-xl bg-gray-400/30 p-4 text-black backdrop-blur-xs md:absolute lg:mr-8 lg:gap-4 lg:p-8">
+          <div className="">
+            <p
+              className="font-36days text-2xl lg:text-4xl"
+              data-cursor-hover="true"
+            >
+              Your Turn to Say Hi!
+            </p>
+            <p className="mt-2">
+              Let's Connect, You can share any thing with me :)
+            </p>
+
+            <div className="mt-6 flex flex-col items-start gap-2 lg:flex-row lg:gap-4">
+              <p className="w-fit rounded-full bg-gray-600/30 px-6 py-2 text-xs">
+                ranjeetyadav31638@gmail.com
+              </p>
+
+              <div>
+                <div className="">
+                  <button
+                    className="button-circular-reveal-2 left-0 cursor-pointer rounded-full bg-[#4a556542] px-6 py-2 text-xs transition-all hover:text-white active:text-white"
+                    onClick={handleCopy}
+                  >
+                    Copy
+                  </button>
+                  {/* <button
+                    className="button-circular-reveal-1 -left-4.5 cursor-pointer rounded-r-full bg-gray-600/30 px-6 py-2 text-xs transition-all hover:text-white"
+                    style={{
+                      clipPath:
+                        "polygon(27.5% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                    }}
+                    onClick={handleMail}
+                  >
+                    Mail
+                  </button> */}
+                </div>
+                <AnimatePresence>
+                  <motion.div
+                    className={`py-1 text-center text-xs`}
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={
+                      isItVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }
+                    }
+                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0, y: -8 }}
+                  >
+                    Email Copied !
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt- flex flex-1 flex-col justify-between gap-4">
+            <textarea
+              className="max-h-64 min-h-44 max-w-96 rounded-xl bg-gray-600/30 p-4 text-sm text-black focus:outline-none"
+              maxLength={200}
+              placeholder="Leave your feedback here anonymously...but if you are one of my friend or classmate then do mention your name ( • ‿ - ) ✧"
+              onChange={handleMessage}
+            ></textarea>
+
+            <button
+              className="button-circular-reveal-3 font-36days w-fit cursor-pointer rounded-full bg-black px-6 py-2 text-xl text-white transition-all hover:text-black active:text-black lg:text-3xl"
+              onClick={handleMail}
+            >
+              Send &rarr;
+            </button>
+            <p className="text-sm" data-cursor-hover="true">
+              Note: If for some reason the message is not sent, you can mail me
+              directly.
+            </p>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isSent.length && (
+            <motion.div
+              className={`fixed top-5 right-5 z-50 flex items-center justify-center gap-2 overflow-hidden rounded-md ${theme === "light" ? "bg-black text-white" : "bg-white text-black"} px-6 py-2 text-sm shadow-lg`}
+              initial={{ opacity: 0, x: 20, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isSent.includes("empty") ? (
+                <motion.p
+                  initial={{ x: 0 }}
+                  animate={{ x: [0, -5, 5, -5, 5, 0] }}
+                  transition={{ duration: 0.5 }}
+                  className="text-orange-400"
+                >
+                  <SentimentDissatisfiedRoundedIcon />
+                </motion.p>
+              ) : isSent.includes("Failed") ? (
+                <motion.p
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                  className="text-red-500"
+                >
+                  <PriorityHighRoundedIcon />
+                </motion.p>
+              ) : (
+                <motion.p
+                  initial={{ x: -50, y: 50, scale: 0.5, rotate: -45 }}
+                  animate={{
+                    x: [-50, 0, 50],
+                    y: [50, 0, -50],
+                    scale: [0.5, 1, 0.5],
+                  }}
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
+                  className="text-green-400"
+                >
+                  <SendRoundedIcon />
+                </motion.p>
+              )}
+              {isSent}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Text scroll Animation */}
         {developerMode && (
           <>
             <button
-              className="absolute top-0 left-72 flex cursor-pointer text-black hover:opacity-75"
+              className="absolute top-0 left-10 flex cursor-pointer text-black hover:opacity-75 md:left-72"
               onClick={() => HandleDetailClick("textPathScrollDetail")}
             >
               <motion.p
@@ -341,12 +363,11 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
             <AnimatePresence>
               {developerMode && detailList.textPathScrollDetail && (
                 <DeveloperDetails
-                  className="absolute top-10 left-72 z-70 text-xs"
-                  data={data.textPathScrollDetail}
+                  className="absolute top-10 left-8 z-70 text-xs md:left-72"
+                  data={contactDeveloperData.textPathScrollDetail}
                   LabelProps={{
                     direction: "right",
                     orientation: "up",
-                    strokeColor: "black",
                   }}
                 />
               )}
@@ -365,7 +386,7 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
         {developerMode && (
           <>
             <button
-              className="absolute top-5 left-10 flex cursor-pointer hover:opacity-75"
+              className="absolute top-5 left-10 flex cursor-pointer text-white hover:opacity-75"
               onClick={() => HandleDetailClick("slowRevealingSectionDetail")}
             >
               <motion.p
@@ -396,8 +417,8 @@ const y = useTransform(scrollYProgress, [0, 1], [-220, 0]);
             <AnimatePresence>
               {developerMode && detailList.slowRevealingSectionDetail && (
                 <DeveloperDetails
-                  className="absolute top-10 left-10 z-70 text-xs"
-                  data={data.slowRevealingSectionDetail}
+                  className="absolute top-15 left-8 z-70 text-xs md:top-10 md:left-10"
+                  data={contactDeveloperData.slowRevealingSectionDetail}
                   LabelProps={{ direction: "right", orientation: "up" }}
                 />
               )}
@@ -483,7 +504,7 @@ const Social = ({
               target="_blank"
             >
               <p
-                className={`mx-4 font-medium ${link.color} bg-clip-text text-3xl transition-all hover:text-transparent`}
+                className={`mx-4 font-medium ${link.color} bg-clip-text text-xl transition-all hover:text-transparent md:text-3xl`}
               >
                 {link.name}
               </p>

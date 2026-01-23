@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
@@ -7,6 +8,16 @@ import NightlightRoundRoundedIcon from "@mui/icons-material/NightlightRoundRound
 
 export default function ThemeButton() {
   const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <button className=" " disabled />;
+  }
+
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   const toggleTheme = () => {
@@ -18,7 +29,7 @@ export default function ThemeButton() {
   };
 
   return (
-    <button onClick={toggleTheme} className=" ">
+    <button onClick={toggleTheme} className="hover:cursor-pointer">
       <AnimatePresence mode="popLayout">
         {theme === "light" ? (
           <motion.div

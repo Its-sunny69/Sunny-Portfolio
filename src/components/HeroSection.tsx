@@ -13,6 +13,7 @@ import TypingAnimation from "./TypingAnimation";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
 import { useTheme } from "next-themes";
+import { heroSectionDeveloperdata } from "@/data/developerDetailsData";
 
 type Cursor = {
   x: number;
@@ -99,72 +100,14 @@ export default function HeroSection() {
     }));
   };
 
-  const data = {
-    imageDetial: {
-      title: "Image Slice Animation",
-      description:
-        "How it's created:\n\n• Image is divided into 4 vertical slices using <code class='code'>backgroundPosition</code> property\n• Each slice is exactly <code class='code'>w-20</code> (80px) wide and <code class='code'>backgroundSize: '400% 100%'</code>\n• Slices positioned at: 0%, 33.33%, 66.66%, and 100% for seamless coverage\n\nAnimation Logic:\n\n• Left Slice (img-part-1): Fades in with radial gradient mask from top-left corner\n• Middle Slice 1 (img-part-2): Slides up from y: 20 while fading in\n• Middle Slice 2 (img-part-3): Slides down from y: -20 while fading in\n• Right Slice (img-part-4): Fades in with radial gradient mask from bottom-right corner\n\nTiming:\n\n• All animations run for 1.5s duration\n• Staggered timing: Middle slices start at 0ms, edge slices start at -2s (200ms earlier)\n• Synchronized via Framer Motion's <code class='code'>AnimationSequence</code> with negative <code class='code'>at</code> values\n\nResult: Creates a dynamic entrance effect where the image unfolds from center outward with smooth directional movement and gradient fade-in masks on edges",
-      codeSnippet: `const sequence: AnimationSequence = [
-  [".img-part-2", { y: 0, opacity: 1 }, { duration: 1.5 }],
-  [".img-part-3", { y: 0, opacity: 1 }, { duration: 1.5, at: "-1.5" }],
-  [".img-part", { opacity: 1 }, { duration: 1.5 }],
-  [".img-part-1", {
-    opacity: 1,
-    maskImage: "radial-gradient(circle at top left, black 60%, transparent 90%)"
-  }, { duration: 1.5, at: "-2" }],
-  [".img-part-4", {
-    opacity: 1,
-    maskImage: "radial-gradient(circle at bottom right, black 60%, transparent 90%)"
-  }, { duration: 1.5, at: "-2" }]
-];
-
-// Each slice structure:
-<motion.div
-  style={{
-    backgroundImage: \`url(\${heroImage.src})\`,
-    backgroundSize: "400% 100%",
-    backgroundPosition: "0% 50%"
-  }}
-  initial={{ opacity: 0 }}
-  className="h-[33rem] w-20 bg-no-repeat"
-/>`,
-    },
-    textDetail: {
-      title: "Animated Gradient Text",
-      description:
-        "How it's created:\n\n• Uses Framer Motion's <code class='code'>motion.p</code> component\n• Text is set to <code class='code'>text-transparent</code> with gradient applied via <code class='code'>background</code> property\n• <code class='code'>backgroundClip: 'text'</code> clips the gradient to text shape only\n\nAnimation Logic:\n\n• Initial: Gradient fully white, opacity 0 (invisible)\n• Animated: Gradient shifts from white (34%) to black (83%), <code class='code'>opacity: 1</code>\n• Timing: 3.3s <code class='code'>delay</code>, 2s <code class='code'>duration</code>, <code class='code'>easeInOut</code> easing\n\nResult: Text fades in with smooth gradient sweep creating elegant reveal effect",
-      codeSnippet: ` <motion.p
-    className="font-36days text-[7.5rem] text-transparent"
-    data-cursor-hover="true"
-    initial={{
-        background: "linear-gradient(162deg,rgba(255, 255, 255, 1) 100%, rgba(0, 0, 0, 1) 100%)",
-        backgroundClip: "text",
-        opacity: 0,
-    }}
-    animate={{
-        background: "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
-        opacity: 1,
-    }}
-    transition={{
-        delay: 3.3,
-        duration: 2,
-        ease: "easeInOut",
-    }}
->
-    Sunny Yadav
-</motion.p>
-            `,
-    },
-  };
-
   return (
-    <div className="relative px-8">
-      <div className="grid grid-cols-7 py-4">
+    <div className="relative border border-green-400 px-2 md:px-8">
+      <div className="grid grid-rows-2 gap-8 border py-4 md:grid-cols-7 md:grid-rows-1 md:gap-0">
         <div
           ref={scope}
-          className="relative col-span-3 flex items-center justify-center"
+          className="relative row-span-1 flex items-center justify-center border border-red-400 md:col-span-3"
         >
-          <RevealingText className="absolute top-0 left-0">
+          <RevealingText className="absolute top-0 -left-10 text-sm lg:left-0 lg:text-base">
             <p
               style={{
                 textOrientation: "sideways",
@@ -177,7 +120,7 @@ export default function HeroSection() {
           </RevealingText>
 
           <div
-            className="relative flex h-[33rem] cursor-none"
+            className="relative flex cursor-none md:h-[31rem] lg:h-[33rem]"
             onMouseMove={(e) => handleCursor(e)}
             onMouseEnter={() => setFollowButton(true)}
             onMouseLeave={() => setFollowButton(false)}
@@ -190,7 +133,7 @@ export default function HeroSection() {
                 backgroundPosition: "0% 50%",
               }}
               initial={{ opacity: 0 }}
-              className="img-part-1 img-part h-[33rem] w-20 bg-no-repeat"
+              className="img-part-1 img-part h-[26rem] w-16 bg-no-repeat lg:h-[33rem] lg:w-20"
             ></motion.div>
             <motion.div
               style={{
@@ -199,7 +142,7 @@ export default function HeroSection() {
                 backgroundPosition: "33.33% 50%",
               }}
               initial={{ y: 20, opacity: 0 }}
-              className="img-part-2 h-[33rem] w-20 bg-no-repeat"
+              className="img-part-2 h-[26rem] w-16 bg-no-repeat lg:h-[33rem] lg:w-20"
             ></motion.div>
             <motion.div
               style={{
@@ -208,7 +151,7 @@ export default function HeroSection() {
                 backgroundPosition: "66.66% 50%",
               }}
               initial={{ y: -20, opacity: 0 }}
-              className="img-part-3 h-[33rem] w-20 bg-no-repeat"
+              className="img-part-3 h-[26rem] w-16 bg-no-repeat lg:h-[33rem] lg:w-20"
             ></motion.div>
             <motion.div
               style={{
@@ -217,7 +160,7 @@ export default function HeroSection() {
                 backgroundPosition: "100% 50%",
               }}
               initial={{ opacity: 0 }}
-              className="img-part-4 img-part h-[33rem] w-20 bg-no-repeat"
+              className="img-part-4 img-part h-[26rem] w-16 bg-no-repeat lg:h-[33rem] lg:w-20"
             ></motion.div>
 
             <AnimatePresence>
@@ -257,7 +200,7 @@ export default function HeroSection() {
           {developerMode && (
             <>
               <button
-                className="absolute top-0 right-20 flex cursor-pointer hover:opacity-75"
+                className="absolute -top-8 left-10 flex cursor-pointer hover:opacity-75 md:right-20 lg:top-0"
                 onClick={() => HandleDetailClick("imageDetail")}
               >
                 <motion.p
@@ -288,9 +231,12 @@ export default function HeroSection() {
               <AnimatePresence>
                 {developerMode && detailList.imageDetail && (
                   <DeveloperDetails
-                    className="absolute top-8 left-[80%] z-70 text-xs"
-                    data={data.imageDetial}
-                    LabelProps={{ direction: "right", orientation: "up" }}
+                    className="absolute top-8 left-8 z-70 text-xs md:left-[80%]"
+                    data={heroSectionDeveloperdata.imageDetial}
+                    LabelProps={{
+                      direction: "right",
+                      orientation: "up",
+                    }}
                   />
                 )}
               </AnimatePresence>
@@ -298,11 +244,11 @@ export default function HeroSection() {
           )}
         </div>
 
-        <motion.div className="relative col-span-4">
+        <motion.div className="relative row-span-1 border md:col-span-4">
           <TypingAnimation text="I am" delay={2.8} />
 
           <motion.p
-            className="font-36days text-[7.5rem] text-transparent"
+            className="font-36days text-[4rem] text-transparent lg:text-[7.5rem]"
             data-cursor-hover="true"
             initial={{
               background: gradientBackground.initial,
@@ -325,7 +271,7 @@ export default function HeroSection() {
           {developerMode && (
             <>
               <button
-                className="absolute top-15 -left-7 flex cursor-pointer hover:opacity-75"
+                className="absolute -top-5 left-10 flex cursor-pointer hover:opacity-75 md:left-0 lg:top-15 lg:-left-7"
                 onClick={() => HandleDetailClick("textDetail")}
               >
                 <motion.p
@@ -356,8 +302,12 @@ export default function HeroSection() {
               <AnimatePresence>
                 {developerMode && detailList.textDetail && (
                   <DeveloperDetails
-                    className="absolute top-21 -left-[63%] text-xs"
-                    data={data.textDetail}
+                    className="absolute top-5 left-8 text-xs md:-left-[63%] lg:top-21"
+                    data={heroSectionDeveloperdata.textDetail}
+                    LabelProps={{
+                      direction: "left",
+                      orientation: "up",
+                    }}
                   />
                 )}
               </AnimatePresence>
@@ -370,14 +320,17 @@ export default function HeroSection() {
             delay={5.8}
           />
 
-          <div className="mt-14 text-2xl" data-cursor-hover="true">
+          <div
+            className="mt-14 text-center text-xl lg:text-2xl"
+            data-cursor-hover="true"
+          >
             <TypingAnimation
               text=" Every scroll reveals a chapter — walk through my journey and see how it all began."
               delay={7}
             />
           </div>
 
-          <RevealingText className="absolute right-0 bottom-0">
+          <RevealingText className="absolute right-0 bottom-8 text-sm md:bottom-15 lg:bottom-0 lg:text-base">
             <div>
               <p>Not a topper, not a high-IQ genius</p>
               <p className="ml-8">
@@ -391,7 +344,7 @@ export default function HeroSection() {
         <motion.a
           ref={scrollRef}
           href="#project-section"
-          className="hover:border-hover hover:text-hover absolute bottom-8 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-black px-4 py-2 text-sm dark:border-white"
+          className="hover:border-hover hover:text-hover absolute bottom-0 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-black px-4 py-2 text-sm md:bottom-8 dark:border-white"
           initial={{ display: "hidden", opacity: 0 }}
           animate={{ display: "flex", opacity: 1 }}
           transition={{ duration: 0.3, delay: 11.8, ease: "easeInOut" }}

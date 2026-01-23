@@ -11,6 +11,7 @@ import {
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useTheme } from "next-themes";
 
 type Data = {
   title: string;
@@ -27,9 +28,39 @@ export default function LabelDetailCard({
 }) {
   const [isCopied, setIsCopied] = useState(false);
 
+  const { theme } = useTheme();
+
   const HandleCopy = () => {
-    navigator.clipboard.writeText(data.codeSnippet);
-    setIsCopied(true);
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(data.codeSnippet).then(() => {
+        setIsCopied(true);
+      }).catch(() => {
+        // Fallback if clipboard API fails
+        fallbackCopy(data.codeSnippet);
+      });
+    } else {
+      // Fallback for older browsers or non-secure contexts
+      fallbackCopy(data.codeSnippet);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+      document.execCommand("copy");
+      setIsCopied(true);
+    } catch (err) {
+      console.log("Copy failed:", err);
+    }
+    
+    document.body.removeChild(textarea);
   };
 
   useEffect(() => {
@@ -54,9 +85,9 @@ export default function LabelDetailCard({
       />
       <div
         ref={ref}
-        className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black p-8 text-sm text-gray-200"
+        className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black md:p-8 p-4 text-sm text-gray-200"
       >
-        <p className="text-3xl">{data.title}</p>
+        <p className="md:text-3xl text-xl">{data.title}</p>
         <p className="my-4 whitespace-pre-wrap leading-relaxed" dangerouslySetInnerHTML={{ __html: data.description.replace(/\n/g, '<br />') }} />
         <div className="rounded-lg border border-dashed border-gray-600">
           <div className="flex items-center justify-between p-3">
@@ -68,7 +99,7 @@ export default function LabelDetailCard({
             <AnimatePresence>
               {isCopied && (
                 <motion.div
-                  className="fixed top-5 right-5 rounded-md bg-white px-6 py-2 text-sm text-black shadow-lg"
+                  className={`fixed top-5 right-5 rounded-md ${theme === "light" ? "bg-black text-white" : "bg-white text-black"} px-6 py-2 text-sm shadow-lg`}
                   initial={{ opacity: 0, x: 20, scale: 0.8 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8 }}
@@ -86,7 +117,7 @@ export default function LabelDetailCard({
             language="tsx"
             style={irBlack}
             showLineNumbers
-            wrapLongLines
+            // wrapLongLines
             className="my-2"
           >
             {data.codeSnippet}

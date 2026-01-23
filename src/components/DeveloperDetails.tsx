@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import LabelDetailCard from "./LabelDetailCard";
@@ -21,7 +21,6 @@ interface LabelProps {
   orientation: Orientation;
   length?: number;
   LabelClassName?: string;
-  strokeColor?: string;
 }
 
 type DeveloperDetailsProps = {
@@ -32,10 +31,11 @@ type DeveloperDetailsProps = {
 
 export default function DeveloperDetails({
   className = "",
-  LabelProps = { direction: "left", orientation: "up", strokeColor: "white" },
+  LabelProps = { direction: "left", orientation: "up" },
   data,
 }: DeveloperDetailsProps) {
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   const detailCardRef = useOutsideClick(() => setIsDetailCardOpen(false));
 
@@ -66,9 +66,22 @@ export default function DeveloperDetails({
             `,
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <motion.div
-      className={`${className} flex justify-center ${LabelProps.orientation == "up" ? "items-start" : "items-end"} ${LabelProps.direction == "right" ? "flex-row-reverse" : ""}`}
+      className={`${className} flex justify-center text-white ${LabelProps.orientation == "up" ? "items-start" : "items-end"} ${LabelProps.direction == "right" ? "flex-row-reverse" : ""}`}
       exit={{ opacity: 0 }}
     >
       <motion.div
@@ -105,7 +118,7 @@ export default function DeveloperDetails({
         />
       </motion.div>
 
-      <LabelSvg {...LabelProps} />
+      {!isMobileView && <LabelSvg {...LabelProps} />}
 
       <AnimatePresence>
         {isDetailCardOpen && (

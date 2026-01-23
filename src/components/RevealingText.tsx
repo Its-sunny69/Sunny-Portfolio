@@ -52,7 +52,7 @@ export default function RevealingText({
     >
       {HoverMe && (
         <motion.p
-          className="text-hover pointer-events-none absolute"
+          className="text-hover pointer-events-none select-none absolute"
           initial={{ opacity: 1 }}
           animate={{ opacity: isHovering ? 0 : 1 }}
           transition={{ duration: 0.2 }}
@@ -67,7 +67,7 @@ export default function RevealingText({
         </motion.p>
       )}
       <motion.div
-        className="pointer-events-none h-full w-full p-16"
+        className="pointer-events-none select-none h-full w-full p-8 lg:p-16"
         style={{
           maskImage,
           WebkitMaskImage: maskImage,
