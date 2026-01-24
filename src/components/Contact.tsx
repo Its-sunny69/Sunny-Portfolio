@@ -5,7 +5,6 @@ import {
   useScroll,
   useTransform,
   MotionValue,
-  scale,
 } from "motion/react";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -84,7 +83,6 @@ export default function Contact({
   const handleCopy = () => {
     const email = "ranjeetyadav31638@gmail.com";
 
-    // Try modern clipboard API first
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard
         .writeText(email)
@@ -92,7 +90,6 @@ export default function Contact({
           setIsItVisible(true);
         })
         .catch(() => {
-          // Fallback if clipboard API fails
           fallbackCopy(email);
         });
     } else {
@@ -113,7 +110,7 @@ export default function Contact({
       document.execCommand("copy");
       setIsItVisible(true);
     } catch (err) {
-      console.log("Copy failed:", err);
+      console.error("Copy failed:", err);
     }
 
     document.body.removeChild(textarea);
@@ -141,15 +138,14 @@ export default function Contact({
       const text = await res.text();
 
       if (!res.ok) {
-        console.log("API Error:", text);
+        console.error("API Error:", text);
         setIsSent("Failed to send message.");
         return;
       } else {
-        console.log("Email sent successfully:", text);
         setIsSent("Message Sent!");
       }
     } catch (error) {
-      console.log("Error:", error);
+      console.error("Error:", error);
     }
   };
 
@@ -175,7 +171,7 @@ export default function Contact({
         </p>
       </div>
 
-      <motion.div className="relative mt-16 min-h-[38rem] overflow-hidden border bg-white">
+      <motion.div className="relative mt-16 min-h-[38rem] overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent"></div>
 
         <motion.div
@@ -217,7 +213,7 @@ export default function Contact({
               Your Turn to Say Hi!
             </p>
             <p className="mt-2">
-              Let's Connect, You can share any thing with me :)
+              Let's Connect, You can share any thing with me :&#41;
             </p>
 
             <div className="mt-6 flex flex-col items-start gap-2 lg:flex-row lg:gap-4">
@@ -233,17 +229,8 @@ export default function Contact({
                   >
                     Copy
                   </button>
-                  {/* <button
-                    className="button-circular-reveal-1 -left-4.5 cursor-pointer rounded-r-full bg-gray-600/30 px-6 py-2 text-xs transition-all hover:text-white"
-                    style={{
-                      clipPath:
-                        "polygon(27.5% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                    }}
-                    onClick={handleMail}
-                  >
-                    Mail
-                  </button> */}
                 </div>
+
                 <AnimatePresence>
                   <motion.div
                     className={`py-1 text-center text-xs`}
@@ -482,10 +469,6 @@ const Social = ({
     setLinkVisible(null);
   };
 
-  useEffect(() => {
-    console.log(scrollYProgress);
-  }, [scrollYProgress]);
-
   return (
     <div className="h-[250px] w-full overflow-hidden shadow-[0px_36px_41px_17px_rgba(0,0,0,1)]">
       <motion.div
@@ -502,6 +485,7 @@ const Social = ({
               onMouseEnter={() => handleMouseEnter(link.name)}
               onMouseLeave={handleMouseLeave}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <p
                 className={`mx-4 font-medium ${link.color} bg-clip-text text-xl transition-all hover:text-transparent md:text-3xl`}

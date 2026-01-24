@@ -1,7 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-// Reveal content in a circular area following the cursor
 export default function Testing({
   children,
   className,
@@ -22,7 +21,7 @@ export default function Testing({
   const smoothY = useSpring(mouseY, { stiffness: 300, damping: 30 });
   const smoothRadius = useSpring(radius, { stiffness: 300, damping: 30 });
 
-  // Create radial gradient mask that follows cursor
+  //Radial gradient mask that follows cursor
   const maskImage = useTransform(
     [smoothX, smoothY, smoothRadius],
     ([x, y, r]) =>

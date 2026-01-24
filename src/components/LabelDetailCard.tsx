@@ -1,13 +1,5 @@
 import SyntaxHighlighter from "react-syntax-highlighter";
-import {
-  atomOneDark,
-  sunburst,
-  atelierSulphurpoolDark,
-  arta,
-  atelierHeathDark,
-  gml,
-  irBlack,
-} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { irBlack } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -31,14 +23,15 @@ export default function LabelDetailCard({
   const { theme } = useTheme();
 
   const HandleCopy = () => {
-    // Try modern clipboard API first
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(data.codeSnippet).then(() => {
-        setIsCopied(true);
-      }).catch(() => {
-        // Fallback if clipboard API fails
-        fallbackCopy(data.codeSnippet);
-      });
+      navigator.clipboard
+        .writeText(data.codeSnippet)
+        .then(() => {
+          setIsCopied(true);
+        })
+        .catch(() => {
+          fallbackCopy(data.codeSnippet);
+        });
     } else {
       // Fallback for older browsers or non-secure contexts
       fallbackCopy(data.codeSnippet);
@@ -52,14 +45,14 @@ export default function LabelDetailCard({
     textarea.style.opacity = "0";
     document.body.appendChild(textarea);
     textarea.select();
-    
+
     try {
       document.execCommand("copy");
       setIsCopied(true);
     } catch (err) {
-      console.log("Copy failed:", err);
+      console.error("Copy failed:", err);
     }
-    
+
     document.body.removeChild(textarea);
   };
 
@@ -85,14 +78,26 @@ export default function LabelDetailCard({
       />
       <div
         ref={ref}
-        className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black md:p-8 p-4 text-sm text-gray-200"
+        className="scroll-bar relative z-80 h-[80%] w-[90%] overflow-x-hidden overflow-y-auto rounded-lg bg-black p-4 text-sm text-gray-200 md:p-8"
       >
-        <p className="md:text-3xl text-xl">{data.title}</p>
-        <p className="my-4 whitespace-pre-wrap leading-relaxed" dangerouslySetInnerHTML={{ __html: data.description.replace(/\n/g, '<br />') }} />
+        <h1 className="text-xl md:text-3xl">{data.title}</h1>
+        <p
+          className="my-4 leading-relaxed whitespace-pre-wrap"
+          dangerouslySetInnerHTML={{
+            __html: data.description.replace(/\n/g, "<br />"),
+          }}
+        />
         <div className="rounded-lg border border-dashed border-gray-600">
           <div className="flex items-center justify-between p-3">
-            <p className="font-36days " data-cursor-hover="true">Code Snippet</p>
-            <button onClick={HandleCopy} className="hover:text-neutral-600 active:scale-95 transition-all cursor-pointer" data-cursor-hover="true" title="Copy">
+            <p className="font-36days" data-cursor-hover="true">
+              Code Snippet
+            </p>
+            <button
+              onClick={HandleCopy}
+              className="cursor-pointer transition-all hover:text-neutral-600 active:scale-95"
+              data-cursor-hover="true"
+              title="Copy"
+            >
               <ContentCopyRoundedIcon />
             </button>
 
@@ -117,7 +122,6 @@ export default function LabelDetailCard({
             language="tsx"
             style={irBlack}
             showLineNumbers
-            // wrapLongLines
             className="my-2"
           >
             {data.codeSnippet}

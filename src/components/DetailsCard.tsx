@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { use, useState } from "react";
+import { useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 type Cursor = {
   x: number;
@@ -71,9 +72,11 @@ export default function DetailsCard({
             onMouseEnter={() => setFollowButton(true)}
             onMouseLeave={() => setFollowButton(false)}
           >
-            <img
+            <Image
+              width={384}
+              height={216}
               src={data.imgURL}
-              alt="image"
+              alt="project image"
               className={`h-full w-full rounded-lg object-cover ${followButton ? "opacity-85 blur-[1px]" : ""} transition-all duration-200`}
             />
 

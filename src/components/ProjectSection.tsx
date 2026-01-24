@@ -12,8 +12,9 @@ export default function ProjectSection() {
     semicircleDetail: false,
     projectCardDetail: false,
   });
-  const { developerMode } = useContext(DeveloperContext);
   const scope = useRef(null);
+
+  const { developerMode } = useContext(DeveloperContext);
   const isInView = useInView(scope, { once: true });
   const { theme } = useTheme();
 
@@ -42,7 +43,7 @@ export default function ProjectSection() {
 
       <motion.div
         ref={scope}
-        className="relative flex h-screen w-full justify-center overflow-x-auto overflow-y-hidden border border-green-400 px-2 md:px-8 lg:overflow-hidden"
+        className="relative flex h-screen w-full justify-center overflow-x-auto overflow-y-hidden px-2 md:px-8 lg:overflow-hidden"
       >
         {ProjectList1.map((item, index) => (
           <NewCard key={index} index={index} data={item} />

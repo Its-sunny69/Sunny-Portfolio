@@ -10,7 +10,6 @@ const useOutsideClick = (callback: () => void) => {
       }
     };
 
-    // Defer binding the event listener to allow state/render to settle
     const timeout = setTimeout(() => {
       document.addEventListener("click", handleClick);
     });

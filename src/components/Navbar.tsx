@@ -33,13 +33,15 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
+    <motion.div
       className="flex items-center justify-between px-2 py-4 text-xs md:px-8"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
     >
-      <div data-cursor-hover="true">ポートフォリオ</div>
+      <h1 data-cursor-hover="true" className="font-medium" title="protfolio">
+        ポートフォリオ
+      </h1>
       <div className="flex items-center gap-4">
         {/* Mobile Menu Button */}
         <button
@@ -102,6 +104,7 @@ export default function Navbar() {
                 href="https://drive.google.com/uc?export=download&id=15gyH9nlnuuhr2CIuvwif9uV4odH_tLaW"
                 className="group hover:text-hover transition-all"
                 title="Download resume"
+                download="CV - Sunny Yadav.pdf"
               >
                 Resume
                 <div className="bg-hover h-[0.7px] w-0 transition-all duration-200 ease-out group-hover:w-full"></div>
@@ -112,6 +115,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </div>
-    </motion.nav>
+    </motion.div>
   );
 }

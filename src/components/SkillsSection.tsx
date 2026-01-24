@@ -12,7 +12,7 @@ import { DeveloperContext } from "@/context/developerContext";
 import { programming, tools } from "@/data/skillsData";
 import { skillsDeveloperData } from "@/data/developerDetailsData";
 
-const ITEM_WIDTH = 288; // w-72 = 18rem = 288px
+const ITEM_WIDTH = 288;
 
 export default function SkillsSection() {
   const [detailList, setdetailList] = useState({
@@ -62,7 +62,7 @@ export default function SkillsSection() {
 
   return (
     <div className="relative flex h-screen flex-col justify-between py-4">
-      <RevealingText className="absolute top-0 right-0 border" HoverMe={true}>
+      <RevealingText className="absolute top-0 right-0" HoverMe={true}>
         <div className="flex items-center justify-center">
           <div>
             <p>Curiosity</p>

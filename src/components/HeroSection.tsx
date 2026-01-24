@@ -5,7 +5,7 @@ import {
   type AnimationSequence,
 } from "motion/react";
 import heroImage from "@/assets/mountain3.jpg";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RevealingText from "./RevealingText";
@@ -32,12 +32,12 @@ export default function HeroSection() {
     animate:
       "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
   });
+  const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 });
+  const scrollRef = useRef(null);
+
+  const [scope, animation] = useAnimate();
   const { developerMode } = useContext(DeveloperContext);
   const { theme } = useTheme();
-
-  const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 });
-
-  const scrollRef = useRef(null);
 
   const handleCursor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -45,7 +45,6 @@ export default function HeroSection() {
     const y = e.clientY - rect.top;
     setCursor({ x, y });
   };
-  const [scope, animation] = useAnimate();
 
   const sequence: AnimationSequence = [
     [".img-part-2", { y: 0, opacity: 1 }, { duration: 1.5 }],
@@ -101,11 +100,11 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="relative border border-green-400 px-2 md:px-8">
-      <div className="grid grid-rows-2 gap-8 border py-4 md:grid-cols-7 md:grid-rows-1 md:gap-0">
+    <div className="relative px-2 md:px-8">
+      <div className="grid grid-rows-2 gap-8 py-4 md:grid-cols-7 md:grid-rows-1 md:gap-0">
         <div
           ref={scope}
-          className="relative row-span-1 flex items-center justify-center border border-red-400 md:col-span-3"
+          className="relative row-span-1 flex items-center justify-center md:col-span-3"
         >
           <RevealingText className="absolute top-0 -left-10 text-sm lg:left-0 lg:text-base">
             <p
@@ -115,7 +114,7 @@ export default function HeroSection() {
                 pointerEvents: "none",
               }}
             >
-              I took this pic specially for portfolio :)
+              I took this pic specially for portfolio :&#41;
             </p>
           </RevealingText>
 
@@ -244,7 +243,7 @@ export default function HeroSection() {
           )}
         </div>
 
-        <motion.div className="relative row-span-1 border md:col-span-4">
+        <motion.div className="relative row-span-1 md:col-span-4">
           <TypingAnimation text="I am" delay={2.8} />
 
           <motion.p
@@ -321,11 +320,11 @@ export default function HeroSection() {
           />
 
           <div
-            className="mt-14 text-center text-xl lg:text-2xl"
+            className="mt-14 text-center text-xl md:text-start lg:text-2xl"
             data-cursor-hover="true"
           >
             <TypingAnimation
-              text=" Every scroll reveals a chapter — walk through my journey and see how it all began."
+              text="Every scroll reveals a chapter — walk through my journey and see how it all began."
               delay={7}
             />
           </div>
@@ -344,6 +343,7 @@ export default function HeroSection() {
         <motion.a
           ref={scrollRef}
           href="#project-section"
+          title="scroll down"
           className="hover:border-hover hover:text-hover absolute bottom-0 left-1/2 flex w-fit -translate-x-1/2 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-black px-4 py-2 text-sm md:bottom-8 dark:border-white"
           initial={{ display: "hidden", opacity: 0 }}
           animate={{ display: "flex", opacity: 1 }}

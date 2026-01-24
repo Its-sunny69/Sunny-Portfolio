@@ -55,6 +55,7 @@ export default function MobileMenu() {
         href="https://drive.google.com/uc?export=download&id=15gyH9nlnuuhr2CIuvwif9uV4odH_tLaW"
         className="group hover:text-hover transition-all"
         title="Download resume"
+        download="resume.pdf"
       >
         Resume
         <div className="bg-hover h-[0.7px] w-0 transition-all duration-200 ease-out group-hover:w-full"></div>

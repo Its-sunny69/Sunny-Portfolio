@@ -17,14 +17,12 @@ import {
   motion,
   useAnimate,
   useMotionValue,
-  useMotionValueEvent,
   useScroll,
   useTransform,
   useAnimationFrame,
 } from "motion/react";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import KeyboardDoubleArrowUpRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowUpRounded";
-import EmailTemplate from "@/components/EmailTemplate";
 import { useTheme } from "next-themes";
 
 export default function Home() {
@@ -32,7 +30,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [scope, animation] = useAnimate();
-  const [bgScope, bgAnimation] = useAnimate();
   const [isHovered, setIsHovered] = useState(false);
   const rotationValue = useMotionValue(0);
   const progressDiv = useRef<HTMLDivElement>(null);
@@ -60,11 +57,6 @@ export default function Home() {
   );
   const progressCounter = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    console.log("scrollYProgress:", latest);
-    console.log("xProgress:", xProgress.get());
-  });
-
   const loadingSequence: AnimationSequence = [
     [
       ".loading",
@@ -88,44 +80,6 @@ export default function Home() {
     [".title", { opacity: 0 }, { duration: 1, ease: "easeInOut", at: "1" }],
   ];
 
-  const themeAnimation: AnimationSequence = [
-    [
-      ".bg-div",
-      {
-        background:
-          theme === "light"
-            ? "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(225, 225, 225, 1) 100%)"
-            : "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(10, 10, 10, 1) 100%)",
-      },
-      { duration: 0.5, ease: "linear" },
-    ],
-    [
-      ".bg-div",
-      {
-        background:
-          theme === "light"
-            ? "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(225, 225, 225, 1) 50%)"
-            : "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(10, 10, 10, 1) 50%)",
-      },
-      { duration: 0.5, ease: "linear" },
-    ],
-    [
-      ".bg-div",
-      {
-        background:
-          theme === "light"
-            ? "linear-gradient(90deg, rgba(225, 225, 225, 1) 0%, rgba(225, 225, 225, 1) 100%)"
-            : "linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 1) 100%)",
-      },
-      { duration: 0.5, ease: "linear" },
-    ],
-  ];
-  // work on background animation....
-
-  useEffect(() => {
-    console.log("scrollYProgress:", scrollYProgress);
-  }, [scrollYProgress]);
-
   // useEffect(() => {
   //   const runAnimation = async () => {
   //     await animation(loadingSequence);
@@ -136,12 +90,6 @@ export default function Home() {
 
   //   runAnimation();
   // }, []);
-
-  // useEffect(() => {
-  //   bgAnimation(themeAnimation);
-  // }, [theme]);
-
-  console.log("rendering background");
 
   const sentence = "Custom-crafted animations, built line by line.";
   const words = sentence.split(" ");
@@ -182,7 +130,7 @@ export default function Home() {
           )}
         </motion.div>
 
-        <motion.p className="font-36days absolute">
+        <motion.p className="font-36days absolute flex w-fit flex-wrap items-center justify-center">
           {words.map((word, wordIndex) => (
             <span key={wordIndex} className="mx-2">
               {word.split("").map((letter, index) => {
@@ -269,7 +217,7 @@ export default function Home() {
       </motion.div>
 
       <div className="relative w-full flex-1">
-        <motion.div
+        <motion.main
           className="relative z-10 min-h-screen w-full"
           initial={{
             background:
@@ -320,36 +268,47 @@ export default function Home() {
             ease: "linear",
           }}
         >
-          {/* <AnimatePresence>
+          <AnimatePresence>
             <CustomCursor cursorDisplay={cursorDisplay} />
-          </AnimatePresence> */}
-          <div>
-            <Navbar />
-          </div>
+          </AnimatePresence>
 
-          <div id="hero-section" className="mt-4 lg:min-h-screen">
+          <nav id="navbar-section">
+            <Navbar />
+          </nav>
+
+          <section id="hero-section" className="mt-4 lg:min-h-screen">
             <HeroSection />
-          </div>
-          <div id="project-section" className="my-16 border lg:min-h-screen">
+          </section>
+
+          <section id="project-section" className="my-16 lg:min-h-screen">
             <ProjectSection />
             <ProjectSection2 />
-          </div>
-          <div id="skills-section" className="my-16 border lg:min-h-screen">
+          </section>
+
+          <section id="skills-section" className="my-16 lg:min-h-screen">
             <SkillsSection />
-          </div>
-          <div id="story-section" className="my-16 border lg:min-h-screen">
+          </section>
+
+          <section id="story-section" className="my-16 lg:min-h-screen">
             <StoryTimeline />
-          </div>
-          <div id="contact-section" className="my-16 border lg:min-h-screen">
+          </section>
+
+          <section id="contact-section" className="my-16 lg:min-h-screen">
             <Contact setCursorDisplay={setCursorDisplay} />
-          </div>
-        </motion.div>
+          </section>
+        </motion.main>
 
-        <div className="sticky bottom-0 z-5 mt-[29rem] md:mt-[20rem] w-full lg:mt-[29rem]">
+        <footer
+          id="footer-section"
+          className="sticky bottom-0 z-5 mt-[29rem] w-full md:mt-[20rem] lg:mt-[29rem]"
+        >
           <Footer />
-        </div>
+        </footer>
 
-        <div className="fixed bottom-0 left-15 z-10 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-full text-neutral-700 dark:text-white">
+        <div
+          id="scroll-to-top"
+          className="fixed bottom-0 left-15 z-10 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-full text-neutral-700 dark:text-white"
+        >
           <motion.div
             className="absolute rounded-full"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

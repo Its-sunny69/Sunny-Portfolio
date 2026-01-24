@@ -17,6 +17,7 @@ export default function ProjectSection2() {
   const [detailList, setdetailList] = useState({
     slidingBackground: false,
   });
+
   const { developerMode } = useContext(DeveloperContext);
   const { theme } = useTheme();
 
@@ -90,6 +91,7 @@ export default function ProjectSection2() {
                 href={item.projectURLs[0].url}
                 className="group"
                 target="_blank"
+                title="view project"
               >
                 View Project
                 <div className="h-[0.7px] w-0 bg-white transition-all duration-200 ease-out group-hover:w-full dark:bg-black"></div>

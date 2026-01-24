@@ -1,7 +1,6 @@
 import {
   AnimatePresence,
   motion,
-  number,
   useMotionValueEvent,
   useScroll,
   useTransform,
@@ -25,14 +24,14 @@ export default function StoryTimeline() {
   const [positions, setPositions] = useState([
     0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.989,
   ]);
-  const { developerMode } = useContext(DeveloperContext);
+  const [totalLength, setTotalLength] = useState(0);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const { scrollYProgress } = useScroll({ target: scrollRef });
 
-  const [totalLength, setTotalLength] = useState(0);
+  const { scrollYProgress } = useScroll({ target: scrollRef });
+  const { developerMode } = useContext(DeveloperContext);
 
   // Responsive SVG values state
   const [responsiveValues, setResponsiveValues] = useState({
@@ -42,8 +41,8 @@ export default function StoryTimeline() {
     fontSize: 0.2,
     letterSpacing: 0.02,
     lineHeight: 0.3,
-    aplhaX: 0,
-    gamaY: 0,
+    alphaX: 0,
+    gammaY: 0,
     ringRadius: 90,
   });
 
@@ -60,9 +59,8 @@ export default function StoryTimeline() {
         fontSize: 0.6,
         letterSpacing: 0.025,
         lineHeight: 0.6,
-        aplhaX: -0.5,
-        // work HeroSection, adujst the value...
-        gamaY: 0.4,
+        alphaX: -0.5,
+        gammaY: 0.4,
         ringRadius: 70,
       });
     } else if (windowWidth <= 768) {
@@ -74,8 +72,8 @@ export default function StoryTimeline() {
         fontSize: 0.3,
         letterSpacing: 0.03,
         lineHeight: 0.4,
-        aplhaX: -0.5,
-        gamaY: 0,
+        alphaX: -0.5,
+        gammaY: 0,
         ringRadius: 80,
       });
     } else {
@@ -87,14 +85,13 @@ export default function StoryTimeline() {
         fontSize: 0.2,
         letterSpacing: 0.02,
         lineHeight: 0.3,
-        aplhaX: 0,
-        gamaY: 0,
+        alphaX: 0,
+        gammaY: 0,
         ringRadius: 90,
       });
     }
   };
 
-  // Listen to window resize continuously
   useEffect(() => {
     handleResponsiveValues();
     window.addEventListener("resize", handleResponsiveValues);
@@ -103,7 +100,6 @@ export default function StoryTimeline() {
 
   const pathLength = useTransform(scrollYProgress, [0.02, 1], [0, 1]);
 
-  // Get total path length on mount
   useEffect(() => {
     if (pathRef.current) {
       const length = pathRef.current.getTotalLength();
@@ -123,12 +119,6 @@ export default function StoryTimeline() {
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setCurrentScrollProgress(latest);
 
-    if (pathRef.current && totalLength > 0) {
-      // Calculate the current position along the path
-      const currentLength = latest * totalLength;
-      const point = pathRef.current.getPointAtLength(currentLength);
-    }
-
     let idx = Math.floor(latest * 10);
     if (latest == 0) {
       idx = 0;
@@ -138,8 +128,6 @@ export default function StoryTimeline() {
 
     setActiveIndex(idx);
   });
-
-
 
   useEffect(() => {
     const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
@@ -171,8 +159,6 @@ export default function StoryTimeline() {
       [key]: !prevState[key],
     }));
   };
-
-
 
   return (
     <div className="py-4">
@@ -279,7 +265,7 @@ export default function StoryTimeline() {
             <AnimatePresence>
               {developerMode && detailList.ringtext3Ddetail && (
                 <DeveloperDetails
-                  className="absolute md:top-36 top-39 md:left-40 left-8 z-70 text-xs tracking-wider lg:top-48 lg:left-54"
+                  className="absolute top-39 left-8 z-70 text-xs tracking-wider md:top-36 md:left-40 lg:top-48 lg:left-54"
                   data={storyDeveloperData.ringtext3Ddetail}
                   LabelProps={{ direction: "right", orientation: "up" }}
                 />
@@ -292,7 +278,7 @@ export default function StoryTimeline() {
         {developerMode && (
           <>
             <button
-              className="absolute top-40 md:top-50 md:left-[28rem] right-10 flex cursor-pointer hover:opacity-75 lg:top-64 lg:left-[34rem]"
+              className="absolute top-40 right-10 flex cursor-pointer hover:opacity-75 md:top-50 md:left-[28rem] lg:top-64 lg:left-[34rem]"
               onClick={() => HandleDetailClick("timelineSVGDetail")}
             >
               <motion.p
@@ -323,7 +309,7 @@ export default function StoryTimeline() {
             <AnimatePresence>
               {developerMode && detailList.timelineSVGDetail && (
                 <DeveloperDetails
-                  className="absolute top-56 md:left-[17rem] right-8 z-70 text-xs tracking-wider lg:top-72 lg:left-[34rem]"
+                  className="absolute top-56 right-8 z-70 text-xs tracking-wider md:left-[17rem] lg:top-72 lg:left-[34rem]"
                   data={storyDeveloperData.timelineSVGDetail}
                   LabelProps={{ direction: "right", orientation: "up" }}
                 />
@@ -334,7 +320,7 @@ export default function StoryTimeline() {
 
         <motion.svg
           ref={svgRef}
-          className="bg-whit mx-auto w-full border p-1 pb-44 md:pb-24 lg:w-[90%] lg:pb-0"
+          className="bg-whit mx-auto w-full p-1 pb-44 md:pb-24 lg:w-[90%] lg:pb-0"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="-2 -2 15 56"
           preserveAspectRatio="xMidYMid meet"
@@ -398,7 +384,7 @@ export default function StoryTimeline() {
 
             // Calculate safe x position for rect and text
             let safeX = point.x - rectWidth / 2 - 0.5;
-            // if (safeX < 0) safeX = -1.5 + responsiveValues.aplhaX;
+
             const minX = -2;
             const maxX = 13 - rectWidth;
             safeX = Math.max(minX, Math.min(maxX, safeX));
@@ -427,7 +413,7 @@ export default function StoryTimeline() {
                   {/* Rectangle background */}
                   <motion.rect
                     x={safeX}
-                    y={point.y - 0.3 - responsiveValues.gamaY}
+                    y={point.y - 0.3 - responsiveValues.gammaY}
                     width={responsiveValues.rectWidth}
                     height={responsiveValues.rectHeight}
                     fill="#0a0a0a"
@@ -455,7 +441,6 @@ export default function StoryTimeline() {
                     y={point.y + 0.3}
                     textAnchor="start"
                     fontSize={responsiveValues.numberFontSize}
-                    // letterSpacing={responsiveValues.letterSpacing}
                     fill="white"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{
@@ -476,7 +461,7 @@ export default function StoryTimeline() {
                   <motion.text
                     width="8"
                     x={safeX + 1}
-                    y={point.y + 1 + responsiveValues.gamaY}
+                    y={point.y + 1 + responsiveValues.gammaY}
                     textAnchor="start"
                     fontSize={responsiveValues.fontSize}
                     fill="white"
@@ -510,7 +495,7 @@ export default function StoryTimeline() {
         </motion.svg>
 
         <RingText3D
-          ClassNames="absolute bottom-10 md:bottom-78 lg:bottom-92 left-0 md:right-[36.5%]"
+          ClassNames="absolute bottom-10 md:bottom-78 lg:bottom-92 md:right-[36.5%]"
           ringText="THE END "
           ringRadius={responsiveValues.ringRadius}
           initial={{ opacity: 0, scale: 0 }}

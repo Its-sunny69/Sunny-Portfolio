@@ -12,7 +12,6 @@ interface LabelProps {
   LabelClassName?: string;
 }
 
-// Configuration object for better maintainability
 const CONFIG = {
   baseWidth: 150,
   height: 120,
@@ -44,7 +43,6 @@ export default function LabelSvg({
     }
   }, [theme]);
 
-  // Fix viewBox to accommodate left direction with increased length
   const viewBoxWidth =
     direction === "left"
       ? CONFIG.baseViewBoxWidth + length
@@ -66,7 +64,7 @@ export default function LabelSvg({
     } else {
       // Left direction: start from right, extend to left
       const startX = CONFIG.endX + length;
-      const midX = 70; // Keep consistent distance from right edge
+      const midX = 70;
       const endX = CONFIG.startX;
       const endY = isUp ? CONFIG.upY : CONFIG.downY;
       return `M ${startX} ${CONFIG.startY} L ${midX} ${CONFIG.startY} L ${endX} ${endY}`;

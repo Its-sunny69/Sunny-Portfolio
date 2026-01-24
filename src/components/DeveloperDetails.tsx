@@ -1,10 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import LabelDetailCard from "./LabelDetailCard";
 import useOutsideClick from "@/utlis/useOutsideClicks";
-import { Description } from "@mui/icons-material";
 import LabelSvg from "./LabelSvg";
 
 type Direction = "right" | "left";
@@ -39,33 +36,6 @@ export default function DeveloperDetails({
 
   const detailCardRef = useOutsideClick(() => setIsDetailCardOpen(false));
 
-  const Dummydata = {
-    title: "Animated Gradient Text",
-    description:
-      "How it's created:\n\n• Uses Framer Motion's <code class='code'>motion.p</code> component\n• Text is set to <code class='code'>text-transparent</code> with gradient applied via <code class='code'>background</code> property\n• <code class='code'>backgroundClip: 'text'</code> clips the gradient to text shape only\n\nAnimation Logic:\n\n• Initial: Gradient fully white, opacity 0 (invisible)\n• Animated: Gradient shifts from white (34%) to black (83%), <code class='code'>opacity: 1</code>\n• Timing: 3.3s <code class='code'>delay</code>, 2s <code class='code'>duration</code>, <code class='code'>easeInOut</code> easing\n\nResult: Text fades in with smooth gradient sweep creating elegant reveal effect",
-    codeSnippet: ` <motion.p
-    className="font-36days text-[7.5rem] text-transparent"
-    data-cursor-hover="true"
-    initial={{
-        background: "linear-gradient(162deg,rgba(255, 255, 255, 1) 100%, rgba(0, 0, 0, 1) 100%)",
-        backgroundClip: "text",
-        opacity: 0,
-    }}
-    animate={{
-        background: "linear-gradient(162deg,rgba(255, 255, 255, 1) 34%, rgba(0, 0, 0, 1) 83%)",
-        opacity: 1,
-    }}
-    transition={{
-        delay: 3.3,
-        duration: 2,
-        ease: "easeInOut",
-    }}
->
-    Sunny Yadav
-</motion.p>
-            `,
-  };
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobileView(window.innerWidth <= 640);
@@ -99,7 +69,7 @@ export default function DeveloperDetails({
         transition={{ duration: 0.4, delay: 1.2, ease: "easeInOut" }}
       >
         <div className="flex items-center justify-between gap-2 bg-neutral-950/50 p-4">
-          <p className="text-sm">{data.title}</p>
+          <h1 className="text-sm">{data.title}</h1>
           <button
             className="cursor-pointer rounded-lg bg-white px-2 py-1 text-black transition-all hover:bg-gray-200 active:scale-95"
             onClick={() => setIsDetailCardOpen(true)}
