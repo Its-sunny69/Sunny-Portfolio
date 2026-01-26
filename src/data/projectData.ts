@@ -12,7 +12,13 @@ import {
 } from "@/assets/programming-icons";
 import { StaticImageData } from "next/image";
 
-import { PortfolioImg, AriseImg, BriefoxImg, TrustVibesImg, OakTogetherImg  } from "@/assets/projects-images";
+import {
+  PortfolioImg,
+  AriseImg,
+  BriefoxImg,
+  TrustVibesImg,
+  OakTogetherImg,
+} from "@/assets/projects-images";
 
 type CardItem = {
   title: string;
@@ -37,11 +43,11 @@ export const ProjectList1: CardItem[] = [
     description:
       "A Portfolio website built with Next.js, TypeScript, and Framer Motion featuring custom animations, smooth scrolling, and interactive UI elements. This portfolio showcases my expertise in frontend development, animation design, and creating engaging user experiences. It includes detailed project showcases, skills section with technology icons, and a functional contact form integrated with email notifications.",
     features: [
-      "<strong class='text-white font-bold'>Custom Interactive Animations</strong> - 10+ Framer Motion sequences including advanced image slice animations, gradient text effects, smooth scroll triggers, custom cursor interactions, dynamic progress counters, and typing animations for fully engaging visual experience.",
-      "<strong class='text-white font-bold'>Next.js & TypeScript</strong> - Built with modern best practices, server-side rendering, and strong type safety for production-ready code.",
-      "<strong class='text-white font-bold'>Responsive Design</strong> - Fully responsive layouts using TailwindCSS achieving <strong>100% mobile compatibility</strong> with smooth scrolling and adaptive UI across all screen sizes.",
-      "<strong class='text-white font-bold'>Email Integration</strong> - Contact form with Resend API for automated email notifications and React Email for templated emails with <strong>99% delivery rate</strong>.",
-      "<strong class='text-white font-bold'>Performance & SEO Optimized</strong> - Integrated Vercel Analytics and Speed Insights achieving <strong>95+ Lighthouse scores</strong> for Best practices, accessibility, and SEO with proper meta tags and structured data.",
+      "Custom Interactive Animations - <strong class='text-white font-bold'>10+ Framer Motion sequences</strong> including <strong class='text-white font-bold'>image slice animations</strong>, <strong class='text-white font-bold'>gradient text effects</strong>, <strong class='text-white font-bold'>smooth scroll triggers</strong>, <strong class='text-white font-bold'>custom cursor interactions</strong>, <strong class='text-white font-bold'>dynamic progress counters</strong>, and <strong class='text-white font-bold'>typing animations</strong> for fully engaging visual experience.",
+      "Next.js & TypeScript - Built with <strong class='text-white font-bold'>modern best practices</strong>, <strong class='text-white font-bold'>server-side rendering</strong>, and <strong class='text-white font-bold'>strong type safety</strong> for production-ready code.",
+      "Responsive Design - Fully responsive layouts using <strong class='text-white font-bold'>TailwindCSS</strong> achieving <strong class='text-white font-bold'>100% mobile compatibility</strong> with <strong class='text-white font-bold'>smooth scrolling</strong> and <strong class='text-white font-bold'>adaptive UI</strong> across all screen sizes.",
+      "Contact form with <strong class='text-white font-bold'>Resend API</strong> for <strong class='text-white font-bold'>automated email notifications</strong> and <strong class='text-white font-bold'>React Email</strong> for <strong class='text-white font-bold'>templated emails</strong> with <strong class='text-white font-bold'>99% delivery rate</strong>.",
+      "<strong class='text-white font-bold'>Vercel Analytics</strong> and <strong class='text-white font-bold'>Speed Insights</strong> achieving <strong class='text-white font-bold'>95+ Lighthouse scores</strong> for <strong class='text-white font-bold'>Best practices</strong>, <strong class='text-white font-bold'>accessibility</strong>, and <strong class='text-white font-bold'>SEO</strong> with <strong class='text-white font-bold'>proper meta tags</strong> and <strong class='text-white font-bold'>structured data</strong>.",
     ],
     projectURLs: [
       {

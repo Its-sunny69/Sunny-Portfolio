@@ -123,6 +123,12 @@ export default function HeroSection() {
             onMouseMove={(e) => handleCursor(e)}
             onMouseEnter={() => setFollowButton(true)}
             onMouseLeave={() => setFollowButton(false)}
+            onClick={() =>
+              window.open(
+                "https://www.linkedin.com/in/sunny-yadav-557676249/",
+                "_blank",
+              )
+            }
           >
             <motion.div
               style={{

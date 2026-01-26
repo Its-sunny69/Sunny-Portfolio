@@ -39,7 +39,7 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
     >
-      <h1 data-cursor-hover="true" className="font-medium" title="protfolio">
+      <h1 data-cursor-hover="true" className="font-medium" title="portfolio">
         ポートフォリオ
       </h1>
       <div className="flex items-center gap-4">

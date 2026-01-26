@@ -107,9 +107,9 @@ const nohemi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Sunny Yadav Portfolio | Frontend Developer",
+  title: "Sunny Yadav | Frontend Developer",
   description:
-    "Explore my portfolio featuring custom-crafted animations, full-stack projects, and modern web solutions. Specializing in React, Next.js, TypeScript, and interactive UI/UX design.",
+    "Sunny Yadav, I am a frontend developer specializing in React, Next.js, TypeScript, and interactive UI/UX design. I create full-stack projects, and modern web solutions.",
   keywords: [
     "Frontend Developer",
     "Full Stack Developer",
@@ -131,10 +131,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://sunny-portfolio-teal.vercel.app",
-    siteName: "Frontend Developer Portfolio",
-    title: "Frontend Developer Portfolio | Custom Animations & Web Solutions",
+    siteName: "Sunny Yadav",
+    title: "Sunny Yadav | Frontend Developer",
     description:
-      "Explore my portfolio featuring custom-crafted animations, full-stack projects, and modern web solutions. Specializing in React, Next.js, and interactive design.",
+      "Sunny Yadav, I am a frontend developer specializing in React, Next.js, and interactive design. I create full-stack projects and modern web solutions.",
     images: [
       {
         url: "https://sunny-portfolio-teal.vercel.app/profile.webp",
@@ -146,11 +146,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Frontend Developer Portfolio",
+    title: "Sunny Yadav | Frontend Developer",
     description:
-      "Frontend Developer specializing in React, Next.js, and custom animations",
+      "Frontend Developer specializing in React, Next.js, TypeScript, and interactive UI/UX design. Creating full-stack projects and modern web solutions.",
     images: ["https://sunny-portfolio-teal.vercel.app/profile.webp"],
-    creator: "@its-sunny69",
+    creator: "@its_sunny69",
   },
 };
 

@@ -174,7 +174,7 @@ export default function StoryTimeline() {
           Not Perfect -<span className="italic"> Still in Progress</span>.
         </p>
       </div>
-      <div className="mt-16 flex items-center justify-center border">
+      <div className="mt-16 flex items-center justify-center">
         <div className="px-2 text-lg md:px-8 md:text-xl lg:w-[80%] lg:text-2xl">
           <TypingAnimation
             text="Once upon a time, I woke up in a completely different world — magic everywhere, destiny calling...just kidding!__(after all, I'm Isekai lover)  (◠ᴗ◠)"
@@ -190,7 +190,7 @@ export default function StoryTimeline() {
       </div>
 
       <div
-        className="relative w-full border px-2 tracking-normal md:px-8"
+        className="relative w-full px-2 tracking-normal md:px-8"
         ref={scrollRef}
       >
         <motion.div className="left sticky top-125 left-full flex h-40 w-fit flex-col items-end justify-end rounded bg-transparent p-2 text-right tracking-wide md:top-110">
