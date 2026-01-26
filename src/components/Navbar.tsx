@@ -101,7 +101,7 @@ export default function Navbar() {
               </button>
 
               <a
-                href="https://drive.google.com/uc?export=download&id=15gyH9nlnuuhr2CIuvwif9uV4odH_tLaW"
+                href="https://drive.google.com/uc?export=download&id=1qyYkE9ej4Lh8G6cFa6vL7WHfGvbtMUef"
                 className="group hover:text-hover transition-all"
                 title="Download resume"
                 download="CV - Sunny Yadav.pdf"
