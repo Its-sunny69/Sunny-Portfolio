@@ -3,6 +3,7 @@ import { useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { StaticImageData } from "next/image";
 
 type Cursor = {
   x: number;
@@ -12,7 +13,7 @@ type Cursor = {
 type Data = {
   title: string;
   overview: string;
-  imgURL: string;
+  imgURL: string | StaticImageData;
   description: string;
   features: string[];
   projectURLs: {
@@ -20,7 +21,7 @@ type Data = {
     url: string;
   }[];
   techListName: string;
-  techListImg: string[];
+  techListImg: (string | StaticImageData)[];
 };
 
 export default function DetailsCard({
@@ -77,6 +78,7 @@ export default function DetailsCard({
               height={216}
               src={data.imgURL}
               alt="project image"
+              style={{ objectPosition: "top left" }}
               className={`h-full w-full rounded-lg object-cover ${followButton ? "opacity-85 blur-[1px]" : ""} transition-all duration-200`}
             />
 

@@ -27,7 +27,7 @@ import { useTheme } from "next-themes";
 
 export default function Home() {
   const [cursorDisplay, setCursorDisplay] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [scope, animation] = useAnimate();
   const [isHovered, setIsHovered] = useState(false);
@@ -80,16 +80,16 @@ export default function Home() {
     [".title", { opacity: 0 }, { duration: 1, ease: "easeInOut", at: "1" }],
   ];
 
-  // useEffect(() => {
-  //   const runAnimation = async () => {
-  //     await animation(loadingSequence);
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 500);
-  //   };
+  useEffect(() => {
+    const runAnimation = async () => {
+      await animation(loadingSequence);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    };
 
-  //   runAnimation();
-  // }, []);
+    runAnimation();
+  }, []);
 
   const sentence = "Custom-crafted animations, built line by line.";
   const words = sentence.split(" ");
@@ -219,6 +219,7 @@ export default function Home() {
       <div className="relative w-full flex-1">
         <motion.main
           className="relative z-10 min-h-screen w-full"
+          role="main"
           initial={{
             background:
               theme === "light"

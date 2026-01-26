@@ -143,6 +143,7 @@ export default function Contact({
         return;
       } else {
         setIsSent("Message Sent!");
+        setMessage("");
       }
     } catch (error) {
       console.error("Error:", error);

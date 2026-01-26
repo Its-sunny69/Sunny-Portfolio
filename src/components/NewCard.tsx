@@ -12,11 +12,12 @@ import DetailsCard from "@/components/DetailsCard";
 import Image from "next/image";
 import KingSvg from "@/assets/king.svg";
 import { useTheme } from "next-themes";
+import { StaticImageData } from "next/image";
 
 type Data = {
   title: string;
   overview: string;
-  imgURL: string;
+  imgURL: string | StaticImageData;
   description: string;
   features: string[];
   projectURLs: {
@@ -24,7 +25,7 @@ type Data = {
     url: string;
   }[];
   techListName: string;
-  techListImg: string[];
+  techListImg: (string | StaticImageData)[];
 };
 
 function NewCard({ data, index }: { data: Data; index: number }) {
@@ -153,6 +154,7 @@ function NewCard({ data, index }: { data: Data; index: number }) {
                     height={192}
                     src={data.imgURL}
                     alt="project image"
+                    style={{objectPosition: "top left"}}
                     className="h-48 w-full rounded-md object-cover"
                   />
 

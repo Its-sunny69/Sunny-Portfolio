@@ -10,11 +10,14 @@ import {
   NodeJSIcon,
   FirebaseIcon,
 } from "@/assets/programming-icons";
+import { StaticImageData } from "next/image";
+
+import { PortfolioImg, AriseImg, BriefoxImg, TrustVibesImg, OakTogetherImg  } from "@/assets/projects-images";
 
 type CardItem = {
   title: string;
   overview: string;
-  imgURL: string;
+  imgURL: string | StaticImageData;
   description: string;
   features: string[];
   projectURLs: {
@@ -28,38 +31,45 @@ type CardItem = {
 export const ProjectList1: CardItem[] = [
   {
     title: "Portfolio",
-    overview: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    imgURL:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    overview:
+      "A modern, interactive portfolio website showcasing custom-crafted animations and full-stack projects.",
+    imgURL: PortfolioImg,
     description:
-      "3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa minus sed, ex doloremque possimus voluptas sapiente illum doloribus numquam mollitia molestiae, nemo voluptates, nisi molestias! Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4"],
+      "A Portfolio website built with Next.js, TypeScript, and Framer Motion featuring custom animations, smooth scrolling, and interactive UI elements. This portfolio showcases my expertise in frontend development, animation design, and creating engaging user experiences. It includes detailed project showcases, skills section with technology icons, and a functional contact form integrated with email notifications.",
+    features: [
+      "<strong class='text-white font-bold'>Custom Interactive Animations</strong> - 10+ Framer Motion sequences including advanced image slice animations, gradient text effects, smooth scroll triggers, custom cursor interactions, dynamic progress counters, and typing animations for fully engaging visual experience.",
+      "<strong class='text-white font-bold'>Next.js & TypeScript</strong> - Built with modern best practices, server-side rendering, and strong type safety for production-ready code.",
+      "<strong class='text-white font-bold'>Responsive Design</strong> - Fully responsive layouts using TailwindCSS achieving <strong>100% mobile compatibility</strong> with smooth scrolling and adaptive UI across all screen sizes.",
+      "<strong class='text-white font-bold'>Email Integration</strong> - Contact form with Resend API for automated email notifications and React Email for templated emails with <strong>99% delivery rate</strong>.",
+      "<strong class='text-white font-bold'>Performance & SEO Optimized</strong> - Integrated Vercel Analytics and Speed Insights achieving <strong>95+ Lighthouse scores</strong> for Best practices, accessibility, and SEO with proper meta tags and structured data.",
+    ],
     projectURLs: [
       {
         label: "Live Demo",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://sunny-portfolio-teal.vercel.app/",
       },
       {
         label: "GitHub",
-        url: "https://unpkg.com/simple-icons@v15/icons/simpleicons.svg",
+        url: "https://github.com/Its-sunny69/Sunny-Portfolio",
       },
     ],
-    techListName: "React, Tailwind CSS, HTML5, JavaScript, MongoDB, Next.js",
+    techListName:
+      "React, Next.js, TypeScript, TailwindCSS, Framer Motion, Node.js, Resend API, Vercel",
     techListImg: [
-      ReactJSIcon,
+      HTML5Icon,
+      CSS3Icon,
+      JavaScriptIcon,
+      NextJSIcon,
+      TypeScriptIcon,
       TailwindCSSIcon,
-      HTML5Icon,
-      HTML5Icon,
-      HTML5Icon,
-      HTML5Icon,
+      NodeJSIcon,
     ],
   },
   {
     title: "Briefox",
     overview:
       "AI-powered web tool for designers to generate briefs, find fonts, and extract color palettes.",
-    imgURL:
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imgURL: BriefoxImg,
     description:
       "Briefox is an AI-powered design assistant that empowers designers with instant access to design briefs, font discovery, and color palette extraction. Featuring zero-login convenience, Lighthouse-optimized performance, and seamless Gemini API integration for intelligent design recommendations.",
     features: [
@@ -94,8 +104,7 @@ export const ProjectList1: CardItem[] = [
     title: "Arise",
     overview:
       "A productivity-focused app designed to help users overcome procrastination.",
-    imgURL:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imgURL: AriseImg,
     description:
       "Arise is a collaborative productivity platform that combines real-time task management with room-based collaboration. It features modular architecture built with React and Redux, secure JWT authentication, and leaderboard metrics to keep teams motivated and organized.",
     features: [
@@ -133,8 +142,7 @@ export const ProjectList2: CardItem[] = [
     title: "Oak Together",
     overview:
       "Tree Plantation and Event Management Web App [ Incomplete Project ]",
-    imgURL:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imgURL: OakTogetherImg,
     description:
       "Oak Together is a collaborative tree plantation platform that combines environmental activism with gamified engagement. Built as a team project, it connects users to real environmental initiatives through interactive mapping, real-time air quality monitoring, and AI-powered insights for sustainable impact.",
     features: [
@@ -171,8 +179,7 @@ export const ProjectList2: CardItem[] = [
     title: "TrustVibes",
     overview:
       "Public review and testimonial management platform with no-auth feedback collection.",
-    imgURL:
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imgURL: TrustVibesImg,
     description:
       "TrustVibes is a feedback collection platform that enables businesses to gather authentic customer reviews and testimonials without requiring user authentication. Built with React and Firebase, it simplifies the review submission process while providing powerful admin tools for testimonial management and display.",
     features: [
