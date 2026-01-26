@@ -8,7 +8,7 @@ import {
 } from "motion/react";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import City from "@/assets/city.jpg";
+import Profile3 from "@/assets/contact.webp";
 import DeveloperDetails from "./DeveloperDetails";
 import { DeveloperContext } from "@/context/developerContext";
 import { useTheme } from "next-themes";
@@ -178,7 +178,7 @@ export default function Contact({
           className="absolute left-32 h-56 w-36 md:left-28 lg:left-[250]"
           style={{ y: imgY, scale: imgScale }}
         >
-          <Image src={City} alt="Description" fill className="object-cover" />
+          <Image src={Profile3} alt="profile picture" fill className="object-cover" />
         </motion.div>
 
         <svg viewBox="1 0 25 12" className="mt-28 w-full lg:mt-0" ref={section}>

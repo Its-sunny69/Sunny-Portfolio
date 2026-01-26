@@ -5,22 +5,27 @@ export default function TypingAnimation({
   delay = 0,
   className,
   style,
+  whileInView = false,
 }: {
   text?: string;
   delay?: number;
   className?: string;
   style?: React.CSSProperties;
+  whileInView?: boolean;
 }) {
   const displayText =
     text || "This is a typing animation component placeholder.";
-  
+
   const words = displayText.split(" ");
   let charIndex = 0;
 
   return (
     <div className={className} style={style}>
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+        <span
+          key={wordIndex}
+          style={{ display: "inline-block", whiteSpace: "nowrap" }}
+        >
           {word.split("").map((char, index) => {
             const currentCharIndex = charIndex++;
             return (
@@ -31,10 +36,22 @@ export default function TypingAnimation({
                   opacity: 0,
                   filter: "blur(4px)",
                 }}
-                animate={{
-                  opacity: 1,
-                  filter: "blur(0px)",
-                }}
+                whileInView={
+                  whileInView
+                    ? {
+                        opacity: 1,
+                        filter: "blur(0px)",
+                      }
+                    : undefined
+                }
+                animate={
+                  whileInView
+                    ? undefined
+                    : {
+                        opacity: 1,
+                        filter: "blur(0px)",
+                      }
+                }
                 transition={{
                   delay: currentCharIndex * 0.05 + delay,
                   duration: 0.5,
@@ -52,10 +69,22 @@ export default function TypingAnimation({
                 opacity: 0,
                 filter: "blur(4px)",
               }}
-              animate={{
-                opacity: 1,
-                filter: "blur(0px)",
-              }}
+              whileInView={
+                whileInView
+                  ? {
+                      opacity: 1,
+                      filter: "blur(0px)",
+                    }
+                  : undefined
+              }
+              animate={
+                whileInView
+                  ? undefined
+                  : {
+                      opacity: 1,
+                      filter: "blur(0px)",
+                    }
+              }
               transition={{
                 delay: charIndex++ * 0.05 + delay,
                 duration: 0.5,

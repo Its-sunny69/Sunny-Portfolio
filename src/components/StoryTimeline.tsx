@@ -8,11 +8,12 @@ import {
 import { useRef, useState, useEffect, useContext } from "react";
 import RingText3D from "@/components/RingText3D";
 import Image from "next/image";
-import City from "@/assets/city.jpg";
+import Profile2 from "@/assets/profile2.webp";
 import { DeveloperContext } from "@/context/developerContext";
 import DeveloperDetails from "./DeveloperDetails";
 import { storyList, storyMessage } from "@/data/storyData";
 import { storyDeveloperData } from "@/data/developerDetailsData";
+import TypingAnimation from "./TypingAnimation";
 
 export default function StoryTimeline() {
   const [currentScrollProgress, setCurrentScrollProgress] = useState(0);
@@ -173,9 +174,23 @@ export default function StoryTimeline() {
           Not Perfect -<span className="italic"> Still in Progress</span>.
         </p>
       </div>
+      <div className="mt-16 flex items-center justify-center border">
+        <div className="px-2 text-lg md:px-8 md:text-xl lg:w-[80%] lg:text-2xl">
+          <TypingAnimation
+            text="Once upon a time, I woke up in a completely different world — magic everywhere, destiny calling...just kidding!__(after all, I'm Isekai lover)  (◠ᴗ◠)"
+            whileInView={true}
+          />
+          <br />
+          <TypingAnimation
+            text="Scroll down to see the real story."
+            delay={8}
+            whileInView={true}
+          />
+        </div>
+      </div>
 
       <div
-        className="relative w-full px-2 tracking-normal md:px-8"
+        className="relative w-full border px-2 tracking-normal md:px-8"
         ref={scrollRef}
       >
         <motion.div className="left sticky top-125 left-full flex h-40 w-fit flex-col items-end justify-end rounded bg-transparent p-2 text-right tracking-wide md:top-110">
@@ -205,8 +220,8 @@ export default function StoryTimeline() {
 
           <div className="flex items-center justify-end">
             <Image
-              src={City}
-              alt="city"
+              src={Profile2}
+              alt="profile picture"
               width={50}
               height={50}
               className="aspect-square rounded-full object-cover"

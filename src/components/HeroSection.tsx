@@ -4,7 +4,7 @@ import {
   useAnimate,
   type AnimationSequence,
 } from "motion/react";
-import heroImage from "@/assets/mountain3.jpg";
+import Profile1 from "@/assets/profile.webp";
 import { useContext, useEffect, useRef, useState } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -123,11 +123,10 @@ export default function HeroSection() {
             onMouseMove={(e) => handleCursor(e)}
             onMouseEnter={() => setFollowButton(true)}
             onMouseLeave={() => setFollowButton(false)}
-            data-cursor-hover="true"
           >
             <motion.div
               style={{
-                backgroundImage: `url(${heroImage.src})`,
+                backgroundImage: `url(${Profile1.src})`,
                 backgroundSize: "400% 100%",
                 backgroundPosition: "0% 50%",
               }}
@@ -136,7 +135,7 @@ export default function HeroSection() {
             ></motion.div>
             <motion.div
               style={{
-                backgroundImage: `url(${heroImage.src})`,
+                backgroundImage: `url(${Profile1.src})`,
                 backgroundSize: "400% 100%",
                 backgroundPosition: "33.33% 50%",
               }}
@@ -145,7 +144,7 @@ export default function HeroSection() {
             ></motion.div>
             <motion.div
               style={{
-                backgroundImage: `url(${heroImage.src})`,
+                backgroundImage: `url(${Profile1.src})`,
                 backgroundSize: "400% 100%",
                 backgroundPosition: "66.66% 50%",
               }}
@@ -154,7 +153,7 @@ export default function HeroSection() {
             ></motion.div>
             <motion.div
               style={{
-                backgroundImage: `url(${heroImage.src})`,
+                backgroundImage: `url(${Profile1.src})`,
                 backgroundSize: "400% 100%",
                 backgroundPosition: "100% 50%",
               }}
