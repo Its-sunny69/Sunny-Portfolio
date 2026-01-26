@@ -176,7 +176,7 @@ export default function Contact({
         <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent"></div>
 
         <motion.div
-          className="absolute left-32 h-56 w-36 md:left-28 lg:left-[250]"
+          className="absolute left-32 h-56 w-36 md:left-28 lg:left-[18.5%]"
           style={{ y: imgY, scale: imgScale }}
         >
           <Image src={Profile3} alt="profile picture" fill className="object-cover" />

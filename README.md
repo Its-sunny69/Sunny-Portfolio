@@ -1,4 +1,4 @@
-# Sunny Yadav - Fronted Developer Portfolio
+# Sunny Yadav - Frontend Developer Portfolio
 
 ![Portfolio Screenshot](./src/assets/screenshot.webp)
 
@@ -150,7 +150,7 @@ pnpm install
 Create a `.env.local` file in the root directory:
 
 ```env
-NEXT_PUBLIC_RESEND_API_KEY=your_resend_api_key
+RESEND_API_KEY=your_resend_api_key
 ```
 
 ---
