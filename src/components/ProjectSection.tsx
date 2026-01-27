@@ -27,14 +27,14 @@ export default function ProjectSection() {
 
   return (
     <div className="relative flex flex-col items-center justify-center overflow-hidden py-4">
-      <div className="flex flex-col items-center px-2 md:px-8">
+      <div className="flex flex-col items-center px-2 text-center md:px-8">
         <h1
           className="font-36days text-3xl md:text-4xl lg:text-6xl"
           data-cursor-hover="true"
         >
           Hand Crafted Works
         </h1>
-        <p className="mt-2 text-center">
+        <p className="mt-2">
           Each project tells a story of growth, upgrades, and milestones
           achieved -{" "}
           <span className="italic">from zero to something i am now</span>.

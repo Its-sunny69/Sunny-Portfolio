@@ -163,7 +163,7 @@ export default function StoryTimeline() {
 
   return (
     <div className="py-4">
-      <div className="flex flex-col items-center px-2 md:px-8">
+      <div className="flex flex-col items-center px-2 text-center md:px-8">
         <h1
           className="font-36days text-3xl md:text-4xl lg:text-6xl"
           data-cursor-hover="true"
@@ -193,7 +193,7 @@ export default function StoryTimeline() {
         className="relative w-full px-2 tracking-normal md:px-8"
         ref={scrollRef}
       >
-        <motion.div className="left sticky top-125 left-full flex h-40 w-fit flex-col items-end justify-end rounded bg-transparent p-2 text-right tracking-wide md:top-110">
+        <motion.div className="left sticky top-125 left-full flex h-40 w-fit flex-col items-end justify-end rounded bg-transparent p-2 text-right tracking-wide md:top-100">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -510,7 +510,7 @@ export default function StoryTimeline() {
         </motion.svg>
 
         <RingText3D
-          ClassNames="absolute bottom-10 md:bottom-78 lg:bottom-92 md:right-[36.5%]"
+          ClassNames="absolute bottom-10 md:bottom-70 lg:bottom-92 md:right-[32.5%] lg:right-[35.5%]"
           ringText="THE END "
           ringRadius={responsiveValues.ringRadius}
           initial={{ opacity: 0, scale: 0 }}

@@ -252,7 +252,7 @@ export default function HeroSection() {
           <TypingAnimation text="I am" delay={2.8} />
 
           <motion.p
-            className="font-36days text-[4rem] text-transparent lg:text-[7.5rem]"
+            className="font-36days text-center text-[3rem] text-transparent md:text-[4rem] lg:text-[7.5rem]"
             data-cursor-hover="true"
             initial={{
               background: gradientBackground.initial,

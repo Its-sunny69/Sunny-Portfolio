@@ -301,7 +301,7 @@ export default function Home() {
 
         <footer
           id="footer-section"
-          className="sticky bottom-0 z-5 mt-[29rem] w-full md:mt-[20rem] lg:mt-[29rem]"
+          className="sticky bottom-0 z-5 mt-[32rem] w-full md:mt-[20rem] lg:mt-[29rem]"
         >
           <Footer />
         </footer>

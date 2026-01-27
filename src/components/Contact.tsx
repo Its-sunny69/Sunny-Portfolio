@@ -159,14 +159,14 @@ export default function Contact({
 
   return (
     <div className="h-screen w-full bg-white pt-16 text-black">
-      <div className="flex flex-col items-center px-2 md:px-8">
+      <div className="flex flex-col items-center text-center px-2 md:px-8">
         <h1
-          className="font-36days text-3xl md:text-4xl lg:text-6xl"
+          className="font-36days  text-3xl md:text-4xl lg:text-6xl"
           data-cursor-hover="true"
         >
           Open a Conversation
         </h1>
-        <p className="pt-2 text-center">
+        <p className="pt-2 ">
           No Redirect, Email ID required -
           <span className="italic"> just write and hit send!</span>
         </p>
@@ -176,7 +176,7 @@ export default function Contact({
         <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent"></div>
 
         <motion.div
-          className="absolute left-32 h-56 w-36 md:left-28 lg:left-[18.5%]"
+          className="absolute left-[31%] h-56 w-36 md:left-28 lg:left-[18.5%]"
           style={{ y: imgY, scale: imgScale }}
         >
           <Image src={Profile3} alt="profile picture" fill className="object-cover" />
