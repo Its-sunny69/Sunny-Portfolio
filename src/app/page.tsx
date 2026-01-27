@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import NameSvg from "@/components/NameSvg";
 import Navbar from "@/components/Navbar";
-import ProgressCounter from "@/components/ProgressCounter";
 import ProjectSection from "@/components/ProjectSection";
 import ProjectSection2 from "@/components/ProjectSection2";
 import SkillsSection from "@/components/SkillsSection";
@@ -17,11 +16,9 @@ import {
   motion,
   useAnimate,
   useMotionValue,
-  useScroll,
-  useTransform,
   useAnimationFrame,
 } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import KeyboardDoubleArrowUpRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowUpRounded";
 import { useTheme } from "next-themes";
 
@@ -32,11 +29,7 @@ export default function Home() {
   const [scope, animation] = useAnimate();
   const [isHovered, setIsHovered] = useState(false);
   const rotationValue = useMotionValue(0);
-  const progressDiv = useRef<HTMLDivElement>(null);
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [progressWidth, setProgressWidth] = useState(0);
 
-  const { scrollYProgress } = useScroll();
   const { theme } = useTheme();
 
   const rotationVelocity = isHovered ? 45 : 90;
@@ -49,13 +42,6 @@ export default function Home() {
     const rotationIncrement = (rotationVelocity * delta) / 1000;
     rotationValue.set(rotationValue.get() + rotationIncrement);
   });
-
-  const xProgress = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, Math.max(0, windowWidth - progressWidth - 75)],
-  );
-  const progressCounter = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   const loadingSequence: AnimationSequence = [
     [
@@ -91,29 +77,10 @@ export default function Home() {
     runAnimation();
   }, []);
 
-  useEffect(() => {
-    console.log("progressCounter value:", progressCounter.get());
-  }, [progressCounter]);
-
   const sentence = "Custom-crafted animations, built line by line.";
   const words = sentence.split(" ");
 
   let letterIndex = 0;
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-
-    if (progressDiv.current) {
-      setProgressWidth(progressDiv.current.offsetWidth);
-    }
-
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   if (isLoading) {
     return (
@@ -157,7 +124,7 @@ export default function Home() {
   }
 
   return (
-    <div ref={progressDiv}>
+    <div>
       <motion.div
         className="relative overflow-x-clip"
         initial={{
@@ -205,22 +172,7 @@ export default function Home() {
           duration: 0.5,
           ease: "linear",
         }}
-        
       >
-        <motion.div
-          key="progress-bar"
-          style={{
-            x: xProgress,
-          }}
-          className="sticky top-0 z-11 flex w-fit ![mask-image:none]"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-        >
-          [<ProgressCounter value={progressCounter} />
-          %]
-        </motion.div>
-
         <div className="relative w-full flex-1">
           <motion.main
             className="relative z-10 min-h-screen w-full"
