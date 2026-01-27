@@ -154,7 +154,7 @@ export default function Home() {
 
   return (
     <motion.div
-      className="relative overflow-x-clip border"
+      className="relative overflow-x-clip"
       initial={{
         background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
       }}
