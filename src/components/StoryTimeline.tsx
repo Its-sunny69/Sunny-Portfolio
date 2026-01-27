@@ -8,7 +8,6 @@ import {
 import { useRef, useState, useEffect, useContext } from "react";
 import RingText3D from "@/components/RingText3D";
 import Image from "next/image";
-import Profile2 from "@/assets/profile2.webp";
 import { DeveloperContext } from "@/context/developerContext";
 import DeveloperDetails from "./DeveloperDetails";
 import { storyList, storyMessage } from "@/data/storyData";
@@ -220,7 +219,7 @@ export default function StoryTimeline() {
 
           <div className="flex items-center justify-end">
             <Image
-              src={Profile2}
+              src="/profile2.webp"
               alt="profile picture"
               width={50}
               height={50}
