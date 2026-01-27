@@ -154,7 +154,7 @@ export default function Home() {
 
   return (
     <motion.div
-      className="relative overflow-x-clip"
+      className="relative overflow-x-clip border"
       initial={{
         background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
       }}
@@ -200,13 +200,13 @@ export default function Home() {
         duration: 0.5,
         ease: "linear",
       }}
+      ref={progressDiv}
     >
       <motion.div
         key="progress-bar"
         style={{
           x: xProgress,
         }}
-        ref={progressDiv}
         className="sticky top-0 z-11 flex w-fit ![mask-image:none]"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
