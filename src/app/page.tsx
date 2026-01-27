@@ -91,6 +91,10 @@ export default function Home() {
     runAnimation();
   }, []);
 
+  useEffect(() => {
+    console.log("progressCounter value:", progressCounter.get());
+  }, [progressCounter]);
+
   const sentence = "Custom-crafted animations, built line by line.";
   const words = sentence.split(" ");
 
@@ -153,195 +157,197 @@ export default function Home() {
   }
 
   return (
-    <motion.div
-      className="relative overflow-x-clip"
-      initial={{
-        background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
-      }}
-      animate={{
-        background:
-          theme === "light"
-            ? [
-                "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
-                "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
-                "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
-                "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
-                "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
-                "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
-                "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
-                "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
-                "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
-                "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
-                "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
-              ]
-            : [
-                "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
-                "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
-                "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
-                "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
-                "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
-                "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
-                "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
-                "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
-                "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
-                "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
-                "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
-              ],
-      }}
-      transition={{
-        duration: 0.5,
-        ease: "linear",
-      }}
-      ref={progressDiv}
-    >
+    <div ref={progressDiv}>
       <motion.div
-        key="progress-bar"
-        style={{
-          x: xProgress,
+        className="relative overflow-x-clip"
+        initial={{
+          background: "linear-gradient(to right, #ffffff 0%, #000000 0%)",
         }}
-        className="sticky top-0 z-11 flex w-fit ![mask-image:none]"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+        animate={{
+          background:
+            theme === "light"
+              ? [
+                  "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                  "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                  "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                  "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                  "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                  "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                  "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                  "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                  "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                  "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                  "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                ]
+              : [
+                  "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                  "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                  "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                  "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                  "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                  "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                  "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                  "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                  "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                  "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                  "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                ],
+        }}
+        transition={{
+          duration: 0.5,
+          ease: "linear",
+        }}
+        
       >
-        [<ProgressCounter value={progressCounter} />
-        %]
-      </motion.div>
-
-      <div className="relative w-full flex-1">
-        <motion.main
-          className="relative z-10 min-h-screen w-full"
-          role="main"
-          initial={{
-            background:
-              theme === "light"
-                ? "linear-gradient(to right, #ffffff 100%, #000000 100%)"
-                : "linear-gradient(to right, #000000 0%, #ffffff 0%)",
+        <motion.div
+          key="progress-bar"
+          style={{
+            x: xProgress,
           }}
-          animate={{
-            background:
-              theme === "light"
-                ? [
-                    "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
-                    "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
-                    "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
-                    "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
-                    "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
-                    "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
-                    "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
-                    "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
-                    "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
-                    "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
-                    "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
-                  ]
-                : [
-                    "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
-                    "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
-                    "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
-                    "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
-                    "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
-                    "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
-                    "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
-                    "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
-                    "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
-                    "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
-                    "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
-                  ],
-          }}
-          transition={{
-            duration: 0.5,
-            ease: "linear",
-          }}
+          className="sticky top-0 z-11 flex w-fit ![mask-image:none]"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
         >
-          <AnimatePresence>
-            <CustomCursor cursorDisplay={cursorDisplay} />
-          </AnimatePresence>
+          [<ProgressCounter value={progressCounter} />
+          %]
+        </motion.div>
 
-          <nav id="navbar-section">
-            <Navbar />
-          </nav>
-
-          <section id="hero-section" className="mt-4 lg:min-h-screen">
-            <HeroSection />
-          </section>
-
-          <section id="project-section" className="my-16 lg:min-h-screen">
-            <ProjectSection />
-            <ProjectSection2 />
-          </section>
-
-          <section id="skills-section" className="my-16 lg:min-h-screen">
-            <SkillsSection />
-          </section>
-
-          <section id="story-section" className="my-16 lg:min-h-screen">
-            <StoryTimeline />
-          </section>
-
-          <section id="contact-section" className="my-16 lg:min-h-screen">
-            <Contact setCursorDisplay={setCursorDisplay} />
-          </section>
-        </motion.main>
-
-        <footer
-          id="footer-section"
-          className="sticky bottom-0 z-5 mt-[32rem] w-full md:mt-[20rem] lg:mt-[29rem]"
-        >
-          <Footer />
-        </footer>
-
-        <div
-          id="scroll-to-top"
-          className="fixed bottom-0 left-15 z-10 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-full text-neutral-700 dark:text-white"
-        >
-          <motion.div
-            className="absolute rounded-full"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            style={{ rotate: rotationValue }}
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.2 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+        <div className="relative w-full flex-1">
+          <motion.main
+            className="relative z-10 min-h-screen w-full"
+            role="main"
+            initial={{
+              background:
+                theme === "light"
+                  ? "linear-gradient(to right, #ffffff 100%, #000000 100%)"
+                  : "linear-gradient(to right, #000000 0%, #ffffff 0%)",
+            }}
+            animate={{
+              background:
+                theme === "light"
+                  ? [
+                      "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                      "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                      "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                      "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                      "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                      "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                      "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                      "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                      "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                      "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                      "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                    ]
+                  : [
+                      "linear-gradient(135deg, #ffffff 100%, #828282 100%, #000000 100%)",
+                      "linear-gradient(135deg, #ffffff 75%, #828282 95%, #000000 100%)",
+                      "linear-gradient(135deg, #ffffff 60%, #828282 90%, #000000 100%)",
+                      "linear-gradient(135deg, #ffffff 50%, #828282 80%, #000000 95%)",
+                      "linear-gradient(135deg, #ffffff 35%, #828282 70%, #000000 90%)",
+                      "linear-gradient(135deg, #ffffff 25%, #828282 60%, #000000 80%)",
+                      "linear-gradient(135deg, #ffffff 15%, #828282 50%, #000000 70%)",
+                      "linear-gradient(135deg, #ffffff 10%, #828282 40%, #000000 60%)",
+                      "linear-gradient(135deg, #ffffff 5%, #828282 30%, #000000 50%)",
+                      "linear-gradient(135deg, #ffffff 2%, #828282 20%, #000000 35%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 15%, #000000 25%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 10%, #000000 15%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 5%, #000000 10%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 2%, #000000 5%)",
+                      "linear-gradient(135deg, #ffffff 0%, #828282 0%, #000000 0%)",
+                    ],
+            }}
+            transition={{
+              duration: 0.5,
+              ease: "linear",
+            }}
           >
-            <div className="relative h-16 w-16">
-              {"TO•THE•TOP•".split("").map((char, i) => {
-                const totalChars = "TO•THE•TOP•".length;
-                const angle = (360 / totalChars) * i;
-                return (
-                  <motion.div
-                    key={i}
-                    className="absolute flex h-full w-full items-center justify-center"
-                    style={{
-                      transform: `rotateZ(${angle}deg) translateY(-32px)`,
-                      transformOrigin: "center center",
-                    }}
-                  >
-                    <span className="text-xs font-medium">{char}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-          <KeyboardDoubleArrowUpRoundedIcon fontSize="large" />
+            <AnimatePresence>
+              <CustomCursor cursorDisplay={cursorDisplay} />
+            </AnimatePresence>
+
+            <nav id="navbar-section">
+              <Navbar />
+            </nav>
+
+            <section id="hero-section" className="mt-4 lg:min-h-screen">
+              <HeroSection />
+            </section>
+
+            <section id="project-section" className="my-16 lg:min-h-screen">
+              <ProjectSection />
+              <ProjectSection2 />
+            </section>
+
+            <section id="skills-section" className="my-16 lg:min-h-screen">
+              <SkillsSection />
+            </section>
+
+            <section id="story-section" className="my-16 lg:min-h-screen">
+              <StoryTimeline />
+            </section>
+
+            <section id="contact-section" className="my-16 lg:min-h-screen">
+              <Contact setCursorDisplay={setCursorDisplay} />
+            </section>
+          </motion.main>
+
+          <footer
+            id="footer-section"
+            className="sticky bottom-0 z-5 mt-[32rem] w-full md:mt-[20rem] lg:mt-[29rem]"
+          >
+            <Footer />
+          </footer>
+
+          <div
+            id="scroll-to-top"
+            className="fixed bottom-0 left-15 z-10 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-full text-neutral-700 dark:text-white"
+          >
+            <motion.div
+              className="absolute rounded-full"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onHoverStart={() => setIsHovered(true)}
+              onHoverEnd={() => setIsHovered(false)}
+              style={{ rotate: rotationValue }}
+              initial={{ scale: 1 }}
+              whileHover={{ scale: 1.2 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              <div className="relative h-16 w-16">
+                {"TO•THE•TOP•".split("").map((char, i) => {
+                  const totalChars = "TO•THE•TOP•".length;
+                  const angle = (360 / totalChars) * i;
+                  return (
+                    <motion.div
+                      key={i}
+                      className="absolute flex h-full w-full items-center justify-center"
+                      style={{
+                        transform: `rotateZ(${angle}deg) translateY(-32px)`,
+                        transformOrigin: "center center",
+                      }}
+                    >
+                      <span className="text-xs font-medium">{char}</span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+            <KeyboardDoubleArrowUpRoundedIcon fontSize="large" />
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
