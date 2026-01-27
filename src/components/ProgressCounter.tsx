@@ -15,7 +15,8 @@ export default function ProgressCounter({
   const prevValueRef = useRef(0);
 
   useMotionValueEvent(value, "change", (latest) => {
-    const newValue = Math.round(latest as number);
+    const clampedValue = Math.max(0, Math.min(100, latest as number));
+    const newValue = Math.round(clampedValue);
     setDisplayValue(newValue);
   });
 
